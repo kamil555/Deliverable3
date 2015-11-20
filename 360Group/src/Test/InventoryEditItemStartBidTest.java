@@ -1,3 +1,4 @@
+package Test;
 import static org.junit.Assert.*;
 
 import java.io.FileWriter;
@@ -6,6 +7,9 @@ import java.io.PrintWriter;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import Main.Inventory;
+import Main.Item;
 
 /**
  * Testing for inventory class.

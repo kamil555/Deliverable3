@@ -1,5 +1,11 @@
 import java.io.IOException;
 
+import Main.Bid;
+import Main.Inventory;
+import Main.Item;
+import Main.User;
+import Main.bidList;
+
 public class TestInventory
 {
 	

@@ -1,3 +1,4 @@
+package Test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -5,6 +6,11 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import Main.Bid;
+import Main.Item;
+import Main.User;
+import Main.bidList;
 
 public class bidListTest
 {

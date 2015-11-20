@@ -1,15 +1,15 @@
+package Test;
 import static org.junit.Assert.*;
-
-import java.text.ParseException;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import Main.Inventory;
+import Main.Item;
 
-public class InventoryAllItemsBidderTest {
 
-
+public class InventoryGetItemFromListTest {
 	
 	private Inventory myInventory;
 	private Item myItem1;
@@ -34,25 +34,14 @@ public class InventoryAllItemsBidderTest {
 		myInventory.addItem(myItem4);
 	}
 
-	/*
-	 * Note: "Inventory.txt" must be cleared and empty
-	 * before running the test.
-	 */
 	@Test
-	public void testAllAuctionItems() throws ParseException {
-
-		Date testDate1 = new Date("11/22/2015 10:00:00");
-		Auction testAuction1 = new Auction("NPName1", testDate1, 2);
-		assertEquals(2, myInventory.allItemsAuction(testAuction1));
+	public void test() {
+		// testing the method returns the correct item
+		assertEquals(myItem3, myInventory.getItemFromList(3));
 		
-		Auction testAuction2 = new Auction("NPName2", testDate1, 2);
-		assertEquals(1, myInventory.allItemsAuction(testAuction2));
-		
-		Auction testAuction3 = new Auction("NPName3", testDate1, 2);
-		assertEquals(1, myInventory.allItemsAuction(testAuction3));
-		
-		// testing name not on list
-		Auction testAuction4 = new Auction("NPName4", testDate1, 2);
-		assertEquals(0, myInventory.allItemsAuction(testAuction4));
+		// testing the method to make sure it returns no if
+		// no item with that id is found
+		assertEquals(null, myInventory.getItemFromList(5));
 	}
+
 }

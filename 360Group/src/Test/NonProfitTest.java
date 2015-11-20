@@ -1,3 +1,4 @@
+package Test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -5,6 +6,11 @@ import java.text.ParseException;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import Main.Auction;
+import Main.Date;
+import Main.NonProfit;
+import Main.User;
 
 /**
  * 

@@ -1,3 +1,4 @@
+package Test;
 import static org.junit.Assert.*;
 
 import java.text.ParseException;
@@ -5,6 +6,9 @@ import java.text.ParseException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import Main.Inventory;
+import Main.Item;
 
 
 public class InventoryViewAllIitemsTest {

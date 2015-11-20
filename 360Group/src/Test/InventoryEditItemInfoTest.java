@@ -1,3 +1,4 @@
+package Test;
 import static org.junit.Assert.*;
 
 import java.io.FileWriter;
@@ -7,13 +8,16 @@ import java.io.PrintWriter;
 import org.junit.Before;
 import org.junit.Test;
 
+import Main.Inventory;
+import Main.Item;
+
 /**
  * Testing for inventory class.
  * 
  * @author Gabrielle Glynn
  * @since November 14, 2015
  */
-public class InventoryEditItemNameTest {
+public class InventoryEditItemInfoTest {
 	
 	private static final double TOLERANCE = .0001;
 	
@@ -30,6 +34,9 @@ public class InventoryEditItemNameTest {
 
 		myItem1 = new Item("Auction1Name", 5.00, "Item1", "Description of item1");		
 		myItem2 = new Item("Auction1Name", 5.00, "Item2", "Description of item2");
+		
+		myInventory.addItem(myItem1);
+		myInventory.addItem(myItem2);
 	}
 
 	/*
@@ -37,10 +44,11 @@ public class InventoryEditItemNameTest {
 	 * before running the test.
 	 */
 	@Test
-	public void testEditItemName() throws IOException {
-		myInventory.addItem(myItem1);
-		myInventory.addItem(myItem2);
-		myInventory.editItemName(myItem1.getItemID(), "editNameItem1");
-		assertEquals("editNameItem1", myItem1.getItemName());
+	public void testEditItemStartBid() throws IOException {
+		myInventory.editItemInfo(myItem2.getItemID(), "New description of item2");
+		assertEquals("New description of item2", myItem2.getItemInfo());
+		myInventory.editItemInfo(myItem1.getItemID(), "New description of item1");
+		assertEquals("New description of item1", myItem1.getItemInfo());
+	
 	}
 }

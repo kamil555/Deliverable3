@@ -1,9 +1,15 @@
+package Test;
 import static org.junit.Assert.*;
 
 import java.text.ParseException;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import Main.Auction;
+import Main.Date;
+import Main.Inventory;
+import Main.Item;
 
 /**
  * Testing for inventory class.
