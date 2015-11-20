@@ -10,10 +10,10 @@ public class Item
 				+ "," + itemInfo;
 	}
 	
-	int itemID;
-	double startBid;
-	String itemName;
-	String itemInfo;
+	public int itemID;
+	public double startBid;
+	public String itemName;
+	public String itemInfo;
 	// Double winBid;
 	// String winUser;
 	public String auctionName;

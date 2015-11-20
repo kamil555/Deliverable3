@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class bidList
 {
-	ArrayList<Bid> Bidlist;
+	public ArrayList<Bid> Bidlist;
 	
 	public bidList() throws IOException
 	{

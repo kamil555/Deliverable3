@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class Inventory
 {
 	// Array list of all the items
-	ArrayList<Item> listofItems;
+	public ArrayList<Item> listofItems;
 	// size of the array list
 	int size;
 	

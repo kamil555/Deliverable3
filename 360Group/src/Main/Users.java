@@ -12,42 +12,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * @author Stepan Adespya and Mindy Huynh
+ * @author Stepan Adespya
  * @since November 5, 2015
  */
-
-class User
-{
-	// UserName of person
-	protected String userName;
-	// Whether a person is a bidder,employee, or nonprofit
-	protected String user;
-	// If nonprofit, Organization name
-	protected String organization;
-	
-	/**
-	 * Saves a User.
-	 * 
-	 * @param username
-	 * @param user
-	 */
-	public User(String username, String user)
-	{
-		this.userName = username;
-		this.user = user;
-	}
-	
-	@Override
-	/**
-	 * overrides the toString method
-	 */
-	public String toString()
-	{
-		return userName + ", " + user;
-	}
-	
-}
-
 public class Users
 {
 	// Keeps track of all Users
