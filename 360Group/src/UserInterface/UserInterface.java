@@ -66,13 +66,13 @@ public class UserInterface{
 		case 1:
 			User userLogin = userLogin(reader, userName);
 			if (userLogin.getUser().equalsIgnoreCase("Bidder")){
-				new BidderInterface(userLogin);
+				new Bidder(userLogin);
 				break;
 			} else if (userLogin.getUser().equalsIgnoreCase("AuctionCentral Employee")){
 				new AuctionCentralEmployee(userLogin);
 				break;
 			} else if (userLogin.getUser().equalsIgnoreCase("nonprofit")){
-				new NonProfitInterface(userLogin);
+				new NonProfit(userLogin);
 				break;
 			}
 			break;
