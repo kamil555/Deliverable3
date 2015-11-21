@@ -20,7 +20,7 @@ public class CalendarAuctionCentral
 {
 	private int futureAuctions;
 	private ArrayList<Auction> auctionList;
-	ArrayList<Auction> futureAuctionList;
+	private ArrayList<Auction> futureAuctionList;
 	private ArrayList<Auction> pastAuctionList;
 
 	private static int MAX_FUTURE_AUCTIONS = 25;
@@ -75,7 +75,7 @@ public class CalendarAuctionCentral
 		System.out.println("Select your Auction or Press -1 to go back to main menu:");
 		for (int i = 0; i < auctionList.size(); i++)
 		{
-			if (auctionList.get(i).getProfitName().equalsIgnoreCase(u.organization))
+			if (auctionList.get(i).getProfitName().equalsIgnoreCase(u.getOrganization()))
 			{
 				System.out.println(i + ")" + auctionList.get(i).toString());
 			}
@@ -391,27 +391,24 @@ public class CalendarAuctionCentral
 		return -1;
 	}
 
-	public void printCalendarMonthly(int month, int year) throws ParseException
-	{
-		String[] monthName =
-			{ "January", "February", "March", "April", "May", "June", "July",
+	public String printCalendarMonthly(int month, int year) throws ParseException{
+		String Calendar = "";
+		String[] monthName = { "January", "February", "March", "April", "May", "June", "July",
 				"August", "September", "October", "November", "December" };
-		int[] monthDay =
-			{ 31, 28, 31, 30, 31, 31, 31, 30, 31, 30, 31, 30 };
-		for (int i = 1; i < monthDay[month - 1] + 1; i++)
-		{
-			System.out.println(monthName[month - 1] + "," + i + ", " + year
-					+ ": ");
+		int[] monthDay = { 31, 28, 31, 30, 31, 31, 31, 30, 31, 30, 31, 30 };
+		for (int i = 1; i < monthDay[month - 1] + 1; i++){
+			Calendar.concat(monthName[month - 1] + "," + i + ", " + year
+					+ ": \n");
 			for (int j = 0; j < auctionList.size(); j++)
 			{
 				if (auctionList.get(j).getAuctionStart().getMonth() == month
 						&& auctionList.get(j).getAuctionStart().getDay() == i
-						&& auctionList.get(j).getAuctionStart().getYear() == year)
-				{
-					System.out.println(auctionList.get(j).toString());
+						&& auctionList.get(j).getAuctionStart().getYear() == year){
+					Calendar.concat(auctionList.get(j).toString()+"\n");
 				}
 			}
 		}
+		return Calendar;
 	}
 
 	// read file into array list of auctions, will use to construct auctionList,
@@ -519,13 +516,12 @@ public class CalendarAuctionCentral
 		pw.close();
 			}
 
-	public void viewFutureAuctions()
-	{
-		for (int i = 0; i < futureAuctionList.size(); i++)
-		{
-			System.out.println(i + ") " + futureAuctionList.get(i).toString());
+	public String viewFutureAuctions(){
+		String futureAuctions = "Here are the future Auctions: \n";
+		for (int i = 0; i < futureAuctionList.size(); i++){
+			futureAuctions.concat(i + ") " + futureAuctionList.get(i).toString()+"\n");
 		}
-
+		return futureAuctions;
 	}
 
 }

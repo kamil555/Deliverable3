@@ -20,7 +20,7 @@ public class TestInventory
 		in.viewAllitems();
 		in.addItem(i);
 		System.out.println(in.listofItems.get(0));
-		Bid b = new Bid(u1.userName, i.itemID, 6.0);
+		Bid b = new Bid(u1.getUserName(), i.itemID, 6.0);
 		System.out.println(b.toString());
 		bidList bl = new bidList();
 		bl.addBid(u1, b);

@@ -147,16 +147,14 @@ public class Inventory
 	 * NOTE: Separate functions?
 	 * @param a
 	 */
-	public int allItemsAuction(Auction a)
-	{
-		int i = 0;
-		for(Item itm: this.listofItems) {
-			if(itm.getAuctionName().equals(a.getAuctionName())) {
-				i++;
-				System.out.println(itm.toString());
+	public String allItemsAuction(Auction a){
+		String auctionItems = "";
+		for(int i = 0; i < listofItems.size(); i++) {
+			if(listofItems.get(i).getAuctionName().equals(a.getAuctionName())) {
+				auctionItems.concat(listofItems.get(i).toString()+"\n");
 			}
 		}
-		return i;
+		return auctionItems;
 	}
 	
 	/**
@@ -170,7 +168,7 @@ public class Inventory
 		bidList b = new bidList();
 		for (int i = 0; i < b.Bidlist.size(); i++)
 		{
-			if (b.Bidlist.get(i).getuserName().endsWith(u.userName))
+			if (b.Bidlist.get(i).getuserName().endsWith(u.getUserName()))
 			{
 				System.out.println(b.Bidlist.get(i).toString());
 			}

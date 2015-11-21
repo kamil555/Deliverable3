@@ -9,62 +9,53 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-public class bidList
-{
+public class bidList{
 	public ArrayList<Bid> Bidlist;
-	
-	public bidList() throws IOException
-	{
+
+	public bidList() throws IOException{
 		Bidlist = new ArrayList<Bid>();
-		
 		readFileToBid("Bids.txt");
-		
 	}
-	
-	public void addBid(User user, Bid b) throws IOException
-	{
-		Bid per = new Bid(user.userName, b.getItemID(), b.getBidAmount());
+
+	public void addBid(User user, Bid b) throws IOException{
+		Bid per = new Bid(user.getUserName(), b.getItemID(), b.getBidAmount());
 		Inventory i = new Inventory();
 		Item it = i.getItemFromList(b.getItemID());
 		if (b.getBidAmount() >= it.startBid)
 		{
 			Bidlist.add(per);
-			String blist = "" + user.userName + "," + b.getItemID() + ","
+			String blist = "" + user.getUserName() + "," + b.getItemID() + ","
 					+ b.getBidAmount();
 			writeToFile("Bids.txt", blist);
+			System.out.println("Bid entered");
+		}else{
+			System.out.println("Sorry you didnt enter a bid over the starting bid.");
 		}
-		// if(item.winBid == null) {
-		// item.winBid = bidAmount;
-		// item.winUser = user.username;
-		// }
-		//
-		// if(bidAmount > item.winBid) {
-		// item.winBid = bidAmount;
-		// item.winUser = user.username;
-		// }
 	}
-	
-	public void editBid(User user, Item item, double bidAmount)
-			throws IOException
-	{
+
+	public void editBid(User user, Item item, double bidAmount)throws IOException{
 		for (int i = 0; i < Bidlist.size(); i++)
 		{
-			if (Bidlist.get(i).getuserName().endsWith(user.userName)
-					&& bidAmount > item.startBid
-					&& item.itemID == Bidlist.get(i).getItemID())
-			{
-				Bidlist.get(i).setBidAmount(bidAmount);
-				clearFile("Bids.txt");
-				writeAllItemsToFile("Bids.txt");
+			if (Bidlist.get(i).getuserName().endsWith(user.getUserName())){
+				if(bidAmount > item.startBid){
+					if(item.itemID == Bidlist.get(i).getItemID()){
+						Bidlist.get(i).setBidAmount(bidAmount);
+						clearFile("Bids.txt");
+						writeAllItemsToFile("Bids.txt");
+						System.out.println("Bid Changed");
+					}
+				}else{
+					System.out.println("Sorry you didnt enter a bid over the starting bid.");
+				}
 			}
+
 		}
 	}
-	
-	public void cancelBid(User user, Item item) throws IOException
-	{
+
+	public void cancelBid(User user, Item item) throws IOException{
 		for (int i = 0; i < Bidlist.size(); i++)
 		{
-			if (Bidlist.get(i).getuserName().equalsIgnoreCase(user.userName)
+			if (Bidlist.get(i).getuserName().equalsIgnoreCase(user.getUserName())
 					&& item.itemID == Bidlist.get(i).getItemID())
 			{
 				Bidlist.remove(i);
@@ -73,7 +64,7 @@ public class bidList
 			}
 		}
 	}
-	
+
 	public String isWinBid(Item item)
 	{
 		int winner = 0;
@@ -85,12 +76,12 @@ public class bidList
 				winner = i;
 			}
 		}
-		
+
 		return "userName is:" + Bidlist.get(winner).getuserName()
 				+ " Amount is:" + Bidlist.get(winner).getBidAmount();
-		
+
 	}
-	
+
 	private void writeToFile(String fileName, String content) throws IOException
 	{
 		// TODO Auto-generated method stub
@@ -105,7 +96,7 @@ public class bidList
 		}
 		pw.close();
 	}
-	
+
 	private void writeAllItemsToFile(String string) throws IOException
 	{
 		// TODO Auto-generated method stub
@@ -117,7 +108,7 @@ public class bidList
 		}
 		pw.close();
 	}
-	
+
 	private void clearFile(String string) throws IOException
 	{
 		FileWriter fw = new FileWriter(string, true);
@@ -125,7 +116,7 @@ public class bidList
 		pw.print("");
 		pw.close();
 	}
-	
+
 	private void readFileToBid(String fileName)
 	{
 		String line = null;
@@ -133,10 +124,10 @@ public class bidList
 		{
 			// FileReader reads text files in the default encoding.
 			FileReader fileReader = new FileReader(fileName);
-			
+
 			// Always wrap FileReader in BufferedReader.
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			
+
 			while ((line = bufferedReader.readLine()) != null)
 			{
 				String[] split = line.split(",", 3);
@@ -146,7 +137,7 @@ public class bidList
 				int id = Integer.parseInt(itemID);
 				double money = Double.parseDouble(bidAmount);
 				Bidlist.add(new Bid(userName, id, money));
-				
+
 			}
 			bufferedReader.close();
 		} catch (FileNotFoundException ex)
