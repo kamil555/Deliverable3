@@ -392,19 +392,19 @@ public class CalendarAuctionCentral
 	}
 
 	public String printCalendarMonthly(int month, int year) throws ParseException{
-		String Calendar = "";
+		String Calendar = "Calendar";
 		String[] monthName = { "January", "February", "March", "April", "May", "June", "July",
 				"August", "September", "October", "November", "December" };
 		int[] monthDay = { 31, 28, 31, 30, 31, 31, 31, 30, 31, 30, 31, 30 };
 		for (int i = 1; i < monthDay[month - 1] + 1; i++){
-			Calendar.concat(monthName[month - 1] + "," + i + ", " + year
-					+ ": \n");
+			Calendar += monthName[month - 1] + "," + i + ", " + year
+					+ ": \n";
 			for (int j = 0; j < auctionList.size(); j++)
 			{
 				if (auctionList.get(j).getAuctionStart().getMonth() == month
 						&& auctionList.get(j).getAuctionStart().getDay() == i
 						&& auctionList.get(j).getAuctionStart().getYear() == year){
-					Calendar.concat(auctionList.get(j).toString()+"\n");
+					Calendar += auctionList.get(j).toString()+"\n";
 				}
 			}
 		}
@@ -519,7 +519,7 @@ public class CalendarAuctionCentral
 	public String viewFutureAuctions(){
 		String futureAuctions = "Here are the future Auctions: \n";
 		for (int i = 0; i < futureAuctionList.size(); i++){
-			futureAuctions.concat(i + ") " + futureAuctionList.get(i).toString()+"\n");
+			futureAuctions += i + ") " + futureAuctionList.get(i).toString()+"\n";
 		}
 		return futureAuctions;
 	}

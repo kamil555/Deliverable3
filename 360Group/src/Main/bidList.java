@@ -21,15 +21,24 @@ public class bidList{
 		Bid per = new Bid(user.getUserName(), b.getItemID(), b.getBidAmount());
 		Inventory i = new Inventory();
 		Item it = i.getItemFromList(b.getItemID());
-		if (b.getBidAmount() >= it.startBid)
-		{
-			Bidlist.add(per);
-			String blist = "" + user.getUserName() + "," + b.getItemID() + ","
-					+ b.getBidAmount();
-			writeToFile("Bids.txt", blist);
-			System.out.println("Bid entered");
+		boolean bidedOnItem = false;
+		for(int j = 0; j < Bidlist.size(); j++){
+			if(Bidlist.get(j).getItemID() == b.getItemID()){
+				bidedOnItem = true;
+			}
+		}
+		if(bidedOnItem){
+			System.out.println("You have already made a Bid on this Item.");
 		}else{
-			System.out.println("Sorry you didnt enter a bid over the starting bid.");
+			if (b.getBidAmount() >= it.startBid){
+				Bidlist.add(per);
+				String blist = "" + user.getUserName() + "," + b.getItemID() + ","
+						+ b.getBidAmount();
+				writeToFile("Bids.txt", blist);
+				System.out.println("Bid entered");
+			}else{
+				System.out.println("Sorry you didnt enter a bid over the starting bid.");
+			}
 		}
 	}
 

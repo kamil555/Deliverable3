@@ -46,17 +46,17 @@ public class AuctionCentralEmployeeInterface{
 	
 	public int enterMonth(){
 		System.out.println("Enter the Month you want to view(1-12)");
+		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);
 		int month = reader.nextInt();
-		reader.close();
 		return month;
 	}
 	
 	public int enterYear(){
 		System.out.println("Enter the Year you want to view(EX. 2015)");
+		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);
 		int year = reader.nextInt();
-		reader.close();
 		return year;
 	}
 	

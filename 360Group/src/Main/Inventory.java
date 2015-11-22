@@ -151,7 +151,7 @@ public class Inventory
 		String auctionItems = "";
 		for(int i = 0; i < listofItems.size(); i++) {
 			if(listofItems.get(i).getAuctionName().equals(a.getAuctionName())) {
-				auctionItems.concat(listofItems.get(i).toString()+"\n");
+				auctionItems += listofItems.get(i).toString()+"\n";
 			}
 		}
 		return auctionItems;

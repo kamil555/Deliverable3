@@ -87,7 +87,7 @@ public class BidderInterface{
 	
 	public int selectItem(Inventory i, Auction a){
 		System.out.println("Select Item(Number) :");
-		i.allItemsAuction(a);
+		System.out.println(i.allItemsAuction(a));
 		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);
 		int select = reader.nextInt();
