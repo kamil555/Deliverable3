@@ -37,15 +37,15 @@ public class bidList{
 		for (int i = 0; i < Bidlist.size(); i++)
 		{
 			if (Bidlist.get(i).getuserName().endsWith(user.getUserName())){
-				if(bidAmount > item.startBid){
-					if(item.itemID == Bidlist.get(i).getItemID()){
+				if(item.itemID == Bidlist.get(i).getItemID()){
+					if(bidAmount > item.startBid){
 						Bidlist.get(i).setBidAmount(bidAmount);
 						clearFile("Bids.txt");
 						writeAllItemsToFile("Bids.txt");
 						System.out.println("Bid Changed");
+					}else{
+						System.out.println("Sorry you didnt enter a bid over the starting bid.");
 					}
-				}else{
-					System.out.println("Sorry you didnt enter a bid over the starting bid.");
 				}
 			}
 
