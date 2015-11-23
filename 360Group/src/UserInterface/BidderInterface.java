@@ -9,12 +9,12 @@ import Main.*;
 /**
  * 
  * @author Stepan Adespya
- * @since November 5, 2015
+ * @since November 21, 2015
  */
 public class BidderInterface{
 
 	/**
-	 * Main menu for the Bidder User
+	 * Main menu for the Bidder User Interface.
 	 * 
 	 * @throws IOException
 	 * @throws ParseException
@@ -24,6 +24,12 @@ public class BidderInterface{
 		System.out.println("Welcome, " + u.getUserName());
 	}
 
+	/**
+	 * The main menu of the Bidder User.
+	 * @return int of the menu selected
+	 * (Precondition nothing)
+	 * (Postcondition int of menu selected)
+	 */
 	public int mainMenu(){
 		System.out.println("Press 1 to see availiable auctions");
 		System.out.println("Press 2 to see bidded items");
@@ -39,6 +45,12 @@ public class BidderInterface{
 		return input;
 	}
 
+	/**
+	 * Asks to enter an item ID
+	 * @return int of item ID
+	 * (Precondition nothing)
+	 * (Postcondition int of item selected)
+	 */
 	public int enterItemID(){
 		System.out.println("Enter item ID to edit bid or -1 to go back: ");
 		@SuppressWarnings("resource")
@@ -47,6 +59,12 @@ public class BidderInterface{
 		return select;
 	}
 
+	/**
+	 * Asks the User what amount of bid he is changing to.
+	 * @return double of the amount he wants to change.
+	 * (Precondition nothing)
+	 * (Postcondition double amount bid changed to)
+	 */
 	public double editBidAmount(){
 		System.out.println("Enter the amount you want to change? $");
 		@SuppressWarnings("resource")
@@ -55,6 +73,12 @@ public class BidderInterface{
 		return money;
 	}
 	
+	/**
+	 * Asks the User how much he wants to bid on item.
+	 * @return double of bid amount
+	 * (Precondition nothing)
+	 * (Postcondition double amount bided)
+	 */
 	public double enterBidAmount(){
 		System.out.println("How much do you want to bid? $");
 		@SuppressWarnings("resource")
@@ -63,6 +87,12 @@ public class BidderInterface{
 		return money;
 	}
 
+	/**
+	 * Menu when User selects an item.
+	 * @return int of what user wants to do next.
+	 * (Precondition nothing)
+	 * (Postcondition int of menu selected)
+	 */
 	public int viewItemMenu(){
 		System.out.println("Press 1 to Bid");
 		System.out.println("Press 2 to go back to menu");
@@ -76,6 +106,13 @@ public class BidderInterface{
 		return input;
 	}
 	
+	/**
+	 * Asks the User to select an Auction.
+	 * @param c AuctionCentral calendar
+	 * @return int of Auction selected.
+	 * (Precondition nothing)
+	 * (Postcondition int of Auction selected)
+	 */
 	public int selectAuction(CalendarAuctionCentral c){
 		System.out.println("Select Auction(Number) :");
 		System.out.println(c.viewFutureAuctions());
@@ -85,6 +122,14 @@ public class BidderInterface{
 		return select;
 	}
 	
+	/**
+	 * Asks the User to select an item from the auction
+	 * @param i
+	 * @param a
+	 * @return int of item selected.
+	 * (Precondition nothing)
+	 * (Postcondition int of item selected)
+	 */
 	public int selectItem(Inventory i, Auction a){
 		System.out.println("Select Item(Number) :");
 		System.out.println(i.allItemsAuction(a));

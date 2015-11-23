@@ -14,7 +14,7 @@ import java.util.Scanner;
 import Main.*;
 /**
  * @author Stepan Adespya
- * @since November 5, 2015
+ * @since November 21, 2015
  */
 public class UserInterface{
 	// Keeps track of all Users
@@ -41,6 +41,14 @@ public class UserInterface{
 		checkForInt(reader);
 	}
 
+	/**
+	 * Checks it User selected the right menu item.
+	 * @param reader
+	 * @throws IOException
+	 * @throws ParseException
+	 * (Precondition nothing)
+	 * (Postcondition int of menu selected)
+	 */
 	private void checkForInt(Scanner reader) throws IOException, ParseException{
 		while(!reader.hasNextInt()){
 			System.out.println("Please enter an integer between 1 and 3.");
@@ -50,6 +58,14 @@ public class UserInterface{
 
 	}
 
+	/**
+	 * Goes to the Right menu selected
+	 * @param reader
+	 * @throws IOException
+	 * @throws ParseException
+	 * (Precondition nothing)
+	 * (Postcondition send the User to menu)
+	 */
 	private void selectOption(Scanner reader) throws IOException, ParseException{
 		int login = 1;
 		int createUser = 2;
@@ -97,6 +113,14 @@ public class UserInterface{
 		}
 	}
 
+	/**
+	 * Gets the new User information
+	 * @param userName
+	 * @throws IOException
+	 * @throws ParseException
+	 * (Precondition User name is valid)
+	 * (Postcondition creates new user)
+	 */
 	private void createNewUser(String userName) throws IOException, ParseException{
 		System.out.println("Press 1 if you want to create an account as a Bidder"
 				+ "\nPress 2 if you want to create an account as an Auction Central Employee"
@@ -128,13 +152,15 @@ public class UserInterface{
 	}
 
 	/**
-	 * Creates a User.
+	 * Looks if new User is a NonProfit if he is asks for organization name.
 	 * 
 	 * @param username
 	 * @param pass
 	 * @param user
 	 * @throws IOException
 	 * @throws ParseException
+	 * (Precondition User name and who is user)
+	 * (Postcondition new user)
 	 */
 	public User createUser(String username, String user) throws IOException,
 	ParseException{
@@ -169,6 +195,8 @@ public class UserInterface{
 	 * @return
 	 * @throws IOException
 	 * @throws ParseException
+	 * (Precondition user name)
+	 * (Postcondition go to right user class)
 	 */
 	private User login(String userName) throws IOException, ParseException{
 		userName.toUpperCase();
@@ -185,10 +213,10 @@ public class UserInterface{
 
 	/**
 	 * Checks to see if anyone else has the same organization name. BR #7
-	 * 
-	 * @param org
-	 *            (Organization name)
+	 * @param org (Organization name)
 	 * @return true or false
+	 * (Precondition organization name)
+	 * (Postcondition checks to see if organization is already used)
 	 */
 	private boolean isOnePerOrg(String org){
 		for (int i = 0; i < users.size(); i++){
@@ -207,6 +235,8 @@ public class UserInterface{
 	 * 
 	 * @param username
 	 * @return true or false
+	 * (Precondition user name valid)
+	 * (Postcondition check is username is already taken)
 	 */
 	private boolean isOneUserName(String username)
 	{
@@ -225,6 +255,8 @@ public class UserInterface{
 	 * Reads the file selected to Users arraylist
 	 * 
 	 * @param fileName
+	 * (Precondition string of file name to read off of)
+	 * (Postcondition fill array of all users in system)
 	 */
 	private void readFileToUsers(String fileName)
 	{
@@ -259,6 +291,8 @@ public class UserInterface{
 	 * Reads the file for nonprofit organizations
 	 * 
 	 * @param fileName
+	 * (Precondition file name to read off of)
+	 * (Postcondition fills all the NonProfit organization names)
 	 */
 	private void readFileToOrg(String fileName)
 	{
@@ -301,6 +335,8 @@ public class UserInterface{
 	 * @param fileName
 	 * @param contents
 	 * @throws IOException
+	 * (Precondition String of contents and file name)
+	 * (Postcondition Writes contents to File)
 	 */
 	private void writeToFile(String fileName, String contents)
 			throws IOException
