@@ -2,6 +2,7 @@ package Main;
 
 import java.io.IOException;
 import java.text.ParseException;
+
 import UserInterface.*;
 
 /**
@@ -16,9 +17,10 @@ public class Bidder{
 	 * 
 	 * @throws IOException
 	 * @throws ParseException
+	 * @throws ClassNotFoundException 
 	 * 
 	 */
-	public Bidder(User u) throws IOException, ParseException{
+	public Bidder(User u) throws IOException, ParseException, ClassNotFoundException{
 		BidderInterface bi = new BidderInterface(u);
 		int input = bi.mainMenu();
 		switch (input){
@@ -53,8 +55,9 @@ public class Bidder{
 	 * @param i
 	 * @throws IOException
 	 * @throws ParseException
+	 * @throws ClassNotFoundException 
 	 */
-	public void viewItem(User u, Item i,BidderInterface bi) throws IOException, ParseException{
+	public void viewItem(User u, Item i,BidderInterface bi) throws IOException, ParseException, ClassNotFoundException{
 		System.out.println(i.toString());
 		int input = bi.viewItemMenu();
 		switch (input){
@@ -90,8 +93,9 @@ public class Bidder{
 	 * @param u
 	 * @throws ParseException
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
-	public void viewOpenAuctions(User u, BidderInterface bi) throws ParseException, IOException{
+	public void viewOpenAuctions(User u, BidderInterface bi) throws ParseException, IOException, ClassNotFoundException{
 		CalendarAuctionCentral c = new CalendarAuctionCentral();
 		int selectAuction = bi.selectAuction(c);
 		Auction a = c.getfutureAuctionList().get(selectAuction);

@@ -1,12 +1,10 @@
 package UserInterface;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -22,17 +20,17 @@ public class UserInterface{
 	private int BIDDER = 1;
 	private int EMPLOYEE = 2;
 	private int NONPROFIT = 3;
+	private String logUser = "User.ser";
 
 	/**
 	 * Users constructor, allows user to login or create account.
 	 * 
 	 * @throws IOException
 	 * @throws ParseException
+	 * @throws ClassNotFoundException 
 	 */
-	public UserInterface() throws IOException, ParseException{
-		users = new ArrayList<User>();
-		readFileToUsers("Logs.txt");
-		readFileToOrg("NonProfit.txt");
+	public UserInterface() throws IOException, ParseException, ClassNotFoundException{
+		readFileToUsers(logUser);
 		System.out.println("Hello Welcome to AuctionCentral");
 		System.out.println("Press 1 to login\nPress 2 to create user\nPress 3 to exit");
 		Scanner reader = new Scanner(System.in);
@@ -48,8 +46,9 @@ public class UserInterface{
 	 * @throws ParseException
 	 * (Precondition nothing)
 	 * (Postcondition int of menu selected)
+	 * @throws ClassNotFoundException 
 	 */
-	private void checkForInt(Scanner reader) throws IOException, ParseException{
+	private void checkForInt(Scanner reader) throws IOException, ParseException, ClassNotFoundException{
 		while(!reader.hasNextInt()){
 			System.out.println("Please enter an integer between 1 and 3.");
 			reader = new Scanner(System.in);
@@ -65,8 +64,9 @@ public class UserInterface{
 	 * @throws ParseException
 	 * (Precondition nothing)
 	 * (Postcondition send the User to menu)
+	 * @throws ClassNotFoundException 
 	 */
-	private void selectOption(Scanner reader) throws IOException, ParseException{
+	private void selectOption(Scanner reader) throws IOException, ParseException, ClassNotFoundException{
 		int login = 1;
 		int createUser = 2;
 		int exit = 3;
@@ -145,9 +145,8 @@ public class UserInterface{
 		} else if (inputUser == NONPROFIT){
 			newUser = createUser(userName, "Nonprofit");
 		}
-		String contents = "" + newUser.getUserName() + "," + newUser.getUser();
-		writeToFile("Logs.txt", contents);
 		users.add(newUser);
+		writeToFile(logUser);
 		System.out.println("Created new User! Please Login with new User.");
 	}
 
@@ -174,15 +173,14 @@ public class UserInterface{
 				System.out.println("Please enter another organization name :");
 				np = reader.nextLine();
 			}
-			per.setOrganization(np);;
-			String org = username + "," + np;
-			writeToFile("NonProfit.txt", org);
+			per.setOrganization(np);
+			writeToFile(logUser);
 
 		}
 		return per;
 	}
 
-	public User userLogin(Scanner reader, String userName) throws IOException, ParseException{
+	public User userLogin(Scanner reader, String userName) throws IOException, ParseException, ClassNotFoundException{
 		System.out.print("Enter Username: ");
 		userName = reader.next().toUpperCase();
 		return login(userName);
@@ -197,8 +195,9 @@ public class UserInterface{
 	 * @throws ParseException
 	 * (Precondition user name)
 	 * (Postcondition go to right user class)
+	 * @throws ClassNotFoundException 
 	 */
-	private User login(String userName) throws IOException, ParseException{
+	private User login(String userName) throws IOException, ParseException, ClassNotFoundException{
 		userName.toUpperCase();
 		for (int i = 0; i < users.size(); i++){
 			if (users.get(i).getUserName().endsWith(userName)){	
@@ -254,65 +253,22 @@ public class UserInterface{
 	 * @param fileName
 	 * (Precondition string of file name to read off of)
 	 * (Postcondition fill array of all users in system)
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	private void readFileToUsers(String fileName){
-		String line = null;
+	@SuppressWarnings("unchecked")
+	private void readFileToUsers(String fileName) throws ClassNotFoundException, IOException{
+		FileInputStream fileIn = new FileInputStream(fileName);
 		try{
-			// FileReader reads text files in the default encoding.
-			FileReader fileReader = new FileReader(fileName);
-
-			// Always wrap FileReader in BufferedReader.
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-			while ((line = bufferedReader.readLine()) != null){
-				String[] split = line.split(",", 2);
-				String username = split[0];
-				String user = split[1];
-				users.add(new User(username, user));
-
-			}
-			bufferedReader.close();
-		} catch (FileNotFoundException ex){
-			System.out.println("Unable to open file '" + fileName + "'");
-		} catch (IOException ex){
-			System.out.println("Error reading file '" + fileName + "'");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			users = (ArrayList<User>) in.readObject();
+			in.close();
+		}catch(EOFException e){
+			users = new ArrayList<User>();
 		}
+        fileIn.close();
 	}
 
-	/**
-	 * Reads the file for nonprofit organizations
-	 * 
-	 * @param fileName
-	 * (Precondition file name to read off of)
-	 * (Postcondition fills all the NonProfit organization names)
-	 */
-	private void readFileToOrg(String fileName){
-		String line = null;
-		try{
-			// FileReader reads text files in the default encoding.
-			FileReader fileReader = new FileReader(fileName);
-
-			// Always wrap FileReader in BufferedReader.
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-			while ((line = bufferedReader.readLine()) != null){
-				String[] split = line.split(",", 2);
-				String username = split[0];
-				String orgname = split[1];
-				for (int i = 0; i < users.size(); i++){
-					if (users.get(i).getUserName().equalsIgnoreCase(username)){
-						users.get(i).setOrganization(orgname);
-					}
-				}
-
-			}
-			bufferedReader.close();
-		} catch (FileNotFoundException ex){
-			System.out.println("Unable to open file '" + fileName + "'");
-		} catch (IOException ex){
-			System.out.println("Error reading file '" + fileName + "'");
-		}
-	}
 
 	/**
 	 * Writes in the file chosen(use for logs)
@@ -323,15 +279,12 @@ public class UserInterface{
 	 * (Precondition String of contents and file name)
 	 * (Postcondition Writes contents to File)
 	 */
-	private void writeToFile(String fileName, String contents)
+	private void writeToFile(String fileName)
 			throws IOException{
-		FileWriter fw = new FileWriter(fileName, true);
-		PrintWriter pw = new PrintWriter(fw);
-		if (Files.size(Paths.get(fileName)) == 0){
-			pw.write(contents);
-		} else{
-			pw.write("\n" + contents);
-		}
-		pw.close();
+		FileOutputStream fileOut = new FileOutputStream(fileName);
+		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		out.writeObject(users);
+		out.close();
+		fileOut.close();
 	}
 }

@@ -70,7 +70,7 @@ public class CalendarAuctionCentral
 		return this.auctionList;
 	}
 
-	public Auction getAuction(User u) throws ParseException, IOException
+	public Auction getAuction(User u) throws ParseException, IOException, ClassNotFoundException
 	{
 		System.out.println("Select your Auction or Press -1 to go back to main menu:");
 		for (int i = 0; i < auctionList.size(); i++)

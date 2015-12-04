@@ -15,9 +15,10 @@ public class AuctionCentralEmployee{
 	 * 
 	 * @throws ParseException
 	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 * 
 	 */
-	public AuctionCentralEmployee(User u) throws ParseException, IOException{
+	public AuctionCentralEmployee(User u) throws ParseException, IOException, ClassNotFoundException{
 		AuctionCentralEmployeeInterface acei = new AuctionCentralEmployeeInterface(u);
 		int input = acei.mainMenu();
 		switch (input){

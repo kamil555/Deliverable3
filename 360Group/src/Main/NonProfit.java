@@ -15,8 +15,9 @@ public class NonProfit{
 	 * 
 	 * @throws ParseException
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
-	public NonProfit(User user) throws ParseException, IOException{
+	public NonProfit(User user) throws ParseException, IOException, ClassNotFoundException{
 		NonProfitInterface npi = new NonProfitInterface(user);
 		int input = npi.mainMenu();
 		//selectOption(input, user);
@@ -66,9 +67,10 @@ public class NonProfit{
 	 * @param duration
 	 * @throws ParseException
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
 	public void scheduleAuction(User u, Date auctionDate, int duration, NonProfitInterface npi)
-			throws ParseException, IOException{
+			throws ParseException, IOException, ClassNotFoundException{
 		CalendarAuctionCentral c = new CalendarAuctionCentral();
 		if (c.checkRequestedDate(auctionDate))
 		{
@@ -90,9 +92,10 @@ public class NonProfit{
 	 * @param auctionDuration
 	 * @throws ParseException
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
 	public void addAuctionInfo(User u, String orgName, Date auctionDate,
-			int auctionDuration,NonProfitInterface npi) throws ParseException, IOException{
+			int auctionDuration,NonProfitInterface npi) throws ParseException, IOException, ClassNotFoundException{
 		Auction a = new Auction(orgName, auctionDate, auctionDuration);
 		CalendarAuctionCentral c = new CalendarAuctionCentral();
 		if (c.checkRequestedAuction(a)){
@@ -121,9 +124,10 @@ public class NonProfit{
 	 * @param a
 	 * @throws ParseException
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
 	public void editAuctionInfo(User u, Auction a,NonProfitInterface npi) throws ParseException,
-	IOException{
+	IOException, ClassNotFoundException{
 		int input = npi.editAuctionMenu();
 		CalendarAuctionCentral c;
 		switch (input){
