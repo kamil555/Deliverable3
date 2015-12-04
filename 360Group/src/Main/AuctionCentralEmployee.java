@@ -20,8 +20,7 @@ public class AuctionCentralEmployee{
 	public AuctionCentralEmployee(User u) throws ParseException, IOException{
 		AuctionCentralEmployeeInterface acei = new AuctionCentralEmployeeInterface(u);
 		int input = acei.mainMenu();
-		switch (input)
-		{
+		switch (input){
 			case 1:
 				int month = acei.enterMonth();
 				int year = acei.enterYear();

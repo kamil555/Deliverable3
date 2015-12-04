@@ -181,7 +181,7 @@ public class UserInterface{
 		}
 		return per;
 	}
-	
+
 	public User userLogin(Scanner reader, String userName) throws IOException, ParseException{
 		System.out.print("Enter Username: ");
 		userName = reader.next().toUpperCase();
@@ -238,12 +238,9 @@ public class UserInterface{
 	 * (Precondition user name valid)
 	 * (Postcondition check is username is already taken)
 	 */
-	private boolean isOneUserName(String username)
-	{
-		for (int i = 0; i < users.size(); i++)
-		{
-			if (users.get(i).getUserName().equalsIgnoreCase(username))
-			{
+	private boolean isOneUserName(String username){
+		for (int i = 0; i < users.size(); i++){
+			if (users.get(i).getUserName().equalsIgnoreCase(username)){
 				System.out.println("Sorry the Username is already taken");
 				return true;
 			}
@@ -258,19 +255,16 @@ public class UserInterface{
 	 * (Precondition string of file name to read off of)
 	 * (Postcondition fill array of all users in system)
 	 */
-	private void readFileToUsers(String fileName)
-	{
+	private void readFileToUsers(String fileName){
 		String line = null;
-		try
-		{
+		try{
 			// FileReader reads text files in the default encoding.
 			FileReader fileReader = new FileReader(fileName);
 
 			// Always wrap FileReader in BufferedReader.
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-			while ((line = bufferedReader.readLine()) != null)
-			{
+			while ((line = bufferedReader.readLine()) != null){
 				String[] split = line.split(",", 2);
 				String username = split[0];
 				String user = split[1];
@@ -278,11 +272,9 @@ public class UserInterface{
 
 			}
 			bufferedReader.close();
-		} catch (FileNotFoundException ex)
-		{
+		} catch (FileNotFoundException ex){
 			System.out.println("Unable to open file '" + fileName + "'");
-		} catch (IOException ex)
-		{
+		} catch (IOException ex){
 			System.out.println("Error reading file '" + fileName + "'");
 		}
 	}
@@ -294,37 +286,30 @@ public class UserInterface{
 	 * (Precondition file name to read off of)
 	 * (Postcondition fills all the NonProfit organization names)
 	 */
-	private void readFileToOrg(String fileName)
-	{
+	private void readFileToOrg(String fileName){
 		String line = null;
-		try
-		{
+		try{
 			// FileReader reads text files in the default encoding.
 			FileReader fileReader = new FileReader(fileName);
 
 			// Always wrap FileReader in BufferedReader.
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-			while ((line = bufferedReader.readLine()) != null)
-			{
+			while ((line = bufferedReader.readLine()) != null){
 				String[] split = line.split(",", 2);
 				String username = split[0];
 				String orgname = split[1];
-				for (int i = 0; i < users.size(); i++)
-				{
-					if (users.get(i).getUserName().equalsIgnoreCase(username))
-					{
+				for (int i = 0; i < users.size(); i++){
+					if (users.get(i).getUserName().equalsIgnoreCase(username)){
 						users.get(i).setOrganization(orgname);
 					}
 				}
 
 			}
 			bufferedReader.close();
-		} catch (FileNotFoundException ex)
-		{
+		} catch (FileNotFoundException ex){
 			System.out.println("Unable to open file '" + fileName + "'");
-		} catch (IOException ex)
-		{
+		} catch (IOException ex){
 			System.out.println("Error reading file '" + fileName + "'");
 		}
 	}
@@ -339,17 +324,14 @@ public class UserInterface{
 	 * (Postcondition Writes contents to File)
 	 */
 	private void writeToFile(String fileName, String contents)
-			throws IOException
-			{
+			throws IOException{
 		FileWriter fw = new FileWriter(fileName, true);
 		PrintWriter pw = new PrintWriter(fw);
-		if (Files.size(Paths.get(fileName)) == 0)
-		{
+		if (Files.size(Paths.get(fileName)) == 0){
 			pw.write(contents);
-		} else
-		{
+		} else{
 			pw.write("\n" + contents);
 		}
 		pw.close();
-			}
+	}
 }
