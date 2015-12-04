@@ -8,7 +8,7 @@ import UI.*;
  * @author Stepan Adespya
  * @since November 5, 2015
  */
-public class NonProfit{
+public class NonProfit {
 
 	/**
 	 * Main Menu for the Non Profit User, easier to navigate
@@ -32,18 +32,18 @@ public class NonProfit{
 			break;
 		case 2:
 			c = new CalendarAuctionCentral();
-			a = c.getAuction(user);
+			a = c.getAuction(user.getOrganization());
 			this.editAuctionInfo(user, a,npi);
 			break;
 		case 3:
 			c = new CalendarAuctionCentral();
-			a = c.getAuction(user);
+			a = c.getAuction(user.getOrganization());
 			this.addItemInfo(user, a,npi);
 			new NonProfit(user);
 			break;
 		case 4:
 			c = new CalendarAuctionCentral();
-			a = c.getAuction(user);
+			a = c.getAuction(user.getOrganization());
 			Inventory i = new Inventory();
 			int item = npi.selectEditItem(i, a);
 			this.editItemInfo(user, item, npi);

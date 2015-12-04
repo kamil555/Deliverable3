@@ -1,4 +1,4 @@
-package UserInterface;
+package UI;
 
 import java.io.EOFException;
 import java.io.FileInputStream;
