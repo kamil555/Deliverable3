@@ -20,7 +20,7 @@ public class UserInterface{
 	private int BIDDER = 1;
 	private int EMPLOYEE = 2;
 	private int NONPROFIT = 3;
-	private String logUser = "User.ser";
+	private String logUser = "Users.ser";
 
 	/**
 	 * Users constructor, allows user to login or create account.
