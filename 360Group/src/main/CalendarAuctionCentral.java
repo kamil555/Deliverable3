@@ -50,7 +50,8 @@ public class CalendarAuctionCentral {
 	private static int MAX_AUCTIONS_ROLLING_7DAY = 5;
 	private static int MAX_AUCTIONS_SAME_DAY = 2;
 	private static int MAX_HOURS_BTW_AUCTIONS = 2;
-	private static int MAX_NP_AUCTIONS_PER_DAY = 365;
+	private static int MAX_NP_AUCTIONS_PER_YEAR = 1;
+	private static int DAYS_PER_YEAR = 365;
 
 	/**
 	 * Makes class CalendarAuctionCentral a singleton.
@@ -69,17 +70,16 @@ public class CalendarAuctionCentral {
 	 */
 	public CalendarAuctionCentral() throws ParseException {
 		auctionList = new ArrayList<Auction>();
-		auctionList = readAuctionsFromFile("auctionList.txt");
+		auctionList = readAuctionsFromFile("auctionList.ser");
 
 		futureAuctionList = new ArrayList<Auction>();
 
-		for (Auction a : auctionList) {
+		for (Auction auction : auctionList) {
 			Date now = new Date();
-			if (now.before(a.getAuctionEnd())) {
-				futureAuctionList.add(a);
+			if (now.before(auction.getAuctionStart())) {
+				futureAuctionList.add(auction);
 			} 
 		}
-
 		futureAuctions = futureAuctionList.size();
 	}
 	
@@ -90,8 +90,7 @@ public class CalendarAuctionCentral {
 	 */
 	public void setFutureAuctions(int auctions) {
 		this.futureAuctions = auctions;
-	}
-	
+	}	
 
 	/**
 	 * @return number of scheduled auctions.
@@ -100,78 +99,13 @@ public class CalendarAuctionCentral {
 		return this.futureAuctions;
 	}
 
-
 	/**
 	 * Returns a list of all auctions.
 	 * @return ArrayList of all auctions.
 	 */
 	public ArrayList<Auction> getAuctionList() {
 		return this.auctionList;
-	}
-
-	/**
-	 * Returns auction if it matches a Nonprofit's name.
-	 * @param nonProfitUser
-	 * @return Auction if nonProfit found
-	 * @throws ParseException
-	 * @throws IOException
-	 */
-	public Auction getAuction(User nonProfitUser) throws ParseException, IOException {
-		System.out
-				.println("Select your Auction or Press -1 to go back to main menu:");
-		for (int i = 0; i < auctionList.size(); i++) {
-			if (auctionList.get(i).getNonProfitName()
-					.equalsIgnoreCase(nonProfitUser.organization)) {
-				System.out.println(i + ")" + auctionList.get(i).toString());
-			}
-		}
-		@SuppressWarnings("resource")
-		Scanner reader = new Scanner(System.in);
-		int select = reader.nextInt();
-		if (select == -1) {
-			new NonProfit(nonProfitUser);
-		}
-		return auctionList.get(select);
-	}
-
-	/**
-	 * 
-	 * @param auctionToEdit
-	 * @param newDate
-	 * @throws ParseException
-	 * @throws IOException
-	 */
-	public void editAuctionDate(Auction auctionToEdit, Date newDate) throws ParseException,
-			IOException {
-		for (int i = 0; i < auctionList.size(); i++) {
-			if (auctionList.get(i).getAuctionName()
-					.endsWith(auctionToEdit.getAuctionName())) {
-				auctionList.get(i).setAuctionStart(newDate);
-				Date newEnd = newDate.clone();
-				newEnd.addHours(auctionList.get(i).getAuctionDuration());
-				auctionList.get(i).resetAuctionEnd(newEnd);
-				writeAuctionsToFile("auctionList.txt");
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 * @param a
-	 * @param newDuration
-	 * @throws IOException
-	 */
-	public void editAuctionDuration(Auction a, int newDuration)
-			throws IOException {
-		for (int i = 0; i < auctionList.size(); i++) {
-			if (auctionList.get(i).getAuctionName()
-					.endsWith(a.getAuctionName())) {
-				auctionList.get(i).setAuctionDuration(newDuration);
-				writeAuctionsToFile("auctionList.txt");
-			}
-		}
-
-	}
+	}	
 
 	/**
 	 * 
@@ -184,14 +118,62 @@ public class CalendarAuctionCentral {
 
 	/**
 	 * 
+	 * @param nonProfitOrganization
+	 * @return
+	 */
+	public Auction getAuction(String nonProfitOrganization) {
+		for (Auction auction : auctionList) {
+			if (auction.getNonProfitName()
+					.equalsIgnoreCase(nonProfitOrganization)) {
+				return auction;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param auctionToEdit
+	 * @param newDate
+	 * @throws ParseException
+	 * @throws IOException
+	 */
+	public void editAuctionDate(Auction auctionToEdit, Date newDate) throws ParseException {
+		for (Auction auction : auctionList) {
+			if (auction.getAuctionName()
+					.equalsIgnoreCase(auctionToEdit.getAuctionName())) {
+				auction.setAuctionStart(newDate);
+				auction.resetAuctionEnd();
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param auctionToEdit
+	 * @param newDuration
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public void editAuctionDuration(Auction auctionToEdit, int newDuration) throws ParseException {
+		for (Auction auction : auctionList) {
+			if (auction.getAuctionName()
+					.equalsIgnoreCase(auctionToEdit.getAuctionName())) {
+				auction.setAuctionDuration(newDuration);
+				auction.resetAuctionEnd();
+			}
+		}
+	}
+
+
+	/**
+	 * 
 	 * @param reqAuction
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public void addFutureAuction(Auction reqAuction) throws IOException,
-			ParseException {
+	public void addFutureAuction(Auction reqAuction) throws ParseException {
 		if (checkRequestedAuction(reqAuction)) {
-			addAuction(this.auctionList, reqAuction, "auctionList.txt");
 			futureAuctionList.add(reqAuction);
 			futureAuctions += 1;
 		}
@@ -199,86 +181,53 @@ public class CalendarAuctionCentral {
 
 
 	/**
-	 * check if Date meets requirements, true means accepted, 
-	 * false means denied
-	 * @param reqDate
-	 * @return boolean; true if 
-	 * @throws ParseException
-	 */
-	public boolean checkRequestedDate(Date reqDate) throws ParseException {
-		if (!atMaxFutureAuctions()) {
-			if (inDateRange(reqDate)) {
-				if (!atMaxAuctionsPerDay(reqDate)) {
-					if (!atMaxAuctions7day(reqDate)) {
-						if (!is2HoursBeforeStart(reqDate)) {
-							return true;
-						} else {
-							System.out
-									.println("Sorry, we have another auction within 2 hours of your requested auction.");
-							return false;
-						}
-					} else {
-						System.out
-								.println("Sorry, we are at our limits for the requested week.");
-						return false;
-					}
-				} else {
-					System.out
-							.println("Sorry, we are at our limits for the requested date.");
-					return false;
-				}
-			} else {
-				System.out
-						.println("Date not in range (must be within 90 days from today)");
-				return false;
-			}
-		} else {
-			System.out.println("At Max future Auctions.");
-			return false;
-		}
-	}
-
-	/**
 	 * check if auction meets requirements, true mean accepted, false means denied
 	 * @param reqAuction
 	 * @return
 	 * @throws ParseException
 	 */
-	public boolean checkRequestedAuction(Auction reqAuction)
-			throws ParseException {
-		if (!atMaxFutureAuctions()) {
-			if (inDateRange(reqAuction.getAuctionEnd())) {
-				if (!oneAuctionPerYear(reqAuction.getProfitName(),
-						reqAuction.getAuctionStart())) {
-					if (!atMaxAuctionsPerDay(reqAuction.getAuctionStart())) {
-						if (!atMaxAuctions7day(reqAuction.getAuctionStart())) {
-							if (!is2HoursBeforeStart(reqAuction
-									.getAuctionStart())) {
-								return true;
-							} else {
-								System.out.println("Error: 2 hour before start");
-								return false;
-							}
-						} else {
-							System.out.println("At max 7 day");
-							return false;
-						}
-					} else {
-						System.out.println("at max auction per day.");
-						return false;
-					}
-				} else {
-					System.out.println("One Auction per year");
-					return false;
-				}
-			} else {
-				System.out.println("Not in date range.");
-				return false;
-			}
-		} else {
-			System.out.println("At max future auctions");
-			return false;
+	public boolean checkRequestedAuction(Auction reqAuction) throws ParseException {
+		int numberOfFails = 0;
+		
+		if (atMaxFutureAuctions()) {
+			System.out.println("Requested auction cannot be added; the maximum "
+					+ MAX_FUTURE_AUCTIONS + " future auctions have already been scheduled.");
+			numberOfFails++;
 		}
+		
+		if (atMaxAuctionPerNonProfitPerYear(reqAuction.getNonProfitName(),
+				reqAuction.getAuctionStart())) {
+			System.out.println("Requested auction cannot be added; " + reqAuction.getNonProfitName() 
+					+ " may only schedule " + MAX_NP_AUCTIONS_PER_YEAR + " auction per year.");
+			numberOfFails++;
+		}
+		
+		if (!inDateRange(reqAuction.getAuctionStart())) {
+			System.out.println("Requested auction cannot be added; the date is not within " 
+					+ MAX_DAYS_OUT + " days from current date.");
+			numberOfFails++;
+		}
+			
+		if (atMaxAuctionsPerDay(reqAuction.getAuctionStart())) {
+			System.out.println("Requested auction cannot be added; no more than " 
+					+ MAX_AUCTIONS_SAME_DAY + " auctions may be scheduled on the same day.");
+			numberOfFails++;
+		}
+		
+		if (atMaxAuctionsIn7DayPeriod(reqAuction.getAuctionStart())) {
+			System.out.println("Requested auction cannot be added; no more than " 
+					+ MAX_AUCTIONS_ROLLING_7DAY + " may be added to any 7-day rolling period.");
+			numberOfFails++;
+		}
+		
+		if (is2HoursBetween(reqAuction)) {
+			System.out.println("Requested auction cannot be added; there must be at least "
+					+ MAX_HOURS_BTW_AUCTIONS + " between the end of one auction and the start" 
+					+ "of another.");
+			numberOfFails++;
+		}
+		
+		return numberOfFails == 0;
 	}
 
 	/**
@@ -289,12 +238,9 @@ public class CalendarAuctionCentral {
 	 * @param fileName
 	 * @throws IOException
 	 */
-	public void addAuction(ArrayList<Auction> auctionList, Auction newAuction,
-			String fileName) throws IOException {
+	public void addAuction(ArrayList<Auction> auctionList, Auction newAuction) {
 		auctionList.add(newAuction);
-		writeOneAuctionToFile(newAuction, fileName);
 	}
-
 
 	/**
 	 * no more than 5 auctions in a rolling 7 day period
@@ -302,53 +248,8 @@ public class CalendarAuctionCentral {
 	 * @return
 	 * @throws ParseException
 	 */
-	public boolean atMaxAuctions7day(Date requestedDate) throws ParseException {
-		int jobsAfter;
-		int jobsBefore;
-		if (oneAuctionforDay(requestedDate) == -1) {
-			jobsAfter = 0;
-			jobsBefore = 0;
-		} else {
-			if (auctionList.get(oneAuctionforDay(requestedDate))
-					.getAuctionStart().before(requestedDate)) {
-				jobsAfter = 1;
-				jobsBefore = 0;
-			} else {
-				jobsAfter = 0;
-				jobsBefore = 1;
-			}
-		}
-		Date tempA = requestedDate.clone();
-		Date tempB = requestedDate.clone();
-		for (int i = 0; i < 7; i++) {
-			tempA.addDays(1);
-			tempB.addDays(-1);
-			for (int j = 0; j < auctionList.size(); j++) {
-				if (auctionList.get(j).getAuctionStart().getMonth() == tempA
-						.getMonth()
-						&& auctionList.get(j).getAuctionStart().getDay() == tempA
-								.getDay()
-						&& auctionList.get(j).getAuctionStart().getYear() == tempA
-								.getYear()) {
-					jobsAfter++;
-				}
-				if (auctionList.get(j).getAuctionStart().getMonth() == tempB
-						.getMonth()
-						&& auctionList.get(j).getAuctionStart().getDay() == tempB
-								.getDay()
-						&& auctionList.get(j).getAuctionStart().getYear() == tempB
-								.getYear()) {
-					jobsBefore++;
-				}
-			}
-		}
-		if (jobsAfter > MAX_AUCTIONS_ROLLING_7DAY
-				|| jobsBefore > MAX_AUCTIONS_ROLLING_7DAY) {
-			return true;
-		} else {
-			return false;
-		}
-
+	public boolean atMaxAuctionsIn7DayPeriod(Date requestedDate) {
+		return true;
 	}
 
 	/**
@@ -367,11 +268,10 @@ public class CalendarAuctionCentral {
 	 */
 	public boolean inDateRange(Date requestedDate) throws ParseException {
 		Date currentDate = new Date();
-		Date inNintyDays = new Date();
-		inNintyDays.addDays(MAX_DAYS_OUT);
+		Date inMaxDaysFromCurrentDate = new Date();
+		inMaxDaysFromCurrentDate.addDays(MAX_DAYS_OUT);
 		return currentDate.before(requestedDate)
-				&& !(inNintyDays.before(requestedDate));
-
+				&& !(inMaxDaysFromCurrentDate.before(requestedDate));
 	}
 
 	/**
@@ -380,27 +280,16 @@ public class CalendarAuctionCentral {
 	 * @return
 	 * @throws ParseException
 	 */
-	public boolean atMaxAuctionsPerDay(Date requestedDate)
-			throws ParseException {
-		int auctions = 0;
-		for (int j = 0; j < auctionList.size(); j++) {
-			if (auctionList.get(j).getAuctionStart().getMonth() == requestedDate
-					.getMonth() // same
-					// month
-					&& auctionList.get(j).getAuctionStart().getDay() == requestedDate
-							.getDay() // same
-					// date
-					&& auctionList.get(j).getAuctionStart().getYear() == requestedDate
-							.getYear()) // same
-			// year
-			{
-				auctions++;
-				if (auctions >= MAX_AUCTIONS_SAME_DAY) {
-					return true;
-				}
+	public boolean atMaxAuctionsPerDay(Date requestedDate) throws ParseException {
+		int auctionOnRequestedDate = 0;
+		for (Auction auction : futureAuctionList) {
+			if (auction.getAuctionStart().getMonth() == requestedDate.getMonth()
+					&& auction.getAuctionStart().getDay() == requestedDate.getDay()
+					&& auction.getAuctionStart().getYear() == requestedDate.getYear()) {
+				auctionOnRequestedDate++;
 			}
 		}
-		return false;
+		return (auctionOnRequestedDate >= MAX_AUCTIONS_SAME_DAY);
 	}
 
 	/**
@@ -410,18 +299,36 @@ public class CalendarAuctionCentral {
 	 * @return
 	 * @throws ParseException
 	 */
-	public boolean is2HoursBeforeStart(Date requestedDate)
-			throws ParseException {
-		if (this.oneAuctionforDay(requestedDate) == -1) {
+	public boolean is2HoursBetween(Auction requestedAuction) throws ParseException {
+		int index = this.oneAuctionforDay(requestedAuction);
+		if (index == -1) {
 			return false;
+		} else if (requestedAuction.getAuctionStart().before(futureAuctionList.get(index)
+					.getAuctionEnd())) {
+			return (requestedAuction.getAuctionEnd().getDiffHours(futureAuctionList.get(index)
+					.getAuctionEnd()) < MAX_HOURS_BTW_AUCTIONS);
 		} else {
-			if (auctionList.get(this.oneAuctionforDay(requestedDate))
-					.getAuctionEnd().getDiffHours(requestedDate) < MAX_HOURS_BTW_AUCTIONS) {
-				return true;
-			} else {
-				return false;
+			return (futureAuctionList.get(index).getAuctionEnd()
+					.getDiffHours(requestedAuction.getAuctionStart()) < MAX_HOURS_BTW_AUCTIONS);
+		}
+	}
+
+	/**
+	 * returns the index of an auction if it is scheduled on the same date as the 
+	 * requested Date of a new auction; if not returns -1
+	 * @param requestedDate
+	 * @return
+	 * @throws ParseException
+	 */
+	public int oneAuctionforDay(Auction requestedAuction) throws ParseException {
+		for (int j = 0; j < futureAuctionList.size(); j++) {
+			if (futureAuctionList.get(j).getAuctionStart().getMonth() == requestedAuction.getAuctionStart().getMonth()
+					&& futureAuctionList.get(j).getAuctionStart().getDay() == requestedAuction.getAuctionStart().getDay()
+					&& futureAuctionList.get(j).getAuctionStart().getYear() == requestedAuction.getAuctionStart().getYear()) {
+				return j;
 			}
 		}
+		return -1;
 	}
 
 	/**
@@ -432,188 +339,15 @@ public class CalendarAuctionCentral {
 	 * @return
 	 * @throws ParseException
 	 */
-	public boolean oneAuctionPerYear(String nonprofit, Date requestedDate)
+	public boolean atMaxAuctionPerNonProfitPerYear(String nonProfitOrganization, Date requestedDate)
 			throws ParseException {
-		for (int i = 0; i < auctionList.size(); i++) {
-			if (auctionList.get(i).getProfitName() == nonprofit) {
-				if (auctionList.get(i).getAuctionEnd()
-						.getDiffDay(requestedDate) < MAX_NP_AUCTIONS_PER_DAY) {
-					return true;
-				} else {
-					return false;
-				}
+		int auctionsWithinLastYear = 0;
+		for (Auction auction : auctionList) {
+			if (auction.getNonProfitName().equalsIgnoreCase(nonProfitOrganization) 
+					&& auction.getAuctionEnd().getDiffDay(requestedDate) < DAYS_PER_YEAR) {
+				auctionsWithinLastYear++;
 			}
 		}
-		return false;
+		return (auctionsWithinLastYear >= MAX_NP_AUCTIONS_PER_YEAR);
 	}
-
-	/**
-	 * returns the index of the auction if it has the same requestDate if not
-	 * returns -1
-	 * @param requestedDate
-	 * @return
-	 * @throws ParseException
-	 */
-	public int oneAuctionforDay(Date requestedDate) throws ParseException {
-		for (int j = 0; j < auctionList.size(); j++) {
-			if (auctionList.get(j).getAuctionStart().getMonth() == requestedDate
-					.getMonth()
-					&& auctionList.get(j).getAuctionStart().getDay() == requestedDate
-							.getDay()
-					&& auctionList.get(j).getAuctionStart().getYear() == requestedDate
-							.getYear()) {
-				return j;
-			}
-		}
-		return -1;
-	}
-
-	/**
-	 * 
-	 * @param month
-	 * @param year
-	 * @throws ParseException
-	 */
-	public void printCalendarMonthly(int month, int year) throws ParseException {
-		String[] monthName = { "January", "February", "March", "April", "May",
-				"June", "July", "August", "September", "October", "November",
-				"December" };
-		int[] monthDay = { 31, 28, 31, 30, 31, 31, 31, 30, 31, 30, 31, 30 };
-		for (int i = 1; i < monthDay[month - 1] + 1; i++) {
-			System.out.println(monthName[month - 1] + "," + i + ", " + year
-					+ ": ");
-			for (int j = 0; j < auctionList.size(); j++) {
-				if (auctionList.get(j).getAuctionStart().getMonth() == month
-						&& auctionList.get(j).getAuctionStart().getDay() == i
-						&& auctionList.get(j).getAuctionStart().getYear() == year) {
-					System.out.println(auctionList.get(j).toString());
-				}
-			}
-		}
-	}
-
-
-	/**
-	 * read file into array list of auctions, will use to construct auctionList,
-	 * futureAuctionList and pastAuctionList
-	 * @param fileName
-	 * @return
-	 * @throws ParseException
-	 */
-	private ArrayList<Auction> readAuctionsFromFile(String fileName)
-			throws ParseException {
-		String line = null;
-		try {
-			ArrayList<Auction> auctionList = new ArrayList<Auction>();
-			// FileReader reads text files in the default encoding.
-			FileReader fileReader = new FileReader(fileName);
-			// Always wrap FileReader in BufferedReader.
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-			while ((line = bufferedReader.readLine()) != null) {
-				String[] split = line.split(",", 3);
-				String auctionName = split[0];
-				Date auctionDate = new Date(split[1]);
-				String auctionDuration = split[2];
-				int duration = Integer.parseInt(auctionDuration);
-				String[] splitName = auctionName.split("-", 2);
-				String nonProfitName = splitName[0];
-
-				auctionList.add(new Auction(nonProfitName, auctionDate,
-						duration));
-			}
-
-			bufferedReader.close();
-
-			 //for debugging System.out.println(auctionList.size());
-			 //System.out.println(auctionList);			 
-			 //for(Auction a:auctionList) {System.out.println(a.toString());} 	 
-
-			return auctionList;
-		} catch (FileNotFoundException ex) {
-			System.out.println("Unable to open file '" + fileName + "'");
-		} catch (IOException ex) {
-			System.out.println("Error reading file '" + fileName + "'");
-		}
-		return null;
-	}
-
-	/**
-	 * 
-	 * @param auctionToRemove
-	 * @param fileName
-	 * @throws IOException
-	 */
-	@SuppressWarnings("unused")
-	private void removeOneAuctionFromFile(Auction auctionToRemove,
-			String fileName) throws IOException {
-		for (Auction a : this.auctionList) {
-			if (auctionToRemove.getAuctionName() == a.getAuctionName()) {
-				this.auctionList.remove(a);
-				writeAuctionsToFile(fileName);
-			}
-		}
-		for (Auction a : this.futureAuctionList) {
-			if (auctionToRemove.getAuctionName() == a.getAuctionName()) {
-				this.futureAuctionList.remove(a);
-				futureAuctions -= 1;
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param fileName
-	 * @throws IOException
-	 */
-	private void clearFile(String fileName) throws IOException {
-		FileWriter fw = new FileWriter(fileName);
-		PrintWriter pw = new PrintWriter(fw);
-		pw.print("");
-		pw.close();
-	}
-
-	/**
-	 * 
-	 * @param fileName
-	 * @throws IOException
-	 */
-	private void writeAuctionsToFile(String fileName) throws IOException {
-		clearFile(fileName);
-		for (int i = 0; i < auctionList.size(); i++) {
-			writeOneAuctionToFile(auctionList.get(i), fileName);
-
-		}
-	}
-
-	/**
-	 * 
-	 * @param auctionToWrite
-	 * @param fileName
-	 * @throws IOException
-	 */
-	private void writeOneAuctionToFile(Auction auctionToWrite, String fileName)
-			throws IOException {
-		String auctionString = new String();
-		auctionString = auctionToWrite.toString();
-		FileWriter fw = new FileWriter(fileName, true);
-		PrintWriter pw = new PrintWriter(fw);
-		if (Files.size(Paths.get(fileName)) == 0) {
-			pw.write(auctionString);
-		} else {
-			pw.write("\r\n" + auctionString);
-		}
-		pw.close();
-	}
-
-	/**
-	 * 
-	 */
-	public void viewFutureAuctions() {
-		for (int i = 0; i < futureAuctionList.size(); i++) {
-			System.out.println(i + ") " + futureAuctionList.get(i).toString());
-		}
-
-	}
-
 }
