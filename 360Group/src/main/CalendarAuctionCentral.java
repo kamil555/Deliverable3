@@ -31,12 +31,12 @@ public class CalendarAuctionCentral {
 	
 	/**
 	 * Variable auctionList keeps track of all auctions
-	 * overtime, either past of present.
+	 * overtime, either past or present.
 	 */
 	private ArrayList<Auction> auctionList;
 	
 	/**
-	 * Variable futureAuctionList just keeps track of 
+	 * Variable futureAuctionList keeps track of 
 	 * the auctions scheduled into the future.
 	 */
 	ArrayList<Auction> futureAuctionList;
@@ -53,7 +53,7 @@ public class CalendarAuctionCentral {
 	private static int MAX_NP_AUCTIONS_PER_DAY = 365;
 
 	/**
-	 * Makes class a singleton.
+	 * Makes class CalendarAuctionCentral a singleton.
 	 */
 	private static CalendarAuctionCentral sCalendar;
 
@@ -85,7 +85,7 @@ public class CalendarAuctionCentral {
 	
 
 	/**
-	 * Setter for number of scheduled Auctions. Used primarily for testing.
+	 * Sets the number of scheduled Auctions. Used primarily for testing.
 	 * @param auctions
 	 */
 	public void setFutureAuctions(int auctions) {
@@ -94,7 +94,6 @@ public class CalendarAuctionCentral {
 	
 
 	/**
-	 * Getter for number of scheduled auctions.
 	 * @return number of scheduled auctions.
 	 */
 	public int getFutureAuctions() {
@@ -103,7 +102,7 @@ public class CalendarAuctionCentral {
 
 
 	/**
-	 * Getter for list of all auctions.
+	 * Returns a list of all auctions.
 	 * @return ArrayList of all auctions.
 	 */
 	public ArrayList<Auction> getAuctionList() {
