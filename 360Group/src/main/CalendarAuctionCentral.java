@@ -2,15 +2,7 @@ package main;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 
 /**
  * The AuctionCentralCalendar class creates a single calendar
@@ -47,11 +39,12 @@ public class CalendarAuctionCentral {
 	 */
 	private static int MAX_FUTURE_AUCTIONS = 25;
 	private static int MAX_DAYS_OUT = 90;
-	private static int MAX_AUCTIONS_ROLLING_7DAY = 5;
+	private static int MAX_AUCTIONS_ROLLING_PERIOD = 5;
 	private static int MAX_AUCTIONS_SAME_DAY = 2;
 	private static int MAX_HOURS_BTW_AUCTIONS = 2;
 	private static int MAX_NP_AUCTIONS_PER_YEAR = 1;
 	private static int DAYS_PER_YEAR = 365;
+	private static int DAYS_PER_ROLLING_PERIOD = 7;
 
 	/**
 	 * Makes class CalendarAuctionCentral a singleton.
@@ -68,16 +61,21 @@ public class CalendarAuctionCentral {
 	 * Constructor, currently reading auctions from existing file.
 	 * NOTE: NEED TO IMPLEMENT OBJECT SERIALIZATION.
 	 */
-	public CalendarAuctionCentral() throws ParseException {
+	public CalendarAuctionCentral()  {
 		auctionList = new ArrayList<Auction>();
-		auctionList = readAuctionsFromFile("auctionList.ser");
+		//auctionList = readAuctionsFromFile("auctionList.ser");
 
 		futureAuctionList = new ArrayList<Auction>();
 
 		for (Auction auction : auctionList) {
 			Date now = new Date();
-			if (now.before(auction.getAuctionStart())) {
-				futureAuctionList.add(auction);
+			try {
+				if (now.before(auction.getAuctionStart())) {
+					futureAuctionList.add(auction);
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			} 
 		}
 		futureAuctions = futureAuctionList.size();
@@ -88,8 +86,8 @@ public class CalendarAuctionCentral {
 	 * Sets the number of scheduled Auctions. Used primarily for testing.
 	 * @param auctions
 	 */
-	public void setFutureAuctions(int auctions) {
-		this.futureAuctions = auctions;
+	public void setFutureAuctions() {
+		this.futureAuctions = this.futureAuctionList.size();
 	}	
 
 	/**
@@ -114,6 +112,23 @@ public class CalendarAuctionCentral {
 	 */
 	public ArrayList<Auction> getFutureAuctionList() {
 		return this.futureAuctionList;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws ParseException 
+	 */
+	public void setFutureAuctionList() throws ParseException {
+		ArrayList<Auction> newFutureAuctionList = new ArrayList<Auction>();
+		for (Auction auction : this.auctionList) {
+			Date now = new Date();
+			if (now.before(auction.getAuctionStart())) {				
+				newFutureAuctionList.add(auction);
+			} 
+		}
+		this.futureAuctionList = newFutureAuctionList;
+		this.setFutureAuctions();
 	}
 
 	/**
@@ -214,9 +229,9 @@ public class CalendarAuctionCentral {
 			numberOfFails++;
 		}
 		
-		if (atMaxAuctionsIn7DayPeriod(reqAuction.getAuctionStart())) {
+		if (atMaxAuctionsInRollingPeriod(reqAuction.getAuctionStart())) {
 			System.out.println("Requested auction cannot be added; no more than " 
-					+ MAX_AUCTIONS_ROLLING_7DAY + " may be added to any 7-day rolling period.");
+					+ MAX_AUCTIONS_ROLLING_PERIOD + " may be added to any 7-day rolling period.");
 			numberOfFails++;
 		}
 		
@@ -248,8 +263,42 @@ public class CalendarAuctionCentral {
 	 * @return
 	 * @throws ParseException
 	 */
-	public boolean atMaxAuctionsIn7DayPeriod(Date requestedDate) {
-		return true;
+	public boolean atMaxAuctionsInRollingPeriod(Date requestedDate) throws ParseException {
+		requestedDate.addDays(-(DAYS_PER_ROLLING_PERIOD - 1));
+		for (int i = 0; i < DAYS_PER_ROLLING_PERIOD; i++) {
+			if(atMaxAuctionsInRollingPeriodHelper(requestedDate)) {
+				return true;
+			}
+			requestedDate.addDays(1);
+		}		
+		return false;
+	}
+	
+	public boolean atMaxAuctionsInRollingPeriodHelper(Date requestedDate) throws ParseException {
+		int counter = 0;
+		for (int i = 0; i < DAYS_PER_ROLLING_PERIOD; i++) {
+			counter += countAuctionsOnDay(requestedDate);
+			requestedDate.addDays(1);
+		}		
+		return counter >= MAX_AUCTIONS_ROLLING_PERIOD;
+	}
+	
+	/**
+	 * 
+	 * @param requestedDate
+	 * @return the number of auctions that start on a specified date
+	 * @throws ParseException 
+	 */
+	public int countAuctionsOnDay(Date requestedDate) throws ParseException {
+		int counter = 0;
+		for (Auction auction : auctionList) {
+			if (auction.getAuctionStart().getYear() == (requestedDate.getYear())
+					&& auction.getAuctionStart().getMonth() == (requestedDate.getMonth())
+					&& auction.getAuctionStart().getDay() == (requestedDate.getDay())) {
+				counter++;
+			}
+		}
+		return counter;
 	}
 
 	/**

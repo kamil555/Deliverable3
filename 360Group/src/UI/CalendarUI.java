@@ -2,7 +2,11 @@ package UI;
 
 import java.text.ParseException;
 
+import main.CalendarAuctionCentral;
+
 public class CalendarUI {
+	
+	CalendarAuctionCentral myCalendar = new CalendarAuctionCentral();
 	
 	/**
 	 * 
@@ -18,11 +22,11 @@ public class CalendarUI {
 		for (int i = 1; i < monthDay[month - 1] + 1; i++) {
 			System.out.println(monthName[month - 1] + "," + i + ", " + year
 					+ ": ");
-			for (int j = 0; j < getAuctionList.size(); j++) {
-				if (auctionList.get(j).getAuctionStart().getMonth() == month
-						&& auctionList.get(j).getAuctionStart().getDay() == i
-						&& auctionList.get(j).getAuctionStart().getYear() == year) {
-					System.out.println(auctionList.get(j).toString());
+			for (int j = 0; j < myCalendar.getAuctionList().size(); j++) {
+				if (myCalendar.getAuctionList().get(j).getAuctionStart().getMonth() == month
+						&& myCalendar.getAuctionList().get(j).getAuctionStart().getDay() == i
+						&& myCalendar.getAuctionList().get(j).getAuctionStart().getYear() == year) {
+					System.out.println(myCalendar.getAuctionList().get(j).toString());
 				}
 			}
 		}
@@ -33,8 +37,8 @@ public class CalendarUI {
 	 * 
 	 */
 	public void viewFutureAuctions() {
-		for (int i = 0; i < futureAuctionList.size(); i++) {
-			System.out.println(i + ") " + futureAuctionList.get(i).toString());
+		for (int i = 0; i < myCalendar.getAuctionList().size(); i++) {
+			System.out.println(i + ") " + myCalendar.getAuctionList().get(i).toString());
 		}
 
 	}
