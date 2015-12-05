@@ -9,10 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-public class bidList{
+public class BidList{
 	public ArrayList<Bid> Bidlist;
 
-	public bidList() throws IOException{
+	public BidList() throws IOException{
 		Bidlist = new ArrayList<Bid>();
 		readFileToBid("Bids.txt");
 	}

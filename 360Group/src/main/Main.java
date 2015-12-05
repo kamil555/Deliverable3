@@ -2,7 +2,7 @@ package main;
 import java.io.IOException;
 import java.text.ParseException;
 
-import UserInterface.UserInterface;
+import UI.UserInterface;
 
 public class Main
 {
