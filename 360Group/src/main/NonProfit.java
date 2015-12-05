@@ -72,7 +72,8 @@ public class NonProfit {
 	public void scheduleAuction(User u, Date auctionDate, int duration, NonProfitInterface npi)
 			throws ParseException, IOException, ClassNotFoundException{
 		CalendarAuctionCentral c = new CalendarAuctionCentral();
-		if (c.checkRequestedDate(auctionDate))
+		Auction a = new Auction(u.getOrganization(), auctionDate, duration);
+		if (c.checkRequestedAuction(a))
 		{
 			addAuctionInfo(u, u.getOrganization(), auctionDate,
 					duration,npi);

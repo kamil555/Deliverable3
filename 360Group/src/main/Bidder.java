@@ -64,7 +64,7 @@ public class Bidder{
 			case 1:
 				double money = bi.enterBidAmount();
 				Bid b = new Bid(u.getUserName(), i.getItemID(), money);
-				bidList bl = new bidList();
+				BidList bl = new BidList();
 				bl.addBid(u, b);
 				new Bidder(u);
 				break;
@@ -83,7 +83,7 @@ public class Bidder{
 	 * @throws IOException
 	 */
 	public void editBid(User u, Item i, double money) throws IOException{
-		bidList b = new bidList();
+		BidList b = new BidList();
 		b.editBid(u, i, money);
 	}
 	
@@ -98,7 +98,7 @@ public class Bidder{
 	public void viewOpenAuctions(User u, BidderInterface bi) throws ParseException, IOException, ClassNotFoundException{
 		CalendarAuctionCentral c = new CalendarAuctionCentral();
 		int selectAuction = bi.selectAuction(c);
-		Auction a = c.getfutureAuctionList().get(selectAuction);
+		Auction a = c.getAuctionList().get(selectAuction);
 		Inventory i = new Inventory();
 		int selectItem = bi.selectItem(i, a);
 		viewItem(u, i.listofItems.get(selectItem),bi);

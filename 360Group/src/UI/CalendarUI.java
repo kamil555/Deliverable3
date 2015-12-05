@@ -14,7 +14,8 @@ public class CalendarUI {
 	 * @param year
 	 * @throws ParseException
 	 */
-	public void printCalendarMonthly(int month, int year) throws ParseException {
+	public String printCalendarMonthly(int month, int year) throws ParseException {
+		String calendar = "";
 		String[] monthName = { "January", "February", "March", "April", "May",
 				"June", "July", "August", "September", "October", "November",
 				"December" };
@@ -26,10 +27,11 @@ public class CalendarUI {
 				if (myCalendar.getAuctionList().get(j).getAuctionStart().getMonth() == month
 						&& myCalendar.getAuctionList().get(j).getAuctionStart().getDay() == i
 						&& myCalendar.getAuctionList().get(j).getAuctionStart().getYear() == year) {
-					System.out.println(myCalendar.getAuctionList().get(j).toString());
+					calendar += myCalendar.getAuctionList().get(j).toString();
 				}
 			}
 		}
+		return calendar;
 	}
 
 
