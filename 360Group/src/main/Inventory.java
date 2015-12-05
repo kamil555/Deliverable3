@@ -165,7 +165,7 @@ public class Inventory
 	 */
 	public void allItemsBidder(User u) throws IOException
 	{
-		bidList b = new bidList();
+		BidList b = new BidList();
 		for (int i = 0; i < b.Bidlist.size(); i++)
 		{
 			if (b.Bidlist.get(i).getuserName().endsWith(u.getUserName()))

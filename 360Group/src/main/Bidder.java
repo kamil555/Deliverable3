@@ -64,7 +64,7 @@ public class Bidder{
 			case 1:
 				double money = bi.enterBidAmount();
 				Bid b = new Bid(u.getUserName(), i.getItemID(), money);
-				bidList bl = new bidList();
+				BidList bl = new BidList();
 				bl.addBid(u, b);
 				new Bidder(u);
 				break;

@@ -1,5 +1,9 @@
 package main;
-
+/**
+ * 
+ * @author Han 
+ *
+ */
 public class Item
 {
 	
