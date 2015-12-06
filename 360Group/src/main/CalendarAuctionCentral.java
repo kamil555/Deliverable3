@@ -465,11 +465,6 @@ public class CalendarAuctionCentral
 		Date currentDate = new Date();
 		Date inMaxDaysFromCurrentDate = new Date();
 		inMaxDaysFromCurrentDate.addDays(MAX_DAYS_OUT);
-		System.out.println(inMaxDaysFromCurrentDate);
-		if (currentDate.before(requestedDate))
-			System.out.println("current date is before requested date.");
-		if (requestedDate.before(inMaxDaysFromCurrentDate))
-			System.out.println("requested date is before max days out.");
 		return currentDate.before(requestedDate)
 				&& requestedDate.before(inMaxDaysFromCurrentDate);
 	}
