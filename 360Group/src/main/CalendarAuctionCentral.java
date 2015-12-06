@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -36,7 +37,7 @@ public class CalendarAuctionCentral {
 	 * Variable futureAuctionList keeps track of the auctions scheduled into the
 	 * future.
 	 */
-	ArrayList<Auction> futureAuctionList;
+	private ArrayList<Auction> futureAuctionList;
 
 	/**
 	 * Constants specified by Auction Central business rules.
@@ -53,32 +54,31 @@ public class CalendarAuctionCentral {
 	 * Utility constants
 	 */
 	private static int DAYS_PER_YEAR = 365;
-	private static String FILENAME = "auctions.ser";
+	private static String FILENAME = "Auctions.ser";
 
 	/**
 	 * Makes class CalendarAuctionCentral a singleton.
 	 */
 	private static CalendarAuctionCentral sCalendar;
 
-	public static CalendarAuctionCentral getCalendar() throws ParseException {
+	public static CalendarAuctionCentral getCalendar() throws ParseException, ClassNotFoundException, IOException {
 		if (sCalendar == null)
 			sCalendar = new CalendarAuctionCentral();
 		return sCalendar;
 	}
 
 	/**
-	 * Constructor, currently reading auctions from existing file. NOTE: NEED TO
-	 * IMPLEMENT OBJECT SERIALIZATION.
+	 * Constructor, currently reading auctions from existing file.
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
 	public CalendarAuctionCentral() {
+		
 		try {
-			readFileToAuctionList(FILENAME);
-		} catch (ClassNotFoundException e1) {
-			System.out.println("Auction class not found.");
-			e1.printStackTrace();
-			return;
+			deserializeAuctions();
 		} catch (IOException e1) {
-			auctionList = new ArrayList<Auction>();
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
 		futureAuctionList = new ArrayList<Auction>();
@@ -158,7 +158,7 @@ public class CalendarAuctionCentral {
 	 */
 	public Auction getAuction(String nonProfitOrganization) {
 		for (Auction auction : auctionList) {
-			if (auction.getNonProfitName().equalsIgnoreCase(
+			if (auction.getNonProfitName().equals(
 					nonProfitOrganization)) {
 				return auction;
 			}
@@ -166,38 +166,77 @@ public class CalendarAuctionCentral {
 		return null;
 	}
 
-	/**
-	 * 
-	 * @param auctionToEdit
-	 * @param newDate
-	 * @throws ParseException
-	 * @throws IOException
-	 */
+/**
+ * Note, will only edit future auctions.
+ * @param auctionToEdit
+ * @param newDate
+ * @throws ParseException
+ */
 	public void editAuctionDate(Auction auctionToEdit, Date newDate)
 			throws ParseException {
-		for (Auction auction : auctionList) {
-			if (auction.getAuctionName().equalsIgnoreCase(
-					auctionToEdit.getAuctionName())) {
-				auction.setAuctionStart(newDate);
-				auction.resetAuctionEnd();
+		Auction originalAuction = null;
+		Auction auctionToRemove = null;
+		for (Auction auction : futureAuctionList) {
+			if (auction.toString().equals(auctionToEdit.toString())) {
+				auctionToRemove = auction;
+				originalAuction = auction.clone();
 			}
+		}
+		if (originalAuction == null) {
+			System.out.println("Auction " + auctionToEdit.getAuctionName()
+					+ " not found in scheduled auctions.");
+			return;
+		}
+		
+		System.out.println("OA, clone of auction: " + originalAuction);
+
+		futureAuctionList.remove(auctionToRemove);
+		setFutureAuctions();
+		auctionList.remove(auctionToRemove);
+		
+		auctionToEdit.setAuctionStart(newDate);
+		auctionToEdit.resetAuctionEnd();
+		auctionToEdit.resetAuctionName();
+
+		if (checkRequestedAuction(auctionToEdit)) {
+			addFutureAuctionWOChecking(auctionToEdit);
+			System.out
+					.println("Auction with new requested date has been added.");
+		} else {
+			addFutureAuctionWOChecking(originalAuction);
+			System.out
+					.println("Auction with new requested date could not be added.");
 		}
 	}
 
 	/**
-	 * 
+	 * Note: will only edit future auctions.
 	 * @param auctionToEdit
 	 * @param newDuration
-	 * @throws IOException
 	 * @throws ParseException
 	 */
 	public void editAuctionDuration(Auction auctionToEdit, int newDuration)
 			throws ParseException {
-		for (Auction auction : auctionList) {
-			if (auction.getAuctionName().equalsIgnoreCase(
-					auctionToEdit.getAuctionName())) {
-				auction.setAuctionDuration(newDuration);
-				auction.resetAuctionEnd();
+		Auction originalAuction = null;
+		for (Auction auction : futureAuctionList) {
+			if (auctionToEdit.toString().equals(auction.toString())) {
+				originalAuction = auction.clone();
+				futureAuctionList.remove(auction);
+			} else {
+				System.out.println("Auction " + auctionToEdit.getAuctionName() 
+						+ " not found in scheduled auctions.");
+				return;
+			}
+			
+			auctionToEdit.setAuctionDuration(newDuration);
+			auctionToEdit.resetAuctionEnd();
+			
+			if(checkRequestedAuction(auctionToEdit)) {
+				addFutureAuction(auctionToEdit);
+				System.out.println("Auction with new duration has been added.");
+			} else {
+				addFutureAuction(originalAuction);
+				System.out.println("Auction with new duration could not be added.");
 			}
 		}
 	}
@@ -208,8 +247,22 @@ public class CalendarAuctionCentral {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
+	public void addFutureAuctionWOChecking(Auction reqAuction)
+			throws ParseException {
+		auctionList.add(reqAuction);
+		futureAuctionList.add(reqAuction);
+		futureAuctions += 1;
+	}
+
+	/**
+	 * 
+	 * @param reqAuction
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void addFutureAuction(Auction reqAuction) throws ParseException {
 		if (checkRequestedAuction(reqAuction)) {
+			auctionList.add(reqAuction);
 			futureAuctionList.add(reqAuction);
 			futureAuctions += 1;
 		}
@@ -273,19 +326,19 @@ public class CalendarAuctionCentral {
 		return numberOfFails == 0;
 	}
 
-	/**
-	 * add auction passed to it without any error checking; used in function
-	 * that add past auctions to an arraylist
-	 * 
-	 * @param auctionList
-	 * @param newAuction
-	 * @param fileName
-	 * @throws IOException
-	 */
-	// public void addAuction(ArrayList<Auction> auctionList, Auction
-	// newAuction) {
-	// auctionList.add(newAuction);
-	// }
+//	/**
+//	 * add auction passed to it without any error checking; used in function
+//	 * that add past auctions to an arraylist
+//	 * 
+//	 * @param auctionList
+//	 * @param newAuction
+//	 * @param fileName
+//	 * @throws IOException
+//	 */
+//	 public void addAuction(ArrayList<Auction> auctionList, Auction
+//	 newAuction) {
+//	 auctionList.add(newAuction);
+//	 }
 
 	/**
 	 * no more than 5 auctions in a rolling 7 day period
@@ -450,19 +503,32 @@ public class CalendarAuctionCentral {
 		}
 		return (auctionsWithinLastYear >= MAX_NP_AUCTIONS_PER_YEAR);
 	}
-
+	
+	/**
+	 * @throws ClassNotFoundException 
+	 * 
+	 */
 	@SuppressWarnings("unchecked")
-	public void readFileToAuctionList(String fileName)
-			throws ClassNotFoundException, IOException {
-		FileInputStream fileIn = new FileInputStream(fileName);
-		ObjectInputStream in = new ObjectInputStream(fileIn);
-		auctionList = (ArrayList<Auction>) in.readObject();
-		in.close();
+	public void deserializeAuctions()
+			throws IOException {
+		FileInputStream fileIn = new FileInputStream(FILENAME);
+		try {
+			
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			try {
+				auctionList = (ArrayList<Auction>) in.readObject();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			in.close();
+		} catch (EOFException e) {
+			auctionList = new ArrayList<Auction>();
+		}
 		fileIn.close();
 	}
 
-	public void writeAuctionListToFile(String fileName) throws IOException {
-		FileOutputStream fileOut = new FileOutputStream(fileName);
+	public void serializeAuctions() throws IOException {
+		FileOutputStream fileOut = new FileOutputStream(FILENAME);
 		ObjectOutputStream out = new ObjectOutputStream(fileOut);
 		out.writeObject(auctionList);
 		out.close();
