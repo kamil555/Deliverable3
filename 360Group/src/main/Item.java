@@ -14,6 +14,12 @@ public class Item {
 	String itemInfo;
 	public String auctionName;
 	
+	public String getAuctionName() {
+		return auctionName;
+	}
+	public void setAuctionName(String auctionName) {
+		this.auctionName = auctionName;
+	}
 	/**
 	 * getter for start bid
 	 * @return startBid
