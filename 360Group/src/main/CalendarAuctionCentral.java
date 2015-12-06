@@ -359,12 +359,12 @@ public class CalendarAuctionCentral {
 		return false;
 	}
 
-	public boolean atMaxAuctionsInRollingPeriodHelper(Date requestedDate)
+	public boolean atMaxAuctionsInRollingPeriodHelper(Date begOfPeriodDate)
 			throws ParseException {
 		int counter = 0;
 		for (int i = 0; i < DAYS_PER_ROLLING_PERIOD; i++) {
-			counter += countAuctionsOnDay(requestedDate);
-			requestedDate.addDays(1);
+			counter += countAuctionsOnDay(begOfPeriodDate);
+			begOfPeriodDate.addDays(1);
 		}
 		return counter >= MAX_AUCTIONS_ROLLING_PERIOD;
 	}
@@ -410,7 +410,7 @@ public class CalendarAuctionCentral {
 		Date inMaxDaysFromCurrentDate = new Date();
 		inMaxDaysFromCurrentDate.addDays(MAX_DAYS_OUT);
 		return currentDate.before(requestedDate)
-				&& !(inMaxDaysFromCurrentDate.before(requestedDate));
+				&& !(requestedDate.before(inMaxDaysFromCurrentDate));
 	}
 
 	/**
