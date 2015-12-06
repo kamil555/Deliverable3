@@ -13,7 +13,8 @@ import main.*;
  * @author Stepan Adespya
  * @since November 21, 2015
  */
-public class AuctionCentralEmployeeInterface{
+public class AuctionCentralEmployeeInterface
+{
 	private int CALENDAR = 1;
 	private int AUCTIONS = 2;
 	private int LOGOUT = 3;
@@ -23,27 +24,30 @@ public class AuctionCentralEmployeeInterface{
 	 * AuctionCentral Employee Interface constructor;
 	 * 
 	 * @throws ParseException
-	 * @throws IOException 
+	 * @throws IOException
 	 * 
 	 */
-	public AuctionCentralEmployeeInterface(User u) {
+	public AuctionCentralEmployeeInterface(User u)
+	{
 		System.out.println("Employee, " + u.getUserName());
 	}
 	
 	/**
 	 * The main menu of the AuctionCentral Employee User.
-	 * @return int of the menu selected
-	 * (Precondition nothing)
-	 * (Postcondition int of menu selected)
+	 * 
+	 * @return int of the menu selected (Precondition nothing) (Postcondition
+	 *         int of menu selected)
 	 */
-	public int mainMenu(){
+	public int mainMenu()
+	{
 		System.out.println("Press 1 to view calendar");
 		System.out.println("Press 2 to view Auction Details");
 		System.out.println("Press 3 log out");
 		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);
 		int input = reader.nextInt();
-		while (input != AUCTIONS && input != CALENDAR && input != LOGOUT){
+		while (input != AUCTIONS && input != CALENDAR && input != LOGOUT)
+		{
 			System.out.println("Sorry wrong input, Please try again");
 			input = reader.nextInt();
 		}
@@ -52,11 +56,12 @@ public class AuctionCentralEmployeeInterface{
 	
 	/**
 	 * Asks the user to Select a month.
-	 * @return int of month selected
-	 * (Precondition nothing)
-	 * (Postcondition int of month selected)
+	 * 
+	 * @return int of month selected (Precondition nothing) (Postcondition int
+	 *         of month selected)
 	 */
-	public int enterMonth(){
+	public int enterMonth()
+	{
 		System.out.println("Enter the Month you want to view(1-12)");
 		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);
@@ -66,11 +71,12 @@ public class AuctionCentralEmployeeInterface{
 	
 	/**
 	 * Asks the user to Select a year.
-	 * @return int of year selected
-	 * (Precondition nothing)
-	 * (Postcondition int of year selected)
+	 * 
+	 * @return int of year selected (Precondition nothing) (Postcondition int of
+	 *         year selected)
 	 */
-	public int enterYear(){
+	public int enterYear()
+	{
 		System.out.println("Enter the Year you want to view(EX. 2015)");
 		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);
@@ -80,11 +86,12 @@ public class AuctionCentralEmployeeInterface{
 	
 	/**
 	 * Asks the user to Select a Auction.
-	 * @return int of Auction selected
-	 * (Precondition nothing)
-	 * (Postcondition int of Auction selected)
+	 * 
+	 * @return int of Auction selected (Precondition nothing) (Postcondition int
+	 *         of Auction selected)
 	 */
-	public int selectAuction(CalendarAuctionCentral c){
+	public int selectAuction(CalendarAuctionCentral c)
+	{
 		System.out.println("Select Auction(Number) :");
 		CalendarUI cui = new CalendarUI();
 		cui.viewFutureAuctions();
@@ -96,11 +103,12 @@ public class AuctionCentralEmployeeInterface{
 	
 	/**
 	 * Asks the user to return to main menu.
-	 * @return int to return to main menu.
-	 * (Precondition nothing)
-	 * (Postcondition int to return to main menu)
+	 * 
+	 * @return int to return to main menu. (Precondition nothing) (Postcondition
+	 *         int to return to main menu)
 	 */
-	public int returnMainMenu(User u){
+	public int returnMainMenu(User u)
+	{
 		System.out.println("Press 1 to return to main menu");
 		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);

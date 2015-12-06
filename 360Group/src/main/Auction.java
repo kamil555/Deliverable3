@@ -10,39 +10,40 @@ import java.text.ParseException;
  *
  */
 @SuppressWarnings("serial")
-public class Auction implements java.io.Serializable {
+public class Auction implements java.io.Serializable
+{
 	// auction name
 	/**
 	 * This is the name of the auction, it will be automatically generated via
 	 * the the non profits name and the date of the auction.
 	 */
 	private String auctionName;
-
+	
 	/**
 	 * This is the date in which the auction start. It includes date, month,
 	 * year as well as hour and minute of the auction start.
 	 */
 	// auction date
 	private Date auctionStart;
-
+	
 	/**
 	 * This is the date in which the auction end. It includes date, month, year
 	 * as well as hour and minute of the auction end. It will be automatically
 	 * generated via the duration and auction start.
 	 */
 	private Date auctionEnd;
-
+	
 	/**
 	 * This is how long the auction will last. It will be automatically
 	 * generated via the auction start and end.
 	 */
 	private int auctionDuration;
-
+	
 	/**
 	 * This is the non profit's name.
 	 */
 	private String nonprofitName;
-
+	
 	/**
 	 * This is the constructor to the Auction class. It requires the non-profit
 	 * user to fill out profitName. auctionStartDAte, auctionDuration.
@@ -56,24 +57,26 @@ public class Auction implements java.io.Serializable {
 	 * @throws ParseException
 	 */
 	public Auction(String nonprofitName, Date auctionStartDate,
-			int auctionDuration) throws ParseException {
+			int auctionDuration) throws ParseException
+	{
 		this.nonprofitName = nonprofitName;
 		this.auctionStart = auctionStartDate;
 		this.auctionDuration = auctionDuration;
-
+		
 		resetAuctionEnd();
 		resetAuctionName();
 	}
-
+	
 	/**
 	 * This is the getter for auctionName.
 	 * 
 	 * @return auctionName the name of the auction.
 	 */
-	public String getAuctionName() {
+	public String getAuctionName()
+	{
 		return this.auctionName;
 	}
-
+	
 	/**
 	 * This is the method to reset the auction name. Since the start date or the
 	 * non profit name may change, I want the auction name to change according
@@ -81,24 +84,26 @@ public class Auction implements java.io.Serializable {
 	 * 
 	 * @throws ParseException
 	 */
-	public void resetAuctionName() throws ParseException {
+	public void resetAuctionName() throws ParseException
+	{
 		// "calculating" auction name
 		String date = getDate(auctionStart.getMonth(), auctionStart.getDay(),
 				auctionStart.getYear());
-
+		
 		this.auctionName = this.nonprofitName + "-" + date;
 	}
-
+	
 	/**
 	 * This is the getter for auction start.
 	 * 
 	 * @return auctionStart the time and date of when the auction is scheduled
 	 *         to start.
 	 */
-	public Date getAuctionStart() {
+	public Date getAuctionStart()
+	{
 		return auctionStart;
 	}
-
+	
 	/**
 	 * This is the setter for auction start
 	 * 
@@ -106,20 +111,22 @@ public class Auction implements java.io.Serializable {
 	 *            the new date and time for when the auction starts.
 	 * @throws ParseException
 	 */
-	public void setAuctionStart(Date auctionStart) throws ParseException {
+	public void setAuctionStart(Date auctionStart) throws ParseException
+	{
 		this.auctionStart = auctionStart;
 		resetAuctionName();
 	}
-
+	
 	/**
 	 * This is the getter for the end of the auction.
 	 * 
 	 * @return when the auction is scheduled to end.
 	 */
-	public Date getAuctionEnd() {
+	public Date getAuctionEnd()
+	{
 		return auctionEnd;
 	}
-
+	
 	/**
 	 * This is the method to reset the auction end. Since the start date or
 	 * duration may change, I want the auction end to change according to the
@@ -127,40 +134,44 @@ public class Auction implements java.io.Serializable {
 	 * 
 	 * @throws ParseException
 	 */
-	public void resetAuctionEnd() throws ParseException {
+	public void resetAuctionEnd() throws ParseException
+	{
 		Date auctionEnd = auctionStart.clone();
 		auctionEnd.addHours(auctionDuration);
 		this.auctionEnd = auctionEnd;
 	}
-
+	
 	/**
 	 * This is the getter for auctionDuration.
 	 * 
 	 * @return auctionDuration how the long auction is supposed to last.
 	 */
-	public int getAuctionDuration() {
+	public int getAuctionDuration()
+	{
 		return auctionDuration;
 	}
-
+	
 	/**
 	 * This is the setter for auction duration.
 	 * 
 	 * @param auctionDuration
 	 *            the new duration of the auction.
 	 */
-	public void setAuctionDuration(int auctionDuration) {
+	public void setAuctionDuration(int auctionDuration)
+	{
 		this.auctionDuration = auctionDuration;
 	}
-
+	
 	/**
 	 * This is the getter for the nonprofit name.
 	 * 
 	 * @return nonprofitname the name of the non profit
 	 */
-	public String getNonProfitName() {
+	public String getNonProfitName()
+	{
 		return nonprofitName;
 	}
-
+	
 	/**
 	 * This is the setter for the non profitname
 	 * 
@@ -168,44 +179,48 @@ public class Auction implements java.io.Serializable {
 	 *            the new name of the non profit.
 	 * @throws ParseException
 	 */
-	public void setNonProfitName(String profitName) throws ParseException {
+	public void setNonProfitName(String profitName) throws ParseException
+	{
 		this.nonprofitName = profitName;
 		resetAuctionName();
 	}
-
+	
 	/**
 	 * This is the toString of the class.
 	 * 
 	 * @return the string representation all the information saved in the
 	 *         auction class.
 	 */
-	public String toString() {
+	public String toString()
+	{
 		return "Auction Name = " + this.auctionName + "Non-Profit Name = "
 				+ this.nonprofitName + "Auction Start Date = "
 				+ this.auctionStart.toString();
-
+		
 		// return this.auctionName + "," + this.auctionStart + ","
 		// + this.auctionDuration;
 	}
 	
 	public Auction clone()
 	{
-		try {
+		try
+		{
 			return new Auction(this.nonprofitName, this.auctionStart, this.auctionDuration);
-		} catch (ParseException e) {
+		} catch (ParseException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 	}
-
+	
 	// public String printDetails()
 	// {
 	// return "Auction Name = " + this.auctionName + "Non-Profit Name = "
 	// + this.nonprofitName + "Auction Start Date = "
 	// + this.auctionStart.toString();
 	// }
-
+	
 	/*
 	 * public void writeAuctionToFile(String fileName) throws IOException {
 	 * String auctionString = new String(); auctionString = this.toString();
@@ -213,7 +228,7 @@ public class Auction implements java.io.Serializable {
 	 * PrintWriter(fw); // fw.append(System.lineSeparator());
 	 * pw.write(auctionString + "\r\n"); pw.close(); }
 	 */
-
+	
 	/**
 	 * Returns the string representation of the date class.
 	 * 
@@ -225,12 +240,14 @@ public class Auction implements java.io.Serializable {
 	 *            the year we want in the string.
 	 * @return
 	 */
-	private String getDate(int month, int day, int year) {
-		String[] monthName = { "January", "February", "March", "April", "May",
+	private String getDate(int month, int day, int year)
+	{
+		String[] monthName =
+		{ "January", "February", "March", "April", "May",
 				"June", "July", "August", "September", "October", "November",
 				"December" };
 		String mm = monthName[month - 1];
 		return mm + "-" + day + "-" + year;
 	}
-
+	
 }

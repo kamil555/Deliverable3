@@ -1,4 +1,5 @@
 package main;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -66,8 +67,10 @@ public class Inventory
 	 */
 	public void editItemName(int itemID, String newName) throws IOException
 	{
-		for(int i = 0; i < listofItems.size(); i++) {
-			if(listofItems.get(i).getItemID() == itemID) {
+		for (int i = 0; i < listofItems.size(); i++)
+		{
+			if (listofItems.get(i).getItemID() == itemID)
+			{
 				listofItems.get(i).setItemName(newName);
 				writeAllItemsToFile("Inventory.txt");
 			}
@@ -85,8 +88,10 @@ public class Inventory
 	public void editItemStartBid(int itemID, double startBid)
 			throws IOException
 	{
-		for(int i = 0; i < listofItems.size(); i++) {
-			if(listofItems.get(i).getItemID() == itemID) {
+		for (int i = 0; i < listofItems.size(); i++)
+		{
+			if (listofItems.get(i).getItemID() == itemID)
+			{
 				listofItems.get(i).setStartBid(startBid);
 				writeAllItemsToFile("Inventory.txt");
 			}
@@ -103,8 +108,10 @@ public class Inventory
 	 */
 	public void editItemInfo(int itemID, String info) throws IOException
 	{
-		for(int i = 0; i < listofItems.size(); i++) {
-			if(listofItems.get(i).getItemID() == itemID) {
+		for (int i = 0; i < listofItems.size(); i++)
+		{
+			if (listofItems.get(i).getItemID() == itemID)
+			{
 				listofItems.get(i).setItemInfo(info);
 				writeAllItemsToFile("Inventory.txt");
 			}
@@ -143,15 +150,19 @@ public class Inventory
 	}
 	
 	/**
-	 * Shows all the items in a selected auction and returns how many.
-	 * NOTE: Separate functions?
+	 * Shows all the items in a selected auction and returns how many. NOTE:
+	 * Separate functions?
+	 * 
 	 * @param a
 	 */
-	public String allItemsAuction(Auction a){
+	public String allItemsAuction(Auction a)
+	{
 		String auctionItems = "";
-		for(int i = 0; i < listofItems.size(); i++) {
-			if(listofItems.get(i).getAuctionName().equals(a.getAuctionName())) {
-				auctionItems += listofItems.get(i).toString()+"\n";
+		for (int i = 0; i < listofItems.size(); i++)
+		{
+			if (listofItems.get(i).getAuctionName().equals(a.getAuctionName()))
+			{
+				auctionItems += listofItems.get(i).toString() + "\n";
 			}
 		}
 		return auctionItems;
@@ -181,10 +192,11 @@ public class Inventory
 	public void viewAllitems()
 	{
 		int i = 0;
-		for(Item itm: this.listofItems) {
+		for (Item itm : this.listofItems)
+		{
 			i++;
 			System.out.println(i + ") " + itm.toString());
-		}		
+		}
 	}
 	
 	/**
@@ -195,8 +207,10 @@ public class Inventory
 	 */
 	public Item getItemFromList(int ID)
 	{
-		for(Item itm: this.listofItems) {
-			if(itm.getItemID() == ID) return itm;
+		for (Item itm : this.listofItems)
+		{
+			if (itm.getItemID() == ID)
+				return itm;
 		}
 		return null;
 	}

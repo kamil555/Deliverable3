@@ -10,31 +10,36 @@ import UI.*;
  * @author Stepan Adespya
  * @since November 5, 2015
  */
-public class Bidder{
+public class Bidder
+{
 	
 	/**
 	 * Main menu for the Bidder User
 	 * 
 	 * @throws IOException
 	 * @throws ParseException
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 * 
 	 */
-	public Bidder(User u) throws IOException, ParseException, ClassNotFoundException{
+	public Bidder(User u) throws IOException, ParseException, ClassNotFoundException
+	{
 		BidderInterface bi = new BidderInterface(u);
 		int input = bi.mainMenu();
-		switch (input){
+		switch (input)
+		{
 			case 1:
-				this.viewOpenAuctions(u,bi);
+				this.viewOpenAuctions(u, bi);
 				break;
 			case 2:
 				this.viewItemsBidded(u);
 				int select = bi.enterItemID();
 				Inventory i = new Inventory();
 				Item it = i.getItemFromList(select);
-				if (select == -1){
+				if (select == -1)
+				{
 					new Bidder(u);
-				}else{
+				} else
+				{
 					double money = bi.editBidAmount();
 					editBid(u, it, money);
 					new Bidder(u);
@@ -55,12 +60,15 @@ public class Bidder{
 	 * @param i
 	 * @throws IOException
 	 * @throws ParseException
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 */
-	public void viewItem(User u, Item i,BidderInterface bi) throws IOException, ParseException, ClassNotFoundException{
+	public void viewItem(User u, Item i, BidderInterface bi) throws IOException, ParseException,
+			ClassNotFoundException
+	{
 		System.out.println(i.toString());
 		int input = bi.viewItemMenu();
-		switch (input){
+		switch (input)
+		{
 			case 1:
 				double money = bi.enterBidAmount();
 				Bid b = new Bid(u.getUserName(), i.getItemID(), money);
@@ -82,7 +90,8 @@ public class Bidder{
 	 * @param money
 	 * @throws IOException
 	 */
-	public void editBid(User u, Item i, double money) throws IOException{
+	public void editBid(User u, Item i, double money) throws IOException
+	{
 		BidList b = new BidList();
 		b.editBid(u, i, money);
 	}
@@ -93,15 +102,17 @@ public class Bidder{
 	 * @param u
 	 * @throws ParseException
 	 * @throws IOException
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 */
-	public void viewOpenAuctions(User u, BidderInterface bi) throws ParseException, IOException, ClassNotFoundException{
+	public void viewOpenAuctions(User u, BidderInterface bi) throws ParseException, IOException,
+			ClassNotFoundException
+	{
 		CalendarAuctionCentral c = new CalendarAuctionCentral();
 		int selectAuction = bi.selectAuction(c);
 		Auction a = c.getAuctionList().get(selectAuction);
 		Inventory i = new Inventory();
 		int selectItem = bi.selectItem(i, a);
-		viewItem(u, i.listofItems.get(selectItem),bi);
+		viewItem(u, i.listofItems.get(selectItem), bi);
 	}
 	
 	/**
@@ -110,7 +121,8 @@ public class Bidder{
 	 * @param u
 	 * @throws IOException
 	 */
-	private void viewItemsBidded(User u) throws IOException{
+	private void viewItemsBidded(User u) throws IOException
+	{
 		Inventory i = new Inventory();
 		i.allItemsBidder(u);
 	}

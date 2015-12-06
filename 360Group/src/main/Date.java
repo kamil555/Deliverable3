@@ -1,4 +1,5 @@
 package main;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,15 +13,14 @@ import java.util.concurrent.TimeUnit;
  * @since November 14, 2015
  */
 @SuppressWarnings("serial")
-public class Date implements java.io.Serializable 
+public class Date implements java.io.Serializable
 {
 	// holds the date entered
 	private String date;
 	
 	/**
-	 * Constructor for the date entered.
-	 * (Precondition String with MM/dd/yyyy HH:mm:ss format)
-	 * (Postcondition creates a date choosen by user)
+	 * Constructor for the date entered. (Precondition String with MM/dd/yyyy
+	 * HH:mm:ss format) (Postcondition creates a date choosen by user)
 	 */
 	public Date(String date)
 	{
@@ -28,9 +28,8 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * If date is not entered, it takes the current date and time.
-	 * (Precondition nothing)
-	 * (Postcondition takes the current date)
+	 * If date is not entered, it takes the current date and time. (Precondition
+	 * nothing) (Postcondition takes the current date)
 	 */
 	public Date()
 	{
@@ -43,10 +42,11 @@ public class Date implements java.io.Serializable
 	
 	/**
 	 * Gets the month of the date.
+	 * 
 	 * @return int month of the date
 	 * @throws ParseException
-	 * (Precondition nothing)
-	 * (Postcondition returns integer of month)
+	 *             (Precondition nothing) (Postcondition returns integer of
+	 *             month)
 	 */
 	public int getMonth() throws ParseException
 	{
@@ -61,8 +61,7 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @return int day of the date
 	 * @throws ParseException
-	 * (Precondition nothing)
-	 * (Postcondition returns integer of day)
+	 *             (Precondition nothing) (Postcondition returns integer of day)
 	 */
 	public int getDay() throws ParseException
 	{
@@ -77,8 +76,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @return int year of the date
 	 * @throws ParseException
-	 * (Precondition nothing)
-	 * (Postcondition returns integer of year)
+	 *             (Precondition nothing) (Postcondition returns integer of
+	 *             year)
 	 */
 	public int getYear() throws ParseException
 	{
@@ -93,8 +92,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @return int hour of date
 	 * @throws ParseException
-	 * (Precondition nothing)
-	 * (Postcondition returns integer of hour)
+	 *             (Precondition nothing) (Postcondition returns integer of
+	 *             hour)
 	 */
 	public int getHour() throws ParseException
 	{
@@ -109,8 +108,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @return int minutes of the date
 	 * @throws ParseException
-	 * (Precondition nothing)
-	 * (Postcondition returns integer of minutes)
+	 *             (Precondition nothing) (Postcondition returns integer of
+	 *             minutes)
 	 */
 	public int getMinutes() throws ParseException
 	{
@@ -125,8 +124,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @return int seconds
 	 * @throws ParseException
-	 * (Precondition nothing)
-	 * (Postcondition returns integer of seconds)
+	 *             (Precondition nothing) (Postcondition returns integer of
+	 *             seconds)
 	 */
 	public int getSeconds() throws ParseException
 	{
@@ -141,8 +140,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @param month
 	 * @throws ParseException
-	 * (Precondition integer greater than 0 but less than 12)
-	 * (Postcondition sets the date to correct month)
+	 *             (Precondition integer greater than 0 but less than 12)
+	 *             (Postcondition sets the date to correct month)
 	 */
 	public void setMonth(int month) throws ParseException
 	{
@@ -160,8 +159,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @param day
 	 * @throws ParseException
-	 * (Precondition integer greater than 0 but less than 32)
-	 * (Postcondition sets the date to correct day)
+	 *             (Precondition integer greater than 0 but less than 32)
+	 *             (Postcondition sets the date to correct day)
 	 */
 	public void setDay(int day) throws ParseException
 	{
@@ -179,8 +178,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @param year
 	 * @throws ParseException
-	 * (Precondition integer greater than 0)
-	 * (Postcondition sets the date to correct year)
+	 *             (Precondition integer greater than 0) (Postcondition sets the
+	 *             date to correct year)
 	 */
 	public void setYear(int year) throws ParseException
 	{
@@ -198,8 +197,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @param hour
 	 * @throws ParseException
-	 * (Precondition integer non negative and less than 24)
-	 * (Postcondition sets the date to correct hour)
+	 *             (Precondition integer non negative and less than 24)
+	 *             (Postcondition sets the date to correct hour)
 	 */
 	public void setHour(int hour) throws ParseException
 	{
@@ -217,8 +216,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @param minutes
 	 * @throws ParseException
-	 * (Precondition integer non negative and less than 60)
-	 * (Postcondition sets the date to correct minute)
+	 *             (Precondition integer non negative and less than 60)
+	 *             (Postcondition sets the date to correct minute)
 	 */
 	public void setMinutes(int minutes) throws ParseException
 	{
@@ -236,8 +235,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @param seconds
 	 * @throws ParseException
-	 * (Precondition integer non negative and less than 60)
-	 * (Postcondition sets the date to correct second)
+	 *             (Precondition integer non negative and less than 60)
+	 *             (Postcondition sets the date to correct second)
 	 */
 	public void setSeconds(int seconds) throws ParseException
 	{
@@ -256,8 +255,8 @@ public class Date implements java.io.Serializable
 	 * @param d
 	 * @return
 	 * @throws ParseException
-	 * (Precondition date that is not NULL)
-	 * (Postcondition hours between the two dates)
+	 *             (Precondition date that is not NULL) (Postcondition hours
+	 *             between the two dates)
 	 */
 	public long getDiffHours(Date d) throws ParseException
 	{
@@ -276,8 +275,8 @@ public class Date implements java.io.Serializable
 	 * @param d
 	 * @return
 	 * @throws ParseException
-	 * (Precondition date that is not NULL)
-	 * (Postcondition days between the two dates)
+	 *             (Precondition date that is not NULL) (Postcondition days
+	 *             between the two dates)
 	 */
 	public long getDiffDay(Date d) throws ParseException
 	{
@@ -296,8 +295,8 @@ public class Date implements java.io.Serializable
 	 * @param d
 	 * @return true iff current date is before the date entered
 	 * @throws ParseException
-	 * (Precondition date that is not NULL)
-	 * (Postcondition returns true or false)
+	 *             (Precondition date that is not NULL) (Postcondition returns
+	 *             true or false)
 	 */
 	public boolean before(Date d) throws ParseException
 	{
@@ -360,8 +359,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @param days
 	 * @throws ParseException
-	 * (Precondition integer of days wanted to add)
-	 * (Postcondition date is corrected to what is added)
+	 *             (Precondition integer of days wanted to add) (Postcondition
+	 *             date is corrected to what is added)
 	 */
 	public void addDays(int days) throws ParseException
 	{
@@ -381,8 +380,8 @@ public class Date implements java.io.Serializable
 	 * 
 	 * @param hours
 	 * @throws ParseException
-	 * (Precondition integer of hours wanted to add)
-	 * (Postcondition date is corrected to what is added)
+	 *             (Precondition integer of hours wanted to add) (Postcondition
+	 *             date is corrected to what is added)
 	 */
 	public void addHours(int hours) throws ParseException
 	{
@@ -397,10 +396,8 @@ public class Date implements java.io.Serializable
 		this.date = newDate;
 	}
 	
-	
 	/**
-	 * clones the date to another object.
-	 * (Precondition Date not NULL)
+	 * clones the date to another object. (Precondition Date not NULL)
 	 * (Postcondition have the same date)
 	 */
 	public Date clone()
