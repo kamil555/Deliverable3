@@ -1,9 +1,6 @@
 package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import javax.jws.soap.SOAPBinding.Use;
-
 import main.Bid;
 import main.BidList;
 import main.Item;
