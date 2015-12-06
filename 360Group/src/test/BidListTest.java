@@ -66,7 +66,7 @@ public class BidListTest {
 	@Test
 	public void testEditBid() throws Exception {
 		assertEquals("edit name fail", "Han", user.getUserName());
-		assertEquals("add ID fail", 123, item.getItemID);
+		assertEquals("add ID fail", 123, item.getItemID());
 		assertEquals("edit Amount fail", 4.2, bid.getBidAmount(),TOLERANCE);
 	}
 	/**
@@ -75,7 +75,7 @@ public class BidListTest {
 	@Test
 	public void testCancelBid() {
 		assertTrue(bid.getuserName().equalsIgnoreCase(user.getUserName()));
-		assertTrue(bid.getItemID() == item.getItemID);
+		assertTrue(bid.getItemID() == item.getItemID());
 	}
 	/**
 	 * test who is winning the bid
