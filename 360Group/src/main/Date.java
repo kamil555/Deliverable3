@@ -11,7 +11,8 @@ import java.util.concurrent.TimeUnit;
  * @author Stepan Adespya
  * @since November 14, 2015
  */
-public class Date
+@SuppressWarnings("serial")
+public class Date implements java.io.Serializable 
 {
 	// holds the date entered
 	private String date;
