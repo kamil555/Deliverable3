@@ -1,6 +1,6 @@
 package main;
 
-public class Item
+public class Item implements java.io.Serializable
 {
 	/**
 	 * to string method

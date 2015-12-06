@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * @since November 9, 2015
  * @edited by Gabrielle 11/15/2015
  */
-public class Inventory
+public class Inventory implements java.io.Serializable
 {
 	// Array list of all the items
 	public ArrayList<Item> listofItems;

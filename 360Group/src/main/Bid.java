@@ -5,7 +5,7 @@ package main;
  * @author Han
  *
  */
-public class Bid
+public class Bid implements java.io.Serializable
 {
 	
 	/**

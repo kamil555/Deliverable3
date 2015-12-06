@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author Han
  * @edited by Stepan
  */
-public class BidList
+public class BidList implements java.io.Serializable
 {
 	public ArrayList<Bid> Bidlist;
 	

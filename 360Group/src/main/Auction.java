@@ -1,14 +1,10 @@
-/*
- * PPPPPPPPPOOOOOOOOOOOOOOOOOOPPPPPPPPPPPPPPPPPPP
- * CAN YOU SEE ME?!?!?!?!?!?!?!?
- */
 package main;
 
 import java.text.ParseException;
 
 /**
- * This is the Auction class. This class takes in the non profits request for an
- * auction.
+ * This is the Auction class. 
+ * This class takes in the non profits request for an auction.
  * 
  * @author Mindy Huynh
  *
@@ -18,7 +14,8 @@ public class Auction implements java.io.Serializable
 {
 	// auction name
 	/**
-	 * This is the name of the auction, it will be automatically generated via
+	 * This is the name of the auction
+	 * It will be automatically generated via 
 	 * the the non profits name and the date of the auction.
 	 */
 	private String auctionName;
