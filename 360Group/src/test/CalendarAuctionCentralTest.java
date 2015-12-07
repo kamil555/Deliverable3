@@ -820,7 +820,44 @@ public class CalendarAuctionCentralTest
 		assertTrue(calendarWithMaxFutureAuctions.atMaxFutureAuctions());
 	}
 	
+	/**
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	@Test
+	public void testInDateRangeOnAuctionInPast()
+			throws IOException, ParseException
+	{		
+		assertEquals(MAX_FUTURE_AUCTIONS, calendarWithMaxFutureAuctions.getFutureAuctionList().size());
+		assertTrue(calendarWithMaxFutureAuctions.atMaxFutureAuctions());
+	}
 	
+	/**
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	@Test
+	public void testInDateRangeOnAuctionInDateRange()
+			throws IOException, ParseException
+	{		
+		assertEquals(MAX_FUTURE_AUCTIONS, calendarWithMaxFutureAuctions.getFutureAuctionList().size());
+		assertTrue(calendarWithMaxFutureAuctions.atMaxFutureAuctions());
+	}
+	
+	/**
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	@Test
+	public void testInDateRangeOnAuctionInFuture()
+			throws IOException, ParseException
+	{		
+		assertEquals(MAX_FUTURE_AUCTIONS, calendarWithMaxFutureAuctions.getFutureAuctionList().size());
+		assertTrue(calendarWithMaxFutureAuctions.atMaxFutureAuctions());
+	}		
 	
 	/**
 	 * 
