@@ -13,6 +13,9 @@ import java.util.Scanner;
 import main.*;
 
 /**
+ * This is the UserInterface class. 
+ * It combines all interfaces and puts everything together.
+ * 
  * @author Stepan Adespya
  * @edited by Mindy Huynh 12/5/2015
  * @since November 21, 2015
@@ -20,14 +23,34 @@ import main.*;
 public class UserInterface
 {
 	// Keeps track of all Users
+	/**
+	 * This is the list of user. 
+	 * It keeps track of all the users.
+	 */
 	private ArrayList<User> users;
+	
+	/**
+	 * This is the bidder option number.
+	 */
 	private int BIDDER = 1;
+	
+	/**
+	 * This is the employee option number.
+	 */
 	private int EMPLOYEE = 2;
+	
+	/**
+	 * This is the nonprofit option number.
+	 */
 	private int NONPROFIT = 3;
+	
+	/**
+	 * This is the string that represents the file name to be used later.
+	 */
 	private String logUser = "Users.ser";
 	
 	/**
-	 * Users constructor, allows user to login or create account.
+	 * This is the Users class constructor, allows user to login or create account.
 	 * 
 	 * @throws IOException
 	 * @throws ParseException
@@ -45,9 +68,9 @@ public class UserInterface
 	}
 	
 	/**
-	 * Checks it User selected the right menu item.
+	 * This method checks it User selected the right menu item.
 	 * 
-	 * @param reader
+	 * @param reader the reader from scanner that is used read files.
 	 * @throws IOException
 	 * @throws ParseException
 	 *             (Precondition nothing) (Postcondition int of menu selected)
@@ -66,9 +89,9 @@ public class UserInterface
 	}
 	
 	/**
-	 * Goes to the Right menu selected
+	 * This method goes to the Right menu selected.
 	 * 
-	 * @param reader
+	 * @param reader the reader from scanner that is used read files.
 	 * @throws IOException
 	 * @throws ParseException
 	 *             (Precondition nothing) (Postcondition send the User to menu)
@@ -93,15 +116,15 @@ public class UserInterface
 		// login
 			case 1:
 				User userLogin = userLogin(reader, userName);
-				if (userLogin.getUser().equalsIgnoreCase("Bidder"))
+				if (userLogin.getUserStatus().equalsIgnoreCase("Bidder"))
 				{
 					new Bidder(userLogin);
 					break;
-				} else if (userLogin.getUser().equalsIgnoreCase("AuctionCentral Employee"))
+				} else if (userLogin.getUserStatus().equalsIgnoreCase("AuctionCentral Employee"))
 				{
 					new AuctionCentralEmployee(userLogin);
 					break;
-				} else if (userLogin.getUser().equalsIgnoreCase("nonprofit"))
+				} else if (userLogin.getUserStatus().equalsIgnoreCase("nonprofit"))
 				{
 					new NonProfit(userLogin);
 					break;
@@ -129,9 +152,9 @@ public class UserInterface
 	}
 	
 	/**
-	 * Gets the new User information
+	 * This method gets the new User information
 	 * 
-	 * @param userName
+	 * @param userName the name of the user.
 	 * @throws IOException
 	 * @throws ParseException
 	 *             (Precondition User name is valid) (Postcondition creates new
@@ -173,21 +196,20 @@ public class UserInterface
 	}
 	
 	/**
-	 * Looks if new User is a NonProfit if he is asks for organization name.
+	 * This method looks if new User is a NonProfit if he is asks for organization name.
 	 * 
-	 * @param username
-	 * @param pass
-	 * @param user
+	 * @param username the name of the user using the system.
+	 * @param userType the type of user linked to that user name.
 	 * @throws IOException
 	 * @throws ParseException
 	 *             (Precondition User name and who is user) (Postcondition new
 	 *             user)
 	 */
-	public User createUser(String username, String user) throws IOException,
+	public User createUser(String username, String userType) throws IOException,
 			ParseException
 	{
-		User per = new User(username, user);
-		if (per.getUser().equalsIgnoreCase("nonprofit"))
+		User per = new User(username, userType);
+		if (per.getUserStatus().equalsIgnoreCase("nonprofit"))
 		{
 			System.out.println("Enter Nonprofit Organization: ");
 			@SuppressWarnings("resource")
@@ -205,6 +227,16 @@ public class UserInterface
 		return per;
 	}
 	
+	/**
+	 * This is the method for the user to log in.
+	 * 
+	 * @param reader the reader that reads the user name.
+	 * @param userName the name of the user being stored.
+	 * @return the login of the user.
+	 * @throws IOException
+	 * @throws ParseException
+	 * @throws ClassNotFoundException
+	 */
 	public User userLogin(Scanner reader, String userName) throws IOException, ParseException,
 			ClassNotFoundException
 	{
@@ -214,10 +246,10 @@ public class UserInterface
 	}
 	
 	/**
-	 * Login for users.
+	 * This method logs users in.
 	 * 
-	 * @param userName
-	 * @return
+	 * @param userName the name of the user trying to be logged in.
+	 * @return the user trying to log in.
 	 * @throws IOException
 	 * @throws ParseException
 	 *             (Precondition user name) (Postcondition go to right user
@@ -241,9 +273,9 @@ public class UserInterface
 	}
 	
 	/**
-	 * Checks to see if anyone else has the same organization name. BR #7
+	 * This method checks to see if anyone else has the same organization name. BR #7
 	 * 
-	 * @param org
+	 * @param org the organization the nonprofit belogs to.
 	 *            (Organization name)
 	 * @return true or false (Precondition organization name) (Postcondition
 	 *         checks to see if organization is already used)
@@ -266,9 +298,9 @@ public class UserInterface
 	}
 	
 	/**
-	 * Checks if there is the same username
+	 * This method checks if there is the same username
 	 * 
-	 * @param username
+	 * @param username the name of the user trying to log in.
 	 * @return true or false (Precondition user name valid) (Postcondition check
 	 *         is username is already taken)
 	 */
@@ -288,9 +320,9 @@ public class UserInterface
 	/**
 	 * Reads the file selected to Users arraylist
 	 * 
-	 * @param fileName
-	 *            (Precondition string of file name to read off of)
-	 *            (Postcondition fill array of all users in system)
+	 * @param fileName the name of the file we're trying to access.
+	 * @Pre string of file name to read off of
+	 * @Post fill array of all users in system
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
@@ -311,7 +343,7 @@ public class UserInterface
 	}
 	
 	/**
-	 * Writes in the file chosen(use for logs)
+	 * This method writes in the file chosen(use for logs)
 	 * 
 	 * @param fileName
 	 * @param contents

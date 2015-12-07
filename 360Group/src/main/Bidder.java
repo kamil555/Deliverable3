@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.text.ParseException;
+
 import UI.BidderInterface;
 import UI.UserInterface;
 

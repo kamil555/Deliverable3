@@ -7,6 +7,7 @@ import java.util.Scanner;
 import main.*;
 
 /**
+ * This is the nonprofit user interface.
  * @author Stepan Adespya
  * @edited by Mindy Huynh 12/5/2015
  * @since November 21, 2015
@@ -15,7 +16,7 @@ public class NonProfitInterface
 {
 	
 	/**
-	 * Welcome message to User.
+	 * This is the constructor and welcome message to the user. 
 	 * 
 	 * @throws ParseException
 	 * @throws IOException
@@ -27,10 +28,11 @@ public class NonProfitInterface
 	}
 	
 	/**
-	 * Main Menu for Non Profit User.
+	 * This is the Main Menu for Non Profit User.
 	 * 
-	 * @return int of menu selected (Precondition nothing) (Postcondition int of
-	 *         menu selected)
+	 * @return int of menu selected
+	 * @Pre nothing
+	 * @Post int of menu selected)
 	 */
 	public int mainMenu()
 	{
@@ -51,10 +53,11 @@ public class NonProfitInterface
 	}
 	
 	/**
-	 * Asks User to fill out the Auction schedule.
+	 * This method asks User to fill out the Auction schedule.
 	 * 
-	 * @return String of an Auction Date (Precondition nothing) (Postcondition
-	 *         String of date for auction)
+	 * @return String of an Auction Date
+	 * @Pre nothing
+	 * @Post String date for auction)
 	 */
 	public String enterAuctionDetails()
 	{
@@ -89,10 +92,11 @@ public class NonProfitInterface
 	}
 	
 	/**
-	 * Menu for User after Auction is created.
+	 * This is the menu for User after Auction is created.
 	 * 
-	 * @return int of menu selected (Precondition nothing) (Postcondition int of
-	 *         menu selected)
+	 * @return int of menu selected 
+	 * @Pre nothing
+	 * @Post return int of menu selected.
 	 */
 	public int auctionAddMenu()
 	{
@@ -110,10 +114,11 @@ public class NonProfitInterface
 	}
 	
 	/**
-	 * Menu of editing an Auction.
+	 * This is the menu of editing an Auction.
 	 * 
-	 * @return int of menu selected. (Precondition nothing) (Postcondition int
-	 *         of menu selected)
+	 * @return int of menu selected. 
+	 * @Pre nothing
+	 * @Post int of menu selected
 	 */
 	public int editAuctionMenu()
 	{
@@ -131,10 +136,11 @@ public class NonProfitInterface
 	}
 	
 	/**
-	 * Menu of editing an item created.
+	 * This is the menu of editing an item created.
 	 * 
-	 * @return int of menu selected. (Precondition nothing) (Postcondition int
-	 *         of menu selected)
+	 * @return int of menu selected.
+	 * @Pre nothing
+	 * @Post int of menu selected
 	 */
 	public int editItemMenu()
 	{
@@ -153,10 +159,11 @@ public class NonProfitInterface
 	}
 	
 	/**
-	 * Asks User to enter name for item
+	 * This method asks User to enter name for item
 	 * 
-	 * @return String of name for item. (Precondition nothing) (Postcondition
-	 *         String for item name)
+	 * @return String of name for item. 
+	 * @Pre nothing
+	 * @Post String name for item.
 	 */
 	public String enterItemName()
 	{
@@ -169,10 +176,11 @@ public class NonProfitInterface
 	}
 	
 	/**
-	 * Asks User what the start bid amount for item
+	 * This method asks User what the start bid amount for item
 	 * 
-	 * @return double of start bid item (Precondition nothing) (Postcondition
-	 *         double for start bid)
+	 * @return double of start bid item
+	 * @Pre nothing
+	 * @Post double of start bid item.
 	 */
 	public double enterItemStartBid()
 	{
@@ -184,10 +192,11 @@ public class NonProfitInterface
 	}
 	
 	/**
-	 * Asks User to enter more information about item.
+	 * This method asks User to enter more information about item.
 	 * 
-	 * @return String about the item. (Precondition nothing) (Postcondition
-	 *         String about item)
+	 * @return String about the item. 
+	 * @Pre nothing
+	 * @Post String about item.
 	 */
 	public String enterInfo()
 	{
@@ -199,15 +208,16 @@ public class NonProfitInterface
 	}
 	
 	/**
-	 * Asks User the information about item to add.
+	 * This method asks User the information about item to add.
 	 * 
-	 * @param a
-	 * @return Item to add. (Precondition Auction to add item to) (Postcondition
-	 *         Item with information)
+	 * @param auction the auction being used.
+	 * @return Item to add. 
+	 * @Pre nothing
+	 * @Post takes in the information and saves it.
 	 */
-	public Item addItem(Auction a)
+	public Item addItem(Auction auction)
 	{
-		System.out.println(a.getAuctionName());
+		System.out.println(auction.getAuctionName());
 		System.out.println("Name of item :");
 		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);
@@ -219,28 +229,29 @@ public class NonProfitInterface
 		String moreInfo = reader.nextLine();
 		if (!itemName.isEmpty() && !moreInfo.isEmpty())
 		{
-			Item i = new Item(a.getAuctionName(), startBid, itemName, moreInfo);
+			Item i = new Item(auction.getAuctionName(), startBid, itemName, moreInfo);
 			return i;
 		} else
 		{
 			System.out.println("One of the category is not correct.");
-			this.addItem(a);
+			this.addItem(auction);
 		}
 		return null;
 	}
 	
 	/**
-	 * Asks User to select an item to edit.
+	 * This method asks User to select an item to edit.
 	 * 
-	 * @param i
-	 * @param a
-	 * @return int of item selected (Precondition Inventory and Auction where
-	 *         the item is stored) (Postcondition int of item selected)
+	 * @param inven the inventory the item is in
+	 * @param auction the auction for the item.
+	 * @return int of item selected
+	 * @Pre Inventory and Auction where the item is stored
+	 * @Post int of item selected
 	 */
-	public int selectEditItem(Inventory i, Auction a)
+	public int selectEditItem(Inventory inven, Auction auction)
 	{
 		System.out.println("Enter the Number of item you want to edit");
-		System.out.println(i.allItemsAuction(a));
+		System.out.println(inven.allItemsAuction(auction));
 		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);
 		int item = reader.nextInt();
@@ -248,10 +259,11 @@ public class NonProfitInterface
 	}
 	
 	/**
-	 * Asks User to enter the Duration of the Auction
+	 * This method asks User to enter the Duration of the Auction
 	 * 
-	 * @return int of duration (Precondition nothing) (Postcondition int of
-	 *         auction duration)
+	 * @return int of duration 
+	 * @Pre Inventory and Auction where the item is stored
+	 * @Post int of duration.
 	 */
 	public int enterDuration()
 	{
@@ -263,14 +275,14 @@ public class NonProfitInterface
 	}
 	
 	/**
-	 * Checks if the date entered is correct;
+	 * This method checks if the date entered is correct;
 	 * 
-	 * @param month
-	 * @param day
-	 * @param year
+	 * @param month the month to check.
+	 * @param day the date to check.
+	 * @param year the year to check.
 	 * @return true if date is valid and false if date doesn't exist
-	 *         (Precondition int for month, day ,year) (Postcondition true or
-	 *         false)
+	 * @Pre int for month, day ,year
+	 * @Post true or false
 	 */
 	private boolean isValidDate(int month, int day, int year)
 	{
