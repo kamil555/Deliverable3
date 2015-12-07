@@ -1,7 +1,8 @@
 package main;
 
 /**
- * 
+ * This is the User class. 
+ * It keeps track of all the users. 
  * @author Stepan Adespya
  * @edited by Mindy Huynh 12/5/2015
  * @since November 5, 2015
@@ -10,28 +11,41 @@ package main;
 public class User implements java.io.Serializable
 {
 	// UserName of person
+	/**
+	 * This is the user's name.
+	 */
 	private String userName;
+	
 	// Whether a person is a bidder,employee, or nonprofit
-	private String user;
+	/**
+	 * This is the the status of the user.
+	 */
+	private String userStatus;
+	
 	// If nonprofit, Organization name
+	/**
+	 * This is the name of the organization if the user is a non profit.
+	 */
 	private String organization;
 	
 	/**
-	 * Saves a User.
+	 * This method is the constructor for user.
 	 * 
-	 * @param username
-	 * @param user
+	 * @param username the name of the user
+	 * @param userStatus the status of the user.
 	 */
-	public User(String username, String user)
+	public User(String username, String userStatus)
 	{
 		this.userName = username;
-		this.user = user;
+		this.userStatus = userStatus;
 	}
 	
 	/**
-	 * gives the User's Username
+	 * This is the getter for userName.
 	 * 
-	 * @return Username (Precondition nothing) (Postcondition returns Username)
+	 * @return Username the name of the user. 
+	 * @Pre nothing
+	 * @post returns userName
 	 */
 	public String getUserName()
 	{
@@ -39,11 +53,11 @@ public class User implements java.io.Serializable
 	}
 	
 	/**
-	 * Replaces the Username
+	 * This method is the setter for user.
 	 * 
-	 * @param userName
-	 *            (Precondition String passed is not NULL) (Postcondition
-	 *            replaces the Username)
+	 * @param userName the name of the user.
+	 * @Pre passed is not NULL
+	 * @Post replaces the Username
 	 */
 	public void setUserName(String userName)
 	{
@@ -51,33 +65,35 @@ public class User implements java.io.Serializable
 	}
 	
 	/**
-	 * States what the user is(Bidder,NonProfit, or Employee)
+	 * This is the getter for userStatus.
 	 * 
-	 * @return String of what the User is (Precondition nothing) (Postcondition
-	 *         returns state of User)
+	 * @return The status of the user.
+	 * @Pre nothing
+	 * @Post returns state of User
 	 */
-	public String getUser()
+	public String getUserStatus()
 	{
-		return user;
+		return userStatus;
 	}
 	
 	/**
-	 * Sets the User to correct state.
+	 * This is the setter for userStatus
 	 * 
-	 * @param user
-	 *            (Precondition String is not NULL) (Postcondition User becomes
-	 *            in right state)
+	 * @param userStatus
+	 * @Pre string is not NULL
+	 * @Post User changes its status.
 	 */
-	public void setUser(String user)
+	public void setUserStatus(String userStatus)
 	{
-		this.user = user;
+		this.userStatus = userStatus;
 	}
 	
 	/**
-	 * Gives the Organization name if User is Nonprofit
+	 * This is a getter for organization.
 	 * 
-	 * @return String Organization name (Precondition User is NonProfit)
-	 *         (Postcondition returns Organization Name)
+	 * @return String the name of the organization.
+	 * @Pre User is NonProfit
+	 * @Post returns Organization Name
 	 */
 	public String getOrganization()
 	{
@@ -85,11 +101,11 @@ public class User implements java.io.Serializable
 	}
 	
 	/**
-	 * Puts a new Organization name.
+	 * This is the Setter for organization name.
 	 * 
 	 * @param organization
-	 *            (Precondition String is not Null) (Postcondition Organization
-	 *            name to the right User)
+	 * @Pre String is not Null, User is a non profit.
+	 * @Post Postcondition Organization name to the right User
 	 */
 	public void setOrganization(String organization)
 	{
@@ -98,11 +114,11 @@ public class User implements java.io.Serializable
 	
 	@Override
 	/**
-	 * overrides the toString method
+	 * This is the string representation of the user class.
 	 */
 	public String toString()
 	{
-		return userName + ", " + user;
+		return userName + ", " + userStatus;
 	}
 	
 }

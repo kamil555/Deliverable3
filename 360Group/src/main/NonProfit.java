@@ -3,9 +3,12 @@ package main;
 import java.io.IOException;
 import java.text.ParseException;
 
-import UI.*;
+import UI.NonProfitInterface;
+import UI.UserInterface;
 
 /**
+ * This is the nonprofit class.
+ * It keeps track of all the non profits.
  * @author Stepan Adespya
  * @edited by Mindy Huynh 12/5/2015
  * @since November 5, 2015
@@ -14,7 +17,7 @@ public class NonProfit
 {
 	
 	/**
-	 * Main Menu for the Non Profit User, easier to navigate
+	 * This is the constructor for the Non Profit User, easier to navigate.
 	 * 
 	 * @throws ParseException
 	 * @throws IOException
@@ -65,43 +68,43 @@ public class NonProfit
 	}
 	
 	/**
-	 * Requests a Auction, checks if the schedule fits
+	 * This method requests an Auction, checks if the schedule fits
 	 * 
-	 * @param u
-	 * @param auctionDate
-	 * @param duration
+	 * @param user the user that scheduled it.
+	 * @param auctionDate the date of the auction.
+	 * @param duration the duration of the auction.
 	 * @throws ParseException
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public void scheduleAuction(User u, Date auctionDate, int duration, NonProfitInterface npi)
+	public void scheduleAuction(User user, Date auctionDate, int duration, NonProfitInterface npi)
 			throws ParseException, IOException, ClassNotFoundException
 	{
 		CalendarAuctionCentral c = new CalendarAuctionCentral();
-		Auction a = new Auction(u.getOrganization(), auctionDate, duration);
+		Auction a = new Auction(user.getOrganization(), auctionDate, duration);
 		if (c.checkRequestedAuction(a))
 		{
-			addAuctionInfo(u, u.getOrganization(), auctionDate,
+			addAuctionInfo(user, user.getOrganization(), auctionDate,
 					duration, npi);
 		} else
 		{
 			System.out.println("Sorry cannot Schedule on this Date Please try again");
-			new NonProfit(u);
+			new NonProfit(user);
 		}
 	}
 	
 	/**
-	 * Adds Information to the Auction class.
+	 * This method adds Information to the Auction class.
 	 * 
-	 * @param u
-	 * @param profitName
-	 * @param auctionDate
-	 * @param auctionDuration
+	 * @param user the user using the class.
+	 * @param nonProfitName the name of the non profit
+	 * @param auctionDate the date of the auction.
+	 * @param auctionDuration the duration of the auction.
 	 * @throws ParseException
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public void addAuctionInfo(User u, String orgName, Date auctionDate,
+	public void addAuctionInfo(User user, String orgName, Date auctionDate,
 			int auctionDuration, NonProfitInterface npi) throws ParseException, IOException,
 			ClassNotFoundException
 	{
@@ -117,29 +120,29 @@ public class NonProfit
 				input = npi.auctionAddMenu();
 				if (input == 2)
 				{
-					new NonProfit(u);
+					new NonProfit(user);
 				} else
 				{
-					addItemInfo(u, a, npi);
+					addItemInfo(user, a, npi);
 				}
 			}
 		} else
 		{
 			System.out.println("Sorry auction wasn't added");
-			new NonProfit(u);
+			new NonProfit(user);
 		}
 	}
 	
 	/**
-	 * Edits Auction Information.
+	 * This method edits Auction Information.
 	 * 
-	 * @param u
-	 * @param a
+	 * @param user the user using the class.
+	 * @param auction the auction to be added.
 	 * @throws ParseException
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public void editAuctionInfo(User u, Auction a, NonProfitInterface npi) throws ParseException,
+	public void editAuctionInfo(User user, Auction auction, NonProfitInterface npi) throws ParseException,
 			IOException, ClassNotFoundException
 	{
 		int input = npi.editAuctionMenu();
@@ -150,46 +153,46 @@ public class NonProfit
 				String editday = npi.enterAuctionDetails();
 				Date newday = new Date(editday);
 				c = new CalendarAuctionCentral();
-				c.editAuctionDate(a, newday);
+				c.editAuctionDate(auction, newday);
 				System.out.println("Done editing");
-				new NonProfit(u);
+				new NonProfit(user);
 				break;
 			case 2:
 				int duration = npi.enterDuration();
 				c = new CalendarAuctionCentral();
-				c.editAuctionDuration(a, duration);
+				c.editAuctionDuration(auction, duration);
 				System.out.println("Done editing");
-				new NonProfit(u);
+				new NonProfit(user);
 				break;
 		}
 		
 	}
 	
 	/**
-	 * Adds an Item to the selected auction.
+	 * This method adds an Item to the selected auction.
 	 * 
-	 * @param u
-	 * @param a
+	 * @param user the user that's adding item info.
+	 * @param auction the auction that the item belongs to.
 	 * @throws ParseException
 	 * @throws IOException
 	 */
-	public void addItemInfo(User u, Auction a, NonProfitInterface npi) throws ParseException,
+	public void addItemInfo(User user, Auction auction, NonProfitInterface npi) throws ParseException,
 			IOException
 	{
-		Item i = npi.addItem(a);
+		Item i = npi.addItem(auction);
 		Inventory in = new Inventory();
 		in.addItem(i);
 		System.out.println("Item can now be bidded on");
 	}
 	
 	/**
-	 * Edits an items from selected auction.
+	 * This method edits an items from selected auction.
 	 * 
-	 * @param u
-	 * @param itemID
+	 * @param user the user using the class. 
+	 * @param itemID the ID of the item.
 	 * @throws IOException
 	 */
-	public void editItemInfo(User u, int itemID, NonProfitInterface npi) throws IOException
+	public void editItemInfo(User user, int itemID, NonProfitInterface npi) throws IOException
 	{
 		int input = npi.editItemMenu();
 		Inventory i;

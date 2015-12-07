@@ -1,125 +1,44 @@
 package main;
 /**
- * 
+ * This is the item class. 
+ * It keeps track of all the items. 
  * @author Han Wang
  * @edited by Mindy Huynh 12/5/2015
  */
 public class Item implements java.io.Serializable
 {
 	/**
-	 * to string method
+	 * The unique item of the item.
 	 */
-	@Override
-	public String toString()
-	{
-		return itemID + "," + auctionName + "," + startBid + "," + itemName + "," + itemInfo;
-	}
-	
-	int itemID;
-	double startBid;
-	String itemName;
-	String itemInfo;
-	public String auctionName;
-	
-	public String getAuctionName()
-	{
-		return auctionName;
-	}
-	
-	public void setAuctionName(String auctionName)
-	{
-		this.auctionName = auctionName;
-	}
+	private int itemID;
 	
 	/**
-	 * getter for start bid
-	 * 
-	 * @return startBid
+	 * The starting bid of the item.
 	 */
-	public double getStartBid()
-	{
-		return startBid;
-	}
+	private double startBid;
 	
 	/**
-	 * setter for start bid
-	 * 
-	 * @param startBid
-	 *            : start bid
+	 * The name of the item.
 	 */
-	public void setStartBid(double startBid)
-	{
-		this.startBid = startBid;
-	}
+	private String itemName;
 	
 	/**
-	 * getter for Item id
-	 * 
-	 * @return ItemID
+	 * The description of the item.
 	 */
-	public int getItemID()
-	{
-		return itemID;
-	}
+	private String itemInfo;
 	
 	/**
-	 * setter for item id
-	 * 
-	 * @param itemID
-	 *            item's id
+	 * The name of the auction that the item is in.
 	 */
-	public void setItemID(int itemID)
-	{
-		this.itemID = itemID;
-	}
+	private String auctionName;
 	
 	/**
-	 * getter for itemName
+	 * This is the constructor for the item class.
 	 * 
-	 * @return itemName
-	 */
-	public String getItemName()
-	{
-		return itemName;
-	}
-	
-	/**
-	 * setter for itemName
-	 * 
-	 * @param itemName
-	 */
-	public void setItemName(String itemName)
-	{
-		this.itemName = itemName;
-	}
-	
-	/**
-	 * getter for item information
-	 * 
-	 * @return itemInfo
-	 */
-	public String getItemInfo()
-	{
-		return itemInfo;
-	}
-	
-	/**
-	 * setter for Item information
-	 * 
-	 * @param itemInfo
-	 */
-	public void setItemInfo(String itemInfo)
-	{
-		this.itemInfo = itemInfo;
-	}
-	
-	/**
-	 * Construction of item class
-	 * 
-	 * @param auctionName
-	 * @param startBid
-	 * @param itemName
-	 * @param itemInfo
+	 * @param auctionName the name of the auction.
+	 * @param startBid the start bid of the item.
+	 * @param itemName the name of the item.
+	 * @param itemInfo the item's description.
 	 */
 	public Item(String auctionName, double startBid, String itemName, String itemInfo)
 	{
@@ -132,13 +51,13 @@ public class Item implements java.io.Serializable
 	}
 	
 	/**
-	 * Construction of item class
+	 * This is the second constructor for the item class.
 	 * 
-	 * @param itemID
-	 * @param auctionName
-	 * @param startBid
-	 * @param itemName
-	 * @param itemInfo
+	 * @param itemID the ID of the item.
+	 * @param auctionName the name of the auction.
+	 * @param startBid the start bid of the item.
+	 * @param itemName the name of the item.
+	 * @param itemInfo the item's description.
 	 */
 	public Item(int itemID, String auctionName, double startBid, String itemName, String itemInfo)
 	{
@@ -151,7 +70,106 @@ public class Item implements java.io.Serializable
 	}
 	
 	/**
-	 * get the index for Inventory list
+	 * This is the getter for auction name
+	 * @return the name of the auction.
+	 */
+	public String getAuctionName()
+	{
+		return auctionName;
+	}
+	
+	/**
+	 * This is the setter for the auction name
+	 * @param auctionName the nnew name of the auction.
+	 */
+	public void setAuctionName(String auctionName)
+	{
+		this.auctionName = auctionName;
+	}
+	
+	/**
+	 * This is the getter for start bid
+	 * 
+	 * @return startBid the start bid of the item.
+	 */
+	public double getStartBid()
+	{
+		return startBid;
+	}
+	
+	/**
+	 * This is the setter for start bid
+	 * 
+	 * @param startBid the new start bid for the item.
+	 */
+	public void setStartBid(double startBid)
+	{
+		this.startBid = startBid;
+	}
+	
+	/**
+	 * This is the getter for Item id
+	 * 
+	 * @return ItemID the ID of the item.
+	 */
+	public int getItemID()
+	{
+		return itemID;
+	}
+	
+	/**
+	 * This is the setter for item id
+	 * 
+	 * @param itemID the item's new ID
+	 */
+	public void setItemID(int itemID)
+	{
+		this.itemID = itemID;
+	}
+	
+	/**
+	 * This is the getter for itemName
+	 * 
+	 * @return itemName the name of the item.
+	 */
+	public String getItemName()
+	{
+		return itemName;
+	}
+	
+	/**
+	 * This is the setter for itemName
+	 * 
+	 * @param itemName the new name of the item.
+	 */
+	public void setItemName(String itemName)
+	{
+		this.itemName = itemName;
+	}
+	
+	/**
+	 * This is the getter for item information
+	 * 
+	 * @return itemInfo the item's information.
+	 */
+	public String getItemInfo()
+	{
+		return itemInfo;
+	}
+	
+	/**
+	 * This is the setter for Item information
+	 * 
+	 * @param itemInfo the item's new info.
+	 */
+	public void setItemInfo(String itemInfo)
+	{
+		this.itemInfo = itemInfo;
+	}
+	
+	
+	/**
+	 * This is the getter for itemID
 	 * 
 	 * @return index of arraylist
 	 */
@@ -159,6 +177,17 @@ public class Item implements java.io.Serializable
 	{
 		Inventory i = new Inventory();
 		return i.listofItems.size();
+	}
+	
+	/**
+	 * This is the toString method to the item. 
+	 * 
+	 * @return the string representation of the item.
+	 */
+	@Override
+	public String toString()
+	{
+		return itemID + "," + auctionName + "," + startBid + "," + itemName + "," + itemInfo;
 	}
 	
 }

@@ -93,15 +93,15 @@ public class UserInterface
 		// login
 			case 1:
 				User userLogin = userLogin(reader, userName);
-				if (userLogin.getUser().equalsIgnoreCase("Bidder"))
+				if (userLogin.getUserStatus().equalsIgnoreCase("Bidder"))
 				{
 					new Bidder(userLogin);
 					break;
-				} else if (userLogin.getUser().equalsIgnoreCase("AuctionCentral Employee"))
+				} else if (userLogin.getUserStatus().equalsIgnoreCase("AuctionCentral Employee"))
 				{
 					new AuctionCentralEmployee(userLogin);
 					break;
-				} else if (userLogin.getUser().equalsIgnoreCase("nonprofit"))
+				} else if (userLogin.getUserStatus().equalsIgnoreCase("nonprofit"))
 				{
 					new NonProfit(userLogin);
 					break;
@@ -187,7 +187,7 @@ public class UserInterface
 			ParseException
 	{
 		User per = new User(username, user);
-		if (per.getUser().equalsIgnoreCase("nonprofit"))
+		if (per.getUserStatus().equalsIgnoreCase("nonprofit"))
 		{
 			System.out.println("Enter Nonprofit Organization: ");
 			@SuppressWarnings("resource")

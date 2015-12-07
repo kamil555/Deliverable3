@@ -63,7 +63,7 @@ public class BidList implements java.io.Serializable
 			System.out.println("You have already made a Bid on this Item.");
 		} else
 		{
-			if (b.getBidAmount() >= it.startBid)
+			if (b.getBidAmount() >= it.getStartBid())
 			{
 				Bidlist.add(per);
 				String blist = "" + user.getUserName() + "," + b.getItemID() + ","
@@ -94,9 +94,9 @@ public class BidList implements java.io.Serializable
 		{
 			if (Bidlist.get(i).getuserName().endsWith(user.getUserName()))
 			{
-				if (item.itemID == Bidlist.get(i).getItemID())
+				if (item.getItemID() == Bidlist.get(i).getItemID())
 				{
-					if (bidAmount > item.startBid)
+					if (bidAmount > item.getStartBid())
 					{
 						Bidlist.get(i).setBidAmount(bidAmount);
 						clearFile("Bids.txt");
@@ -126,7 +126,7 @@ public class BidList implements java.io.Serializable
 		for (int i = 0; i < Bidlist.size(); i++)
 		{
 			if (Bidlist.get(i).getuserName().equalsIgnoreCase(user.getUserName())
-					&& item.itemID == Bidlist.get(i).getItemID())
+					&& item.getItemID() == Bidlist.get(i).getItemID())
 			{
 				Bidlist.remove(i);
 				clearFile("Bids.txt");

@@ -1,12 +1,9 @@
 package test;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
 import java.io.IOException;
-
 import main.Inventory;
 import main.Item;
-
 import org.junit.Test;
 
 /**
@@ -56,7 +53,7 @@ public class InventoryTest
 		for (int i = 0; i < myInventory.listofItems.size(); i++)
 		{
 			assertEquals(i + 1, myInventory.listofItems.get(i).getItemID());
-			assertEquals("Auction1Name", myInventory.listofItems.get(i).auctionName);
+			assertEquals("Auction1Name", myInventory.listofItems.get(i).getAuctionName());
 			assertEquals(5.00, myInventory.listofItems.get(i).getStartBid(), TOLERANCE);
 		}
 		assertEquals("Item1", myInventory.listofItems.get(0).getItemName());
@@ -78,7 +75,7 @@ public class InventoryTest
 		for (int i = 0; i < myNewInventory.listofItems.size(); i++)
 		{
 			assertEquals(i + 1, myNewInventory.listofItems.get(i).getItemID());
-			assertEquals("Auction1Name", myNewInventory.listofItems.get(i).auctionName);
+			assertEquals("Auction1Name", myNewInventory.listofItems.get(i).getAuctionName());
 			assertEquals(5.00, myNewInventory.listofItems.get(i).getStartBid(), TOLERANCE);
 		}
 		assertEquals("Item1", myNewInventory.listofItems.get(0).getItemName());

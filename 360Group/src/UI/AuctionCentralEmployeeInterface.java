@@ -10,34 +10,53 @@ import java.util.Scanner;
 import main.*;
 
 /**
+ * This is the user interface of the AuctionCentralEmployee class.
+ * 
  * @author Stepan Adespya
  * @edited by Mindy Huynh 12/5/2015
  * @since November 21, 2015
  */
 public class AuctionCentralEmployeeInterface
 {
+	/**
+	 * This is number representation of the calendar.
+	 */
 	private int CALENDAR = 1;
+	
+	/**
+	 * This is number representation of the Auctions.
+	 */
 	private int AUCTIONS = 2;
+	
+	/**
+	 * This is number representation of the logout.
+	 */
 	private int LOGOUT = 3;
+	
+	/**
+	 * This is number representation of the return.
+	 */
 	private int RETURN = 1;
 	
 	/**
-	 * AuctionCentral Employee Interface constructor;
+	 * This is the AuctionCentral Employee Interface constructor.
 	 * 
+	 * @param user current user.
 	 * @throws ParseException
 	 * @throws IOException
 	 * 
 	 */
-	public AuctionCentralEmployeeInterface(User u)
+	public AuctionCentralEmployeeInterface(User user)
 	{
-		System.out.println("Employee, " + u.getUserName());
+		System.out.println("Employee, " + user.getUserName());
 	}
 	
 	/**
-	 * The main menu of the AuctionCentral Employee User.
+	 * This is the main menu of the AuctionCentral Employee User.
 	 * 
-	 * @return int of the menu selected (Precondition nothing) (Postcondition
-	 *         int of menu selected)
+	 * @return int of the menu selected
+	 * @Pre nothing
+	 * @Post int of menu selected
 	 */
 	public int mainMenu()
 	{
@@ -56,10 +75,11 @@ public class AuctionCentralEmployeeInterface
 	}
 	
 	/**
-	 * Asks the user to Select a month.
+	 * This method asks the user to Select a month.
 	 * 
-	 * @return int of month selected (Precondition nothing) (Postcondition int
-	 *         of month selected)
+	 * @return int of month selected 
+	 * @Pre nothing 
+	 * @post int of month selected)
 	 */
 	public int enterMonth()
 	{
@@ -71,10 +91,11 @@ public class AuctionCentralEmployeeInterface
 	}
 	
 	/**
-	 * Asks the user to Select a year.
+	 * This method asks the user to Select a year.
 	 * 
-	 * @return int of year selected (Precondition nothing) (Postcondition int of
-	 *         year selected)
+	 * @return int of year entered 
+	 * @Pre nothing
+	 * @Post int of year entered
 	 */
 	public int enterYear()
 	{
@@ -86,12 +107,14 @@ public class AuctionCentralEmployeeInterface
 	}
 	
 	/**
-	 * Asks the user to Select a Auction.
+	 * This method asks the user to Select an Auction.
 	 * 
-	 * @return int of Auction selected (Precondition nothing) (Postcondition int
-	 *         of Auction selected)
+	 * @param cal the calendar being used.
+	 * @return int of Auction selected 
+	 * @Pre nothing
+	 * @Post int of Auction selected)
 	 */
-	public int selectAuction(CalendarAuctionCentral c)
+	public int selectAuction(CalendarAuctionCentral cal)
 	{
 		System.out.println("Select Auction(Number) :");
 		CalendarUI cui = new CalendarUI();
@@ -103,10 +126,11 @@ public class AuctionCentralEmployeeInterface
 	}
 	
 	/**
-	 * Asks the user to return to main menu.
+	 * This method asks the user to return to main menu.
 	 * 
-	 * @return int to return to main menu. (Precondition nothing) (Postcondition
-	 *         int to return to main menu)
+	 * @return int to return to main menu.
+	 * @Pre nothing
+	 * @Post int to return to main menu)
 	 */
 	public int returnMainMenu(User u)
 	{
