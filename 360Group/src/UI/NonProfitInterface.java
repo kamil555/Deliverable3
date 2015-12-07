@@ -212,10 +212,12 @@ public class NonProfitInterface
 	 * 
 	 * @param auction the auction being used.
 	 * @return Item to add. 
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 * @Pre nothing
 	 * @Post takes in the information and saves it.
 	 */
-	public Item addItem(Auction auction)
+	public Item addItem(Auction auction) throws ClassNotFoundException, IOException
 	{
 		System.out.println(auction.getAuctionName());
 		System.out.println("Name of item :");

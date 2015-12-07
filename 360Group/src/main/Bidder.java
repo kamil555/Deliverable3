@@ -93,8 +93,9 @@ public class Bidder
 	 * @param item the item that is being bid on.
 	 * @param money the amount they want to pay.
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
-	public void editBid(User user, Item item, double money) throws IOException
+	public void editBid(User user, Item item, double money) throws IOException, ClassNotFoundException
 	{
 		BidList b = new BidList();
 		b.editBid(user, item, money);
@@ -124,8 +125,9 @@ public class Bidder
 	 * 
 	 * @param user the bidder for the item.
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
-	private void viewItemsBidded(User user) throws IOException
+	private void viewItemsBidded(User user) throws IOException, ClassNotFoundException
 	{
 		Inventory i = new Inventory();
 		i.allItemsBidder(user);

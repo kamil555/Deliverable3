@@ -1,13 +1,11 @@
 package main;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -22,17 +20,19 @@ public class BidList
 	 * This the the list of bids.
 	 */
 	public ArrayList<Bid> Bidlist;
+	private String fileName = "Bids.ser";
 	
 	/**
 	 * This is the constructor of bidList.
 	 * It creates an arraylist for bid and read from Bid.txt
 	 * 
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
-	public BidList() throws IOException
+	public BidList() throws IOException, ClassNotFoundException
 	{
 		Bidlist = new ArrayList<Bid>();
-		readFileToBid("Bids.txt");
+		readFileToBid(fileName);
 	}
 	
 	/**
@@ -43,9 +43,10 @@ public class BidList
 	 * @param bid
 	 *            the bid that creates a new Bid list
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
 	
-	public void addBid(User user, Bid b) throws IOException
+	public void addBid(User user, Bid b) throws IOException, ClassNotFoundException
 	{
 		Bid per = new Bid(user.getUserName(), b.getItemID(), b.getBidAmount());
 		Inventory i = new Inventory();
@@ -66,9 +67,7 @@ public class BidList
 			if (b.getBidAmount() >= it.getStartBid())
 			{
 				Bidlist.add(per);
-				String blist = "" + user.getUserName() + "," + b.getItemID() + ","
-						+ b.getBidAmount();
-				writeToFile("Bids.txt", blist);
+				writeToFile(fileName);
 				System.out.println("Bid entered");
 			} else
 			{
@@ -99,8 +98,7 @@ public class BidList
 					if (bidAmount > item.getStartBid())
 					{
 						Bidlist.get(i).setBidAmount(bidAmount);
-						clearFile("Bids.txt");
-						writeAllItemsToFile("Bids.txt");
+						writeToFile(fileName);
 						System.out.println("Bid Changed");
 					} else
 					{
@@ -129,8 +127,7 @@ public class BidList
 					&& item.getItemID() == Bidlist.get(i).getItemID())
 			{
 				Bidlist.remove(i);
-				clearFile("Bids.txt");
-				writeAllItemsToFile("Bids.txt");
+				writeToFile(fileName);
 			}
 		}
 	}
@@ -159,97 +156,40 @@ public class BidList
 	}
 	
 	/**
-	 * This method writes this array list to the Bid.txt.
-	 * 
-	 * @param string
-	 *            the string written to the file
-	 * @param blist
-	 *            the list from the array list
-	 * @throws IOException
-	 */
-	private void writeToFile(String fileName, String content) throws IOException
-	{
-		// TODO Auto-generated method stub
-		FileWriter fw = new FileWriter(fileName, true);
-		PrintWriter pw = new PrintWriter(fw);
-		if (Files.size(Paths.get(fileName)) == 0)
-		{
-			pw.write(content);
-		} else
-		{
-			pw.write("\r\n" + content);
-		}
-		pw.close();
-	}
-	
-	/**
-	 * This method writes all items to Bid.txt
+	 * This method writes all items to Bid.ser
 	 * 
 	 * @param string the string being written to.
 	 * @throws IOException
 	 */
-	private void writeAllItemsToFile(String string) throws IOException
+	private void writeToFile(String string) throws IOException
 	{
-		// TODO Auto-generated method stub
-		FileWriter fw = new FileWriter(string);
-		PrintWriter pw = new PrintWriter(fw);
-		for (int i = 0; i < Bidlist.size(); i++)
-		{
-			pw.write(Bidlist.get(i) + "\r\n");
-		}
-		pw.close();
+		FileOutputStream fileOut = new FileOutputStream(fileName);
+		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		out.writeObject(Bidlist);
+		out.close();
+		fileOut.close();
 	}
-	
-	/**
-	 * This method clears the file.
-	 * 
-	 * @param string
-	 *            the empty string to clear the file.
-	 * @throws IOException
-	 */
-	private void clearFile(String string) throws IOException
-	{
-		FileWriter fw = new FileWriter(string, true);
-		PrintWriter pw = new PrintWriter(fw);
-		pw.print("");
-		pw.close();
-	}
-	
 	/**
 	 * This method reads the file to the array list
 	 * 
 	 * @param fileName
 	 *            the file's name to read from.
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	private void readFileToBid(String fileName)
+	@SuppressWarnings("unchecked")
+	private void readFileToBid(String fileName) throws IOException, ClassNotFoundException
 	{
-		String line = null;
+		FileInputStream fileIn = new FileInputStream(fileName);
 		try
 		{
-			// FileReader reads text files in the default encoding.
-			FileReader fileReader = new FileReader(fileName);
-			
-			// Always wrap FileReader in BufferedReader.
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			
-			while ((line = bufferedReader.readLine()) != null)
-			{
-				String[] split = line.split(",", 3);
-				String userName = split[0];
-				String itemID = split[1];
-				String bidAmount = split[2];
-				int id = Integer.parseInt(itemID);
-				double money = Double.parseDouble(bidAmount);
-				Bidlist.add(new Bid(userName, id, money));
-				
-			}
-			bufferedReader.close();
-		} catch (FileNotFoundException ex)
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			Bidlist = (ArrayList<Bid>) in.readObject();
+			in.close();
+		} catch (EOFException e)
 		{
-			System.out.println("Unable to open file '" + fileName + "'");
-		} catch (IOException ex)
-		{
-			System.out.println("Error reading file '" + fileName + "'");
+			Bidlist = new ArrayList<Bid>();
 		}
+		fileIn.close();
 	}
 }

@@ -1,9 +1,12 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
+
 import main.Inventory;
 import main.Item;
+
 import org.junit.Test;
 
 /**
@@ -31,7 +34,7 @@ public class InventoryTest
 	 * in this file.
 	 */
 	@Test
-	public void testAddItem() throws IOException
+	public void testAddItem() throws IOException, ClassNotFoundException
 	{
 		// Testing that size reads zero and that array
 		// list is empty since size is set with the
@@ -88,7 +91,7 @@ public class InventoryTest
 	}
 	
 	@Test
-	public void testEditItemName() throws IOException
+	public void testEditItemName() throws IOException, ClassNotFoundException
 	{
 		myInventory2 = new Inventory();
 		
@@ -103,7 +106,7 @@ public class InventoryTest
 	}
 	
 	@Test
-	public void testEditItemStartBid() throws IOException
+	public void testEditItemStartBid() throws IOException, ClassNotFoundException
 	{
 		myInventory3 = new Inventory();
 		
@@ -121,7 +124,7 @@ public class InventoryTest
 	}
 	
 	@Test
-	public void testEditItemInfo() throws IOException
+	public void testEditItemInfo() throws IOException, ClassNotFoundException
 	{
 		myInventory4 = new Inventory();
 		

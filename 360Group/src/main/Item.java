@@ -1,4 +1,7 @@
 package main;
+
+import java.io.IOException;
+
 /**
  * This is the item class. 
  * It keeps track of all the items. 
@@ -39,8 +42,10 @@ public class Item implements java.io.Serializable
 	 * @param startBid the start bid of the item.
 	 * @param itemName the name of the item.
 	 * @param itemInfo the item's description.
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public Item(String auctionName, double startBid, String itemName, String itemInfo)
+	public Item(String auctionName, double startBid, String itemName, String itemInfo) throws ClassNotFoundException, IOException
 	{
 		// super();
 		this.auctionName = auctionName;
@@ -172,8 +177,10 @@ public class Item implements java.io.Serializable
 	 * This is the getter for itemID
 	 * 
 	 * @return index of arraylist
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	private int getID()
+	private int getID() throws ClassNotFoundException, IOException
 	{
 		Inventory i = new Inventory();
 		return i.listofItems.size();

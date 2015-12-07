@@ -175,9 +175,10 @@ public class NonProfit
 	 * @param auction the auction that the item belongs to.
 	 * @throws ParseException
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
 	public void addItemInfo(User user, Auction auction, NonProfitInterface npi) throws ParseException,
-			IOException
+			IOException, ClassNotFoundException
 	{
 		Item i = npi.addItem(auction);
 		Inventory in = new Inventory();
@@ -191,8 +192,9 @@ public class NonProfit
 	 * @param user the user using the class. 
 	 * @param itemID the ID of the item.
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
-	public void editItemInfo(User user, int itemID, NonProfitInterface npi) throws IOException
+	public void editItemInfo(User user, int itemID, NonProfitInterface npi) throws IOException, ClassNotFoundException
 	{
 		int input = npi.editItemMenu();
 		Inventory i;

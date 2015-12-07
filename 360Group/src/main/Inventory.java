@@ -1,13 +1,11 @@
 package main;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +16,7 @@ import java.util.ArrayList;
  * @edited by Gabrielle 11/15/2015
  * @edited by Mindy Huynh 12/5/2015
  */
-public class Inventory implements java.io.Serializable
+public class Inventory
 {
 	// Array list of all the items
 	/**
@@ -31,13 +29,17 @@ public class Inventory implements java.io.Serializable
 	 */
 	int size;
 	
+	String fileName = "Inventory.ser";
+	
 	/**
 	 * This is the constructor for Inventory, reads log file of items.
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public Inventory()
+	public Inventory() throws ClassNotFoundException, IOException
 	{
 		listofItems = new ArrayList<Item>();
-		readFile("Inventory.txt");
+		readFile(fileName);
 		size = listofItems.size();
 	}
 	
@@ -61,7 +63,7 @@ public class Inventory implements java.io.Serializable
 	{
 		listofItems.add(item);
 		size = listofItems.size();
-		writeToFile("Inventory.txt", item.toString());
+		writeToFile(fileName);
 	}
 	
 	/**
@@ -78,7 +80,7 @@ public class Inventory implements java.io.Serializable
 			if (listofItems.get(i).getItemID() == itemID)
 			{
 				listofItems.get(i).setItemName(newName);
-				writeAllItemsToFile("Inventory.txt");
+				writeToFile(fileName);
 			}
 		}
 		
@@ -99,7 +101,7 @@ public class Inventory implements java.io.Serializable
 			if (listofItems.get(i).getItemID() == itemID)
 			{
 				listofItems.get(i).setStartBid(startBid);
-				writeAllItemsToFile("Inventory.txt");
+				writeToFile(fileName);
 			}
 		}
 		
@@ -119,42 +121,12 @@ public class Inventory implements java.io.Serializable
 			if (listofItems.get(i).getItemID() == itemID)
 			{
 				listofItems.get(i).setItemInfo(info);
-				writeAllItemsToFile("Inventory.txt");
+				writeToFile(fileName);
 			}
 		}
 		
 	}
-	
-	/**
-	 * writes all the items in the array list to file.
-	 * 
-	 * @param fileName
-	 * @throws IOException
-	 */
-	private void writeAllItemsToFile(String fileName) throws IOException
-	{
-		clearFile(fileName);
-		for (int i = 0; i < listofItems.size(); i++)
-		{
-			writeToFile(fileName, listofItems.get(i).toString());
-		}
-		
-	}
-	
-	/**
-	 * clears a file, if needed.
-	 * 
-	 * @param fileName
-	 * @throws IOException
-	 */
-	private void clearFile(String fileName) throws IOException
-	{
-		FileWriter fw = new FileWriter(fileName);
-		PrintWriter pw = new PrintWriter(fw);
-		pw.print("");
-		pw.close();
-	}
-	
+
 	/**
 	 * Shows all the items in a selected auction and returns how many. NOTE:
 	 * Separate functions?
@@ -179,8 +151,9 @@ public class Inventory implements java.io.Serializable
 	 * 
 	 * @param u
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
-	public void allItemsBidder(User u) throws IOException
+	public void allItemsBidder(User u) throws IOException, ClassNotFoundException
 	{
 		BidList b = new BidList();
 		for (int i = 0; i < b.Bidlist.size(); i++)
@@ -225,39 +198,23 @@ public class Inventory implements java.io.Serializable
 	 * Reads all the items from a file.
 	 * 
 	 * @param fileName
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	private void readFile(String fileName)
+	@SuppressWarnings("unchecked")
+	private void readFile(String fileName) throws IOException, ClassNotFoundException
 	{
-		String line = null;
+		FileInputStream fileIn = new FileInputStream(fileName);
 		try
 		{
-			// FileReader reads text files in the default encoding.
-			FileReader fileReader = new FileReader(fileName);
-			
-			// Always wrap FileReader in BufferedReader.
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			
-			while ((line = bufferedReader.readLine()) != null)
-			{
-				String[] split = line.split(",", 5);
-				String sitemID = split[0];
-				int itemID = Integer.parseInt(sitemID);
-				String auctionName = split[1];
-				String start = split[2];
-				double startbid = Double.parseDouble(start);
-				String itemName = split[3];
-				String itemInfo = split[4];
-				listofItems.add(new Item(itemID, auctionName, startbid,
-						itemName, itemInfo));
-			}
-			bufferedReader.close();
-		} catch (FileNotFoundException ex)
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			listofItems = (ArrayList<Item>) in.readObject();
+			in.close();
+		} catch (EOFException e)
 		{
-			System.out.println("Unable to open file '" + fileName + "'");
-		} catch (IOException ex)
-		{
-			System.out.println("Error reading file '" + fileName + "'");
+			listofItems = new ArrayList<Item>();
 		}
+		fileIn.close();
 	}
 	
 	/**
@@ -267,18 +224,13 @@ public class Inventory implements java.io.Serializable
 	 * @param contents
 	 * @throws IOException
 	 */
-	private void writeToFile(String fileName, String contents)
+	private void writeToFile(String fileName)
 			throws IOException
 	{
-		FileWriter fw = new FileWriter(fileName, true);
-		PrintWriter pw = new PrintWriter(fw);
-		if (Files.size(Paths.get(fileName)) == 0)
-		{
-			pw.write(contents);
-		} else
-		{
-			pw.write("\r\n" + contents);
-		}
-		pw.close();
+		FileOutputStream fileOut = new FileOutputStream(fileName);
+		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		out.writeObject(listofItems);
+		out.close();
+		fileOut.close();
 	}
 }
