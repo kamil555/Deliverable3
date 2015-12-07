@@ -17,6 +17,8 @@ public class CalendarUI
 	 */
 	public String printCalendarMonthly(int month, int year) throws ParseException
 	{
+
+		System.out.println(myCalendar.getAuctionList());
 		String calendar = "";
 		String[] monthName =
 		{ "January", "February", "March", "April", "May",

@@ -314,6 +314,7 @@ public class CalendarAuctionCentral
 	 * @throws ParseException
 	 */
 	public void addFutureAuction(Auction reqAuction) throws ParseException {
+		System.out.println(reqAuction);
 		auctionList.add(reqAuction);
 		futureAuctionList.add(reqAuction);
 		try {
@@ -323,6 +324,7 @@ public class CalendarAuctionCentral
 			e.printStackTrace();
 		}
 		futureAuctions += 1;
+		System.out.println(auctionList);
 	}
 	
 	/**
