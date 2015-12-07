@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * so as not to interfere with java's Calendar class.
  * 
  * @author Gabrielle Glynn and Stepan Adespya
- * 
+ * @edited by Mindy Huynh 12/5/2015
  */
 public class CalendarAuctionCentral
 {
@@ -92,7 +92,8 @@ public class CalendarAuctionCentral
 	
 	
 	/**
-	 * Constructor, currently reading auctions from existing file.
+	 * This is the constructor.
+	 * It is currently reading auctions from an existing file.
 	 * 
 	 * @throws IOException
 	 * @throws ClassNotFoundException
@@ -135,7 +136,6 @@ public class CalendarAuctionCentral
 	/**
 	 * Sets the number of scheduled Auctions. Used primarily for testing.
 	 * 
-	 * @param auctions
 	 */
 	public void setFutureAuctions()
 	{
@@ -143,7 +143,9 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
-	 * @return number of scheduled auctions.
+	 * This is a getter for futureAuctions.
+	 * 
+	 * @return futureAuctions the number of scheduled auctions.
 	 */
 	public int getFutureAuctions()
 	{
@@ -151,9 +153,9 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
-	 * Returns a list of all auctions.
+	 * This is a getter for auction list
 	 * 
-	 * @return ArrayList of all auctions.
+	 * @return auctionList list of all auctions.
 	 */
 	public ArrayList<Auction> getAuctionList()
 	{
@@ -161,10 +163,9 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
+	 * This is the getter for futureAuctionList 
 	 * 
-	 * Return array list of future auctions
-	 * 
-	 * @return
+	 * @return futureAuctionList a list of future auctions.
 	 */
 	public ArrayList<Auction> getFutureAuctionList()
 	{
@@ -172,8 +173,8 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
+	 * This is the setter for futureAuctionList.
 	 * 
-	 * @return
 	 * @throws ParseException
 	 */
 	public void setFutureAuctionList() throws ParseException
@@ -192,8 +193,8 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
-	 * 
-	 * @param nonProfitOrganization
+	 * This is the getter for Auction
+	 * @param nonProfitOrganization the nonprofit with the scheduled auction.
 	 * @return
 	 */
 	public Auction getAuction(String nonProfitOrganization)
@@ -210,10 +211,12 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
+	 * 
+	 * This is the method to editAuctionDate.
 	 * Note, will only edit future auctions.
 	 * 
-	 * @param auctionToEdit
-	 * @param newDate
+	 * @param auctionToEdit which auction we need to edit.
+	 * @param newDate the new date of the auction.
 	 * @throws ParseException
 	 */
 	public void editAuctionDate(Auction auctionToEdit, Date newDate)
@@ -260,10 +263,11 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
+	 * This is the method to change auctionDuration.
 	 * Note: will only edit future auctions.
 	 * 
-	 * @param auctionToEdit
-	 * @param newDuration
+	 * @param auctionToEdit the auction we want to change the duration to.
+	 * @param newDuration the new duration.
 	 * @throws ParseException
 	 */
 	public void editAuctionDuration(Auction auctionToEdit, int newDuration)
@@ -309,8 +313,8 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
-	 * 
-	 * @param reqAuction
+	 * This is a method to add more auctions. 
+	 * @param reqAuction the auction we want to add.
 	 * @throws ParseException
 	 */
 	public void addFutureAuction(Auction reqAuction) throws ParseException {
@@ -328,11 +332,11 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
-	 * check if auction meets requirements, true mean accepted, false means
+	 * This is the method that checks if auction meets requirements, true mean accepted, false means
 	 * denied
 	 * 
-	 * @param reqAuction
-	 * @return
+	 * @param reqAuction the auction we want to schedule. 
+	 * @return numberOfFails how many auctions failed to meet requirements.
 	 * @throws ParseException
 	 */
 	public boolean checkRequestedAuction(Auction reqAuction)
@@ -407,10 +411,11 @@ public class CalendarAuctionCentral
 	// }
 	
 	/**
+	 * This is the method that checks the business rule of
 	 * no more than 5 auctions in a rolling 7 day period
 	 * 
-	 * @param requestedDate
-	 * @return
+	 * @param requestedDate the date at which we want to to schedule the auction
+	 * @return if auctioncentral is at its max auctions in a rolling period.
 	 * @throws ParseException
 	 */
 	public boolean atMaxAuctionsInRollingPeriod(Date requestedDate)
@@ -441,9 +446,9 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
-	 * 
-	 * @param requestedDate
-	 * @return the number of auctions that start on a specified date
+	 * This is the method that counts how many auctions within a date. 
+	 * @param requestedDate the date the user want to schedule the auction.
+	 * @return counter the number of auctions that start on a specified date.
 	 * @throws ParseException
 	 */
 	public int countAuctionsOnDay(Date requestedDate) throws ParseException
@@ -464,9 +469,10 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
+	 * This is the method that checks the business rul of
 	 * no more than 25 auctions may be scheduled into the future
 	 * 
-	 * @return
+	 * @return if auctionCentral has reached its max future auctions.
 	 */
 	public boolean atMaxFutureAuctions()
 	{
@@ -474,10 +480,11 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
+	 * This is the method that checks the business rule of
 	 * an auction may not be more than 90 days from the current date
 	 * 
-	 * @param requestedDate
-	 * @return
+	 * @param requestedDate the date the user want to schedule the auction
+	 * @return if the date is into the future and if it's within the 90 period.
 	 * @throws ParseException
 	 */
 	public boolean inDateRange(Date requestedDate) throws ParseException
@@ -490,10 +497,11 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
+	 * This is the method that checks the business rule of
 	 * no more than 2 auctions in the same day
 	 * 
-	 * @param requestedDate
-	 * @return
+	 * @param requestedDate the date the user want to schedule the auction
+	 * @return if auctionCentral is at its limit number of auctions per day.
 	 * @throws ParseException
 	 */
 	public boolean atMaxAuctionsPerDay(Date requestedDate)
@@ -516,11 +524,12 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
+	 * This is the method that checks the business rule of
 	 * start time of 2nd auction/day must be two hours after end time of he
 	 * first
 	 * 
-	 * @param requestedDate
-	 * @return
+	 * @param requestedDate the date the user want to schedule the auction
+	 * @return if the scheduled auction is at least 2 hours before and after the next auction.
 	 * @throws ParseException
 	 */
 	public boolean is2HoursBetween(Auction requestedAuction)
@@ -543,11 +552,12 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
+	 * This is the method that checks the business rule of
 	 * returns the index of an auction if it is scheduled on the same date as
-	 * the requested Date of a new auction; if not returns -1
+	 * the requested Date of a new auction; if not returns -1.
 	 * 
-	 * @param requestedDate
-	 * @return
+	 * @param requestedDate the date the user want to schedule the auction
+	 * @return checks if there's another auction happening at the same date as requestedDate.
 	 * @throws ParseException
 	 */
 	public int oneAuctionforDay(Auction requestedAuction) throws ParseException
@@ -568,12 +578,13 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
+	 * This is the method that checks the business rule of
 	 * no more than one auction per year per nonprofit organization can be
-	 * scheduled
+	 * scheduled.
 	 * 
-	 * @param nonprofit
-	 * @param requestedDate
-	 * @return
+	 * @param nonprofit the nonprofit we are scheduling this for. 
+	 * @param requestedDate the date the user want to schedule the auction
+	 * @return if the nonprofit has scheduled another auction within a 365 days a year.
 	 * @throws ParseException
 	 */
 	public boolean atMaxAuctionPerNonProfitPerYear(
@@ -594,6 +605,7 @@ public class CalendarAuctionCentral
 	}
 	
 	/**
+	 * This method deserializes auctions.
 	 * @throws ClassNotFoundException
 	 * 
 	 */
@@ -632,8 +644,7 @@ public class CalendarAuctionCentral
 	}	
 	
 	/**
-	 * 
-	 * @param fileName
+	 * This method deletes auction file contents.
 	 * @throws IOException
 	 */
 	public void deleteAuctionFileContents() throws IOException

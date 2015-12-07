@@ -9,7 +9,7 @@ import UI.UserInterface;
  * This is the bidder class.
  * It keeps track of all the bidders.
  * @author Stepan Adespya
- * @editor Mindy Huynh
+ * @edited by Mindy Huynh
  * @since November 5, 2015
  */
 public class Bidder

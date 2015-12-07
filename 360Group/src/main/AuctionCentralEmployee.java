@@ -11,7 +11,7 @@ import UI.UserInterface;
  * It keeps track of all the auctionCentral employees.
  * 
  * @author Stepan Adespya
- * @editor Mindy Huynh
+ * @edited by Mindy Huynh 12/5/2015
  * @since November 5, 2015
  */
 public class AuctionCentralEmployee

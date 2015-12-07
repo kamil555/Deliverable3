@@ -7,20 +7,26 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Date class to keep the date of auction as well as times.
+ * This is the date class to keep the date of auction as well as times.
  * 
  * @author Stepan Adespya
+ * @edited by Mindy Huynh 12/5/2015
  * @since November 14, 2015
  */
 @SuppressWarnings("serial")
 public class Date implements java.io.Serializable
 {
 	// holds the date entered
+	/**
+	 * This is the String value of date.
+	 */
 	private String date;
 	
 	/**
-	 * Constructor for the date entered. (Precondition String with MM/dd/yyyy
-	 * HH:mm:ss format) (Postcondition creates a date choosen by user)
+	 * This is the constructor for the date entered.
+	 * 
+	 * @Pre String with MM/dd/yyyy HH:mm:ss format
+	 * @Post creates a date choosen by user
 	 */
 	public Date(String date)
 	{
@@ -28,8 +34,11 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * If date is not entered, it takes the current date and time. (Precondition
-	 * nothing) (Postcondition takes the current date)
+	 * This is the default constructor. If date is not entered, it takes the
+	 * current date and time.
+	 * 
+	 * @Pre nothing
+	 * @Post takes the current date
 	 */
 	public Date()
 	{
@@ -41,12 +50,12 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Gets the month of the date.
+	 * This is the getter for the month.
 	 * 
 	 * @return int month of the date
 	 * @throws ParseException
-	 *             (Precondition nothing) (Postcondition returns integer of
-	 *             month)
+	 * @Pre nothing
+	 * @Post returns integer of month
 	 */
 	public int getMonth() throws ParseException
 	{
@@ -57,11 +66,12 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Gets the day of the date.
+	 * This is the getter for day.
 	 * 
 	 * @return int day of the date
 	 * @throws ParseException
-	 *             (Precondition nothing) (Postcondition returns integer of day)
+	 * @Pre nothing
+	 * @Post returns integer of day
 	 */
 	public int getDay() throws ParseException
 	{
@@ -72,12 +82,12 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Get the year of the date.
+	 * This is the getter for year.
 	 * 
 	 * @return int year of the date
 	 * @throws ParseException
-	 *             (Precondition nothing) (Postcondition returns integer of
-	 *             year)
+	 * @Pre nothing
+	 * @Post returns integer of year
 	 */
 	public int getYear() throws ParseException
 	{
@@ -88,12 +98,12 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Gets the hour of the date.
+	 * This is the getter for the hour of the date.
 	 * 
 	 * @return int hour of date
 	 * @throws ParseException
-	 *             (Precondition nothing) (Postcondition returns integer of
-	 *             hour)
+	 * @Pre nothing
+	 * @Post returns integer of hour
 	 */
 	public int getHour() throws ParseException
 	{
@@ -104,12 +114,12 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Gets the minutes of the date.
+	 * This is the getter for the minutes of the date.
 	 * 
 	 * @return int minutes of the date
 	 * @throws ParseException
-	 *             (Precondition nothing) (Postcondition returns integer of
-	 *             minutes)
+	 * @Pre nothing
+	 * @Post returns integer of minutes
 	 */
 	public int getMinutes() throws ParseException
 	{
@@ -120,12 +130,12 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Gets the seconds of the date.
+	 * This is the getter for the seconds of the date.
 	 * 
 	 * @return int seconds
 	 * @throws ParseException
-	 *             (Precondition nothing) (Postcondition returns integer of
-	 *             seconds)
+	 * @Pre nothing
+	 * @Post returns integer of seconds
 	 */
 	public int getSeconds() throws ParseException
 	{
@@ -136,12 +146,13 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Lets you change the month of date.
+	 * This is the setter for month of date.
 	 * 
 	 * @param month
+	 *            the new month of the date.
 	 * @throws ParseException
-	 *             (Precondition integer greater than 0 but less than 12)
-	 *             (Postcondition sets the date to correct month)
+	 * @Pre integer greater than 0 but less than 12
+	 * @Post sets the date to correct month
 	 */
 	public void setMonth(int month) throws ParseException
 	{
@@ -155,12 +166,13 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Lets you change the day of date.
+	 * This is the setter for day.
 	 * 
 	 * @param day
+	 *            new the day of the date.
 	 * @throws ParseException
-	 *             (Precondition integer greater than 0 but less than 32)
-	 *             (Postcondition sets the date to correct day)
+	 * @Pre integer greater than 0 but less than 32
+	 * @Post sets the date to correct day
 	 */
 	public void setDay(int day) throws ParseException
 	{
@@ -174,12 +186,13 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Lets you change the year of date.
+	 * This is the setter for year of date.
 	 * 
 	 * @param year
+	 *            the new year of date.
 	 * @throws ParseException
-	 *             (Precondition integer greater than 0) (Postcondition sets the
-	 *             date to correct year)
+	 * @Pre integer greater than 0
+	 * @Post sets the date to correct year
 	 */
 	public void setYear(int year) throws ParseException
 	{
@@ -193,12 +206,13 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Lets you change the hour of the date.
+	 * This is the setter for the hour of date.
 	 * 
 	 * @param hour
+	 *            the new hour to be changed.
 	 * @throws ParseException
-	 *             (Precondition integer non negative and less than 24)
-	 *             (Postcondition sets the date to correct hour)
+	 * @Pre integer non negative and less than 24
+	 * @Post sets the date to correct hour
 	 */
 	public void setHour(int hour) throws ParseException
 	{
@@ -212,12 +226,13 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Lets you change the minutes of the date.
+	 * This is the setter for the minutes of the date.
 	 * 
 	 * @param minutes
+	 *            the new minute of the date.
 	 * @throws ParseException
-	 *             (Precondition integer non negative and less than 60)
-	 *             (Postcondition sets the date to correct minute)
+	 * @Pre integer non negative and less than 60
+	 * @Post sets the date to correct minute
 	 */
 	public void setMinutes(int minutes) throws ParseException
 	{
@@ -231,12 +246,13 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Lets you change the seconds of the date.
+	 * This is the setter for the seconds of date.
 	 * 
 	 * @param seconds
+	 *            the new second of the date.
 	 * @throws ParseException
-	 *             (Precondition integer non negative and less than 60)
-	 *             (Postcondition sets the date to correct second)
+	 * @Pre integer non negative and less than 60
+	 * @Post sets the date to correct second
 	 */
 	public void setSeconds(int seconds) throws ParseException
 	{
@@ -250,82 +266,84 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Gives the difference of two dates by hours.
+	 * This is the getter for difference bettween two dates in hours.
 	 * 
-	 * @param d
-	 * @return
+	 * @param date
+	 *            the date we want to compare with.
+	 * @return the difference between this date and the new date.
 	 * @throws ParseException
-	 *             (Precondition date that is not NULL) (Postcondition hours
-	 *             between the two dates)
+	 * @Pre date that is not NULL
+	 * @Post hours between the two dates)
 	 */
-	public long getDiffHours(Date d) throws ParseException
+	public long getDiffHours(Date date) throws ParseException
 	{
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		Calendar c = Calendar.getInstance();
 		c.setTime(df.parse(this.date));
 		Calendar c1 = Calendar.getInstance();
-		c1.setTime(df.parse(d.date));
+		c1.setTime(df.parse(date.date));
 		long diff = c1.getTimeInMillis() - c.getTimeInMillis();
 		return TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 	
 	/**
-	 * Gives the difference of two dates by day.
+	 * This method gives the difference of two dates by day.
 	 * 
-	 * @param d
-	 * @return
+	 * @param date
+	 *            the date to be compared to this.date.
+	 * @return the number of hours in difference for the two dates.
 	 * @throws ParseException
-	 *             (Precondition date that is not NULL) (Postcondition days
-	 *             between the two dates)
+	 * @Pre date that is not NULL
+	 * @Post days between the two dates
 	 */
-	public long getDiffDay(Date d) throws ParseException
+	public long getDiffDay(Date date) throws ParseException
 	{
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		Calendar c = Calendar.getInstance();
 		c.setTime(df.parse(this.date));
 		Calendar c1 = Calendar.getInstance();
-		c1.setTime(df.parse(d.date));
+		c1.setTime(df.parse(date.date));
 		long diff = c1.getTimeInMillis() - c.getTimeInMillis();
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 	
 	/**
-	 * Check if current date is before another date.
+	 * This method checks if current date is before another date.
 	 * 
-	 * @param d
+	 * @param date
+	 *            the date to compare to, to see if one is before the other.
 	 * @return true iff current date is before the date entered
 	 * @throws ParseException
-	 *             (Precondition date that is not NULL) (Postcondition returns
-	 *             true or false)
+	 * @Pre date that is not NULL
 	 */
-	public boolean before(Date d) throws ParseException
+	public boolean before(Date date) throws ParseException
 	{
-		if (this.getYear() < d.getYear())
+		if (this.getYear() < date.getYear())
 		{
 			return true;
-		} else if (this.getYear() == d.getYear())
+		} else if (this.getYear() == date.getYear())
 		{
-			if (this.getMonth() < d.getMonth())
+			if (this.getMonth() < date.getMonth())
 			{
 				return true;
-			} else if (this.getMonth() == d.getMonth())
+			} else if (this.getMonth() == date.getMonth())
 			{
-				if (this.getDay() < d.getDay())
+				if (this.getDay() < date.getDay())
 				{
 					return true;
-				} else if (this.getDay() == d.getDay())
+				} else if (this.getDay() == date.getDay())
 				{
-					if (this.getHour() < d.getHour())
+					if (this.getHour() < date.getHour())
 					{
 						return true;
-					} else if (this.getHour() == d.getHour())
+					} else if (this.getHour() == date.getHour())
 					{
-						if (this.getMinutes() < d.getMinutes())
+						if (this.getMinutes() < date.getMinutes())
 						{
 							return true;
-						} else if (this.getMinutes() == d.getMinutes())
+						} else if (this.getMinutes() == date.getMinutes())
 						{
-							if (this.getSeconds() < d.getSeconds())
+							if (this.getSeconds() < date.getSeconds())
 							{
 								return true;
 							} else
@@ -355,12 +373,13 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Add days to the current date.
+	 * This method adds days to the current date.
 	 * 
 	 * @param days
+	 *            the number of days we want added to current date.
 	 * @throws ParseException
-	 *             (Precondition integer of days wanted to add) (Postcondition
-	 *             date is corrected to what is added)
+	 * @Pre integer of days wanted to add
+	 * @Post date is corrected to what is added)
 	 */
 	public void addDays(int days) throws ParseException
 	{
@@ -376,12 +395,13 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Adds hours to the date.
+	 * This method adds hours to the date.
 	 * 
 	 * @param hours
+	 *            the number of hours we want to add to current date.
 	 * @throws ParseException
-	 *             (Precondition integer of hours wanted to add) (Postcondition
-	 *             date is corrected to what is added)
+	 * @Pre integer of hours wanted to add
+	 * @Post date is corrected to what is added
 	 */
 	public void addHours(int hours) throws ParseException
 	{
@@ -397,8 +417,10 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * clones the date to another object. (Precondition Date not NULL)
-	 * (Postcondition have the same date)
+	 * This method clones the date to another object.
+	 * 
+	 * @Pre Date not NULL
+	 * @Post have the same date
 	 */
 	public Date clone()
 	{
@@ -406,7 +428,10 @@ public class Date implements java.io.Serializable
 	}
 	
 	/**
-	 * Returns the date.
+	 * This method returns the date in string.
+	 * @return the date.
+	 * @Pre date is in correct format.
+	 * @Post correct date
 	 */
 	public String toString()
 	{

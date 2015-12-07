@@ -1,5 +1,9 @@
 package main;
-
+/**
+ * 
+ * @author Han Wang
+ * @edited by Mindy Huynh 12/5/2015
+ */
 public class Item implements java.io.Serializable
 {
 	/**

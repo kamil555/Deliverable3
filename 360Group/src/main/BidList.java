@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * This is the bidList class. 
  * It has all the bids.
  * @author Han Wang
- * @edited by Stepan & Mindy Huynh
+ * @edited by Stepan & Mindy Huynh 12/5/2015
  */
 public class BidList implements java.io.Serializable
 {

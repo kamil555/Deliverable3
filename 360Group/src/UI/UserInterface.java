@@ -14,6 +14,7 @@ import main.*;
 
 /**
  * @author Stepan Adespya
+ * @edited by Mindy Huynh 12/5/2015
  * @since November 21, 2015
  */
 public class UserInterface

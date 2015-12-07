@@ -4,7 +4,7 @@ package main;
  * This is the bid class. It keeps track of the bids by the user. 
  * 
  * @author Han Wang
- *
+ * @edited by Mindy Huynh 12/5/2015
  */
 public class Bid implements java.io.Serializable
 {

@@ -4,6 +4,12 @@ import java.text.ParseException;
 
 import main.CalendarAuctionCentral;
 
+/**
+ * 
+ * @author Gabrielle Glynn
+ * @edited by Mindy Huynh 12/5/2015
+ *
+ */
 public class CalendarUI
 {
 	

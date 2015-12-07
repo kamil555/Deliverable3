@@ -11,21 +11,28 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
- * Inventory class for all items.
+ * This is inventory class for all items.
  * 
  * @author Stepan Adespya
  * @since November 9, 2015
  * @edited by Gabrielle 11/15/2015
+ * @edited by Mindy Huynh 12/5/2015
  */
 public class Inventory implements java.io.Serializable
 {
 	// Array list of all the items
+	/**
+	 * This is the ArrayList of all the items.
+	 */
 	public ArrayList<Item> listofItems;
 	// size of the array list
+	/**
+	 * This is the size of the inventory.
+	 */
 	int size;
 	
 	/**
-	 * Constructor for Inventory, reads log file of items.
+	 * This is the constructor for Inventory, reads log file of items.
 	 */
 	public Inventory()
 	{
@@ -35,9 +42,8 @@ public class Inventory implements java.io.Serializable
 	}
 	
 	/**
-	 * Gives the size of Array list.
+	 * This is the getter for the size.
 	 * 
-	 * @param i
 	 * @throws IOException
 	 */
 	public int getSize()
@@ -46,23 +52,23 @@ public class Inventory implements java.io.Serializable
 	}
 	
 	/**
-	 * Adds a item to the Array list.
+	 * This method adds a item to the Array list.
 	 * 
-	 * @param i
+	 * @param item the item to be added
 	 * @throws IOException
 	 */
-	public void addItem(Item i) throws IOException
+	public void addItem(Item item) throws IOException
 	{
-		listofItems.add(i);
+		listofItems.add(item);
 		size = listofItems.size();
-		writeToFile("Inventory.txt", i.toString());
+		writeToFile("Inventory.txt", item.toString());
 	}
 	
 	/**
-	 * Edits the Name of the Item in Array list and rewrites file.
+	 * This method edits the Name of the Item in Array list and rewrites file.
 	 * 
-	 * @param itemID
-	 * @param newName
+	 * @param itemID the ID of the item.
+	 * @param newName the name of the item.
 	 * @throws IOException
 	 */
 	public void editItemName(int itemID, String newName) throws IOException
@@ -79,10 +85,10 @@ public class Inventory implements java.io.Serializable
 	}
 	
 	/**
-	 * Edits the Starting Bid of the item selected.
+	 * This method edits the Starting Bid of the item selected.
 	 * 
-	 * @param itemID
-	 * @param startBid
+	 * @param itemID the ID of the item.
+	 * @param startBid the starting bid of the item.
 	 * @throws IOException
 	 */
 	public void editItemStartBid(int itemID, double startBid)
@@ -100,10 +106,10 @@ public class Inventory implements java.io.Serializable
 	}
 	
 	/**
-	 * Edits the Information of an item selected.
+	 * This method edits the Information of an item selected.
 	 * 
-	 * @param itemID
-	 * @param info
+	 * @param itemID the Id of the item.
+	 * @param info the information on the item.
 	 * @throws IOException
 	 */
 	public void editItemInfo(int itemID, String info) throws IOException
