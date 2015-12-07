@@ -38,6 +38,7 @@ public class CalendarUI
 				}
 			}
 		}
+		//System.out.print(calendar);
 		return calendar;
 	}
 	

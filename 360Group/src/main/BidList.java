@@ -11,16 +11,21 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
- * 
- * @author Han
- * @edited by Stepan
+ * This is the bidList class. 
+ * It has all the bids.
+ * @author Han Wang
+ * @edited by Stepan & Mindy Huynh
  */
 public class BidList implements java.io.Serializable
 {
+	/**
+	 * This the the list of bids.
+	 */
 	public ArrayList<Bid> Bidlist;
 	
 	/**
-	 * create a arraylist for bid and read from Bid.txt
+	 * This is the constructor of bidList.
+	 * It creates an arraylist for bid and read from Bid.txt
 	 * 
 	 * @throws IOException
 	 */
@@ -31,12 +36,12 @@ public class BidList implements java.io.Serializable
 	}
 	
 	/**
-	 * add a new bid info to arraylist and save to Bids.txt
+	 * This method adds a new bid info to arraylist and save to Bids.txt.
 	 * 
 	 * @param user
-	 *            : get the user info from bider class
+	 *            the user's info from bider class
 	 * @param bid
-	 *            : create a new Bid list
+	 *            the bid that creates a new Bid list
 	 * @throws IOException
 	 */
 	
@@ -73,14 +78,14 @@ public class BidList implements java.io.Serializable
 	}
 	
 	/**
-	 * edit the previews bid price
+	 * This method edits the previews bid price.
 	 * 
 	 * @param user
-	 *            : get the user info from bider class
+	 *            the user to get the user info from bider class
 	 * @param bid
-	 *            : create a new Bid list
+	 *           the bid creates a new Bid list
 	 * @param bidAmount
-	 *            : bider's bid price
+	 *           bider's bid price
 	 * @throws IOException
 	 */
 	public void editBid(User user, Item item, double bidAmount) throws IOException
@@ -108,12 +113,12 @@ public class BidList implements java.io.Serializable
 	}
 	
 	/**
-	 * Cancel the bid for this Auction
+	 * This class cancels the bid for this Auction.
 	 * 
 	 * @param user
-	 *            : get the user info from bider class
+	 *           the user is used get the user info from bider class.
 	 * @param item
-	 *            : which item bid that user want to cancel
+	 *           the item that user want to cancel their bid on.
 	 * @throws IOException
 	 */
 	public void cancelBid(User user, Item item) throws IOException
@@ -131,10 +136,10 @@ public class BidList implements java.io.Serializable
 	}
 	
 	/**
-	 * check the winning bid price and username for the item
+	 * This method checks the winning bid price and username for the item
 	 * 
 	 * @param item
-	 *            item information
+	 *            being checked on's information
 	 * @return user's name and bid amount
 	 */
 	public String isWinBid(Item item)
@@ -154,12 +159,12 @@ public class BidList implements java.io.Serializable
 	}
 	
 	/**
-	 * write this array list to the Bid.txt
+	 * This method writes this array list to the Bid.txt.
 	 * 
 	 * @param string
-	 *            write to the file
+	 *            the string written to the file
 	 * @param blist
-	 *            the array list
+	 *            the list from the array list
 	 * @throws IOException
 	 */
 	private void writeToFile(String fileName, String content) throws IOException
@@ -178,12 +183,11 @@ public class BidList implements java.io.Serializable
 	}
 	
 	/**
-	 * write all items to Bid.txt
+	 * This method writes all items to Bid.txt
 	 * 
-	 * @param string
+	 * @param string the string being written to.
 	 * @throws IOException
 	 */
-	
 	private void writeAllItemsToFile(String string) throws IOException
 	{
 		// TODO Auto-generated method stub
@@ -197,10 +201,10 @@ public class BidList implements java.io.Serializable
 	}
 	
 	/**
-	 * Clear the file
+	 * This method clears the file.
 	 * 
 	 * @param string
-	 *            an empty string
+	 *            the empty string to clear the file.
 	 * @throws IOException
 	 */
 	private void clearFile(String string) throws IOException
@@ -212,10 +216,10 @@ public class BidList implements java.io.Serializable
 	}
 	
 	/**
-	 * read file to the array list
+	 * This method reads the file to the array list
 	 * 
 	 * @param fileName
-	 *            file' name
+	 *            the file's name to read from.
 	 */
 	private void readFileToBid(String fileName)
 	{

@@ -21,38 +21,73 @@ public class CalendarAuctionCentral
 {
 	
 	/**
-	 * Variable futureAuctions specifies the number of auctions currently
+	 * The variable futureAuctions specifies the number of auctions currently
 	 * scheduled.
 	 */
 	private int futureAuctions;
 	
 	/**
-	 * Variable auctionList keeps track of all auctions overtime, either past or
+	 * The variable auctionList keeps track of all auctions overtime, either past or
 	 * present.
 	 */
 	private ArrayList<Auction> auctionList;
 	
 	/**
-	 * Variable futureAuctionList keeps track of the auctions scheduled into the
+	 * The variable futureAuctionList keeps track of the auctions scheduled into the
 	 * future.
 	 */
 	private ArrayList<Auction> futureAuctionList;
 	
 	/**
-	 * Constants specified by Auction Central business rules.
+	 * The constant specified by Auction Central business rules.
+	 * The maximum number of auctions MAX_DAYS_OUT days into the future.
 	 */
 	private static int MAX_FUTURE_AUCTIONS = 25;
+	
+	/**
+	 * The constant specified by Auction Central business rules.
+	 * The number of days into the future in which an auction can be scheduled.
+	 */
 	private static int MAX_DAYS_OUT = 90;
+	
+	/**
+	 * The constant specified by Auction Central business rules.
+	 * The maximum number of auction per period.
+	 */
 	private static int MAX_AUCTIONS_ROLLING_PERIOD = 5;
+	
+	/**
+	 * The constant specified by Auction Central business rules.
+	 * The maximum number of auctions in a day.
+	 */
 	private static int MAX_AUCTIONS_SAME_DAY = 2;
+	
+	/**
+	 * The constant specified by Auction Central business rules.
+	 * The maximum number of hours per auction.
+	 */
 	private static int MAX_HOURS_BTW_AUCTIONS = 2;
+	
+	/**
+	 * The constant specified by Auction Central business rules.
+	 * The maximum number of auctions per year.
+	 */
 	private static int MAX_NP_AUCTIONS_PER_YEAR = 1;
+	
+	/**
+	 * The constant specified by Auction Central business rules.
+	 * The number of days per rolling period.
+	 */
 	private static int DAYS_PER_ROLLING_PERIOD = 7;
 	
-	/*
-	 * Utility constants
+	/**
+	 * The number of days per year.
 	 */
 	private static int DAYS_PER_YEAR = 365;
+	
+	/**
+	 * The file name being used in this class.
+	 */
 	private static String FILENAME = "Auctions.ser";
 	
 	/**
@@ -60,6 +95,14 @@ public class CalendarAuctionCentral
 	 */
 	private static CalendarAuctionCentral sCalendar;
 	
+	/**
+	 * This is the getter for calendar 
+	 * 
+	 * @return the calendar
+	 * @throws ParseException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	public static CalendarAuctionCentral getCalendar() throws ParseException,
 			ClassNotFoundException, IOException
 	{

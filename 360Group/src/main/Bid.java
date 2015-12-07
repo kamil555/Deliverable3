@@ -1,8 +1,9 @@
 package main;
 
 /**
+ * This is the bid class. It keeps track of the bids by the user. 
  * 
- * @author Han
+ * @author Han Wang
  *
  */
 public class Bid implements java.io.Serializable
@@ -18,14 +19,25 @@ public class Bid implements java.io.Serializable
 		return userName + "," + itemID + "," + bidAmount;
 	}
 	
+	/**
+	 * The userName of the bidder.
+	 */
 	private String userName;
+	
+	/**
+	 * The itemID of the item being bid on.
+	 */
 	private int itemID;
+	
+	/**
+	 * The amount the user wants to bid. 
+	 */
 	private double bidAmount;
 	
 	/**
-	 * getItemID
+	 * This is the getter for item ID
 	 * 
-	 * @return item's ID
+	 * @return item's ID to keep it different from other items. 
 	 */
 	public int getItemID()
 	{
@@ -33,9 +45,10 @@ public class Bid implements java.io.Serializable
 	}
 	
 	/**
+	 * This is the setter for itemID. 
+	 * So that we can change the ID of the item.
 	 * 
-	 * @param itemID
-	 *            set Item ID
+	 * @param itemID changes the itemID
 	 */
 	public void setItemID(int itemID)
 	{
@@ -43,8 +56,9 @@ public class Bid implements java.io.Serializable
 	}
 	
 	/**
+	 * This is the getter for bidAmount.
 	 * 
-	 * @return bidAmount
+	 * @return bidAmount the bidAmount for an item.
 	 */
 	public double getBidAmount()
 	{
@@ -71,6 +85,7 @@ public class Bid implements java.io.Serializable
 	}
 	
 	/**
+	 * This is the setter for userName.
 	 * 
 	 * @param userName
 	 *            user's login name
@@ -81,13 +96,14 @@ public class Bid implements java.io.Serializable
 	}
 	
 	/**
-	 * 
+	 * This is the bid constructor. 
+	 * To bid on an item, it needs the users login, itemID and bidAmount.
 	 * @param userName
 	 *            user's login name
 	 * @param itemID
 	 *            item's id
 	 * @param bidAmount
-	 *            bid money
+	 *            bid amount
 	 */
 	public Bid(String userName, int itemID, double bidAmount)
 	{

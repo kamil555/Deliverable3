@@ -21,22 +21,21 @@ public class Auction implements java.io.Serializable
 	private String auctionName;
 	
 	/**
-	 * This is the date in which the auction start. It includes date, month,
-	 * year as well as hour and minute of the auction start.
+	 * This is the time in which the auction will start. 
+	 * It includes date, month, year as well as hour and minute of the auction will start.
 	 */
 	// auction date
 	private Date auctionStart;
 	
 	/**
 	 * This is the date in which the auction end. It includes date, month, year
-	 * as well as hour and minute of the auction end. It will be automatically
-	 * generated via the duration and auction start.
+	 * as well as hour and minute of the auction will end. 
+	 * It will be automatically generated via the duration and auction start.
 	 */
 	private Date auctionEnd;
 	
 	/**
-	 * This is how long the auction will last. It will be automatically
-	 * generated via the auction start and end.
+	 * This is how long the auction will last.
 	 */
 	private int auctionDuration;
 	
@@ -46,8 +45,8 @@ public class Auction implements java.io.Serializable
 	private String nonprofitName;
 	
 	/**
-	 * This is the constructor to the Auction class. It requires the non-profit
-	 * user to fill out profitName. auctionStartDAte, auctionDuration.
+	 * This is the constructor to the Auction class. 
+	 * It requires the non-profit user to fill out nonprofitName. auctionStartDAte, auctionDuration.
 	 * 
 	 * @param nonprofitName
 	 *            The name of the nonprofit company
