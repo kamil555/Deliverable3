@@ -1,9 +1,12 @@
 package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+<<<<<<< HEAD
 
 import java.io.IOException;
 
+=======
+>>>>>>> origin/Han1
 import main.Bid;
 import main.BidList;
 import main.Inventory;
@@ -41,6 +44,25 @@ public class BidListTest {
 		
 		bidlist.addBid(user, bid);
 	
+<<<<<<< HEAD
+=======
+	/**
+	 * test Bidlist
+	 * 
+	 */
+	@Test
+	public void testBidList() {
+		assertTrue(bidlist.Bidlist != null);
+	}
+
+	/**
+	 * test addBid
+	 * @throws Exception
+	 */
+	@Test
+	public void testAddBid() throws Exception {
+		bidlist.addBid(user, bid);
+>>>>>>> origin/Han1
 		assertEquals("add name fail", "Han", user.getUserName());
 		assertEquals("add ID fail", 123, item.getItemID());
 		assertEquals("add Amount fail", 4.2, bid.getBidAmount(),TOLERANCE);
@@ -51,6 +73,7 @@ public class BidListTest {
 	 */
 	@Test
 	public void testEditBid() throws Exception {
+<<<<<<< HEAD
 		bidlist = new BidList();
 		in = new Inventory();
 		user = new User("Han","User");
@@ -63,6 +86,11 @@ public class BidListTest {
 		
 		assertEquals("edit Amount fail", "BidList =[Han,123,5.5]", bidlist.toString());
 		
+=======
+		assertEquals("edit name fail", "Han", user.getUserName());
+		assertEquals("add ID fail", 123, item.getItemID());
+		assertEquals("edit Amount fail", 4.2, bid.getBidAmount(),TOLERANCE);
+>>>>>>> origin/Han1
 	}
 	/**
 	 * test cancel bid
