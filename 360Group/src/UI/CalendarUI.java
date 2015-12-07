@@ -14,7 +14,8 @@ public class CalendarUI {
 	 * @param year
 	 * @throws ParseException
 	 */
-	public void printCalendarMonthly(int month, int year) throws ParseException {
+	public String printCalendarMonthly(int month, int year) throws ParseException {
+		String calendar = "";
 		String[] monthName = { "January", "February", "March", "April", "May",
 				"June", "July", "August", "September", "October", "November",
 				"December" };
@@ -26,10 +27,11 @@ public class CalendarUI {
 				if (myCalendar.getAuctionList().get(j).getAuctionStart().getMonth() == month
 						&& myCalendar.getAuctionList().get(j).getAuctionStart().getDay() == i
 						&& myCalendar.getAuctionList().get(j).getAuctionStart().getYear() == year) {
-					System.out.println(myCalendar.getAuctionList().get(j).toString());
+					calendar += myCalendar.getAuctionList().get(j).toString();
 				}
 			}
 		}
+		return calendar;
 	}
 
 
@@ -42,6 +44,27 @@ public class CalendarUI {
 		}
 
 	}
+	
+//	/*
+//	 * Returns auction if it matches a Nonprofit's name.
+//	 */
+//	public Auction getAuction(User u) throws ParseException, IOException {
+//		System.out
+//				.println("Select your Auction or Press -1 to go back to main menu:");
+//		for (int i = 0; i < auctionList.size(); i++) {
+//			if (auctionList.get(i).getProfitName()
+//					.equalsIgnoreCase(u.organization)) {
+//				System.out.println(i + ")" + auctionList.get(i).toString());
+//			}
+//		}
+//		@SuppressWarnings("resource")
+//		Scanner reader = new Scanner(System.in);
+//		int select = reader.nextInt();
+//		if (select == -1) {
+//			new NonProfit(u);
+//		}
+//		return auctionList.get(select);
+//	}
 
 }
 

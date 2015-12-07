@@ -15,6 +15,14 @@ import java.util.ArrayList;
  */
 public class BidList{
 	public ArrayList<Bid> Bidlist;
+	
+	/**
+	 * Print out what bidlist having now
+	 */
+	@Override
+	public String toString() {
+		return "BidList =" + Bidlist;
+	}
 	/**
 	 * create a arraylist for bid and read from Bid.txt
 	 * @throws IOException

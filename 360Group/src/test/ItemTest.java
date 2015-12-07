@@ -25,7 +25,7 @@ public class ItemTest {
 	 */
 	@Test
 	public void testToString() {
-		System.out.println(item.toString());
+//		System.out.println(item.toString());
 		assertTrue(item.toString().equalsIgnoreCase("123,cakesale,1.0,cake,just a cake"));		
 	}
 	/**

@@ -187,6 +187,17 @@ public class Auction implements java.io.Serializable {
 		// return this.auctionName + "," + this.auctionStart + ","
 		// + this.auctionDuration;
 	}
+	
+	public Auction clone()
+	{
+		try {
+			return new Auction(this.nonprofitName, this.auctionStart, this.auctionDuration);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	// public String printDetails()
 	// {

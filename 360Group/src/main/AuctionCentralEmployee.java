@@ -55,8 +55,8 @@ public class AuctionCentralEmployee{
 	public String viewAuctionDetails(User u,AuctionCentralEmployeeInterface acei) throws ParseException, IOException{
 		CalendarAuctionCentral c = new CalendarAuctionCentral();
 		int select = acei.selectAuction(c);
-		Auction a = c.getfutureAuctionList().get(select);
-		return a.printDetials();
+		Auction a = c.getAuctionList().get(select);
+		return a.toString();
 	}
 	
 	/**
@@ -70,8 +70,8 @@ public class AuctionCentralEmployee{
 	 */
 	public String viewCalendar(User u, int month, int year) 
 			throws ParseException, IOException{
-		CalendarAuctionCentral c = new CalendarAuctionCentral();
-		return c.printCalendarMonthly(month, year);
+		CalendarUI cui = new CalendarUI();
+		return cui.printCalendarMonthly(month, year);
 	}
 	
 }

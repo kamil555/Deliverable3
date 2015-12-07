@@ -1,98 +1,134 @@
 package main;
 /**
  * 
- * @author Han 
+ * @author Han
  *
  */
-public class Item
-{
-	
+
+public class Item {
+	/**
+	 * to string method
+	 */
 	@Override
-	public String toString()
-	{
-		return itemID + "," + auctionName + "," + startBid + "," + itemName
-				+ "," + itemInfo;
+	public String toString() {
+		return itemID + "," +auctionName+","+ startBid + "," + itemName + "," + itemInfo;
 	}
-	
-	public int itemID;
-	public double startBid;
-	public String itemName;
-	public String itemInfo;
-	// Double winBid;
-	// String winUser;
+	int itemID;
+	double startBid;
+	String itemName;
+	String itemInfo;
 	public String auctionName;
-	
-	public String getAuctionName()
-	{
-		return this.auctionName;
+	/**
+	 *  getter for auction Name
+	 * @return auctionName
+	 */
+	public String getAuctionName() {
+		return auctionName;
 	}
-	
-	public double getStartBid()
-	{
+	/**
+	 * setter for auction name
+	 * @param auctionName: auction's name
+	 */
+	public void setAuctionName(String auctionName) {
+		this.auctionName = auctionName;
+	}
+	/**
+	 * getter for start bid
+	 * @return startBid
+	 */
+	public double getStartBid() {
 		return startBid;
 	}
-	
-	public void setStartBid(double startBid)
-	{
+	/**
+	 * setter for start bid
+	 * @param startBid: start bid
+	 */
+	public void setStartBid(double startBid) {
 		this.startBid = startBid;
 	}
 	
-	public int getItemID()
-	{
-		return this.itemID;
+	/**
+	 * getter for Item id
+	 * @return ItemID
+	 */
+	public int getItemID() {
+		return itemID;
 	}
-	
-	public void setItemID(int itemID)
-	{
+	/**
+	 * setter for item id
+	 * @param itemID item's id 
+	 */
+	public void setItemID(int itemID) {
 		this.itemID = itemID;
 	}
-	
-	public String getItemName()
-	{
+	/**
+	 *  getter for itemName
+	 * @return itemName
+	 */
+	public String getItemName() {
 		return itemName;
 	}
-	
-	public void setItemName(String itemName)
-	{
+	/**
+	 * setter for itemName
+	 * @param itemName
+	 */
+	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
-	
-	public String getItemInfo()
-	{
+	/**
+	 * getter for item information
+	 * @return itemInfo
+	 */
+	public String getItemInfo() {
 		return itemInfo;
 	}
-	
-	public void setItemInfo(String itemInfo)
-	{
+	/**
+	 * setter for Item information
+	 * @param itemInfo
+	 */
+	public void setItemInfo(String itemInfo) {
 		this.itemInfo = itemInfo;
 	}
-	
-	public Item(String auctionName, double startBid, String itemName,
-			String itemInfo)
-	{
-		// super();
+	/**
+	 * Construction of item class 
+	 * @param auctionName
+	 * @param startBid
+	 * @param itemName
+	 * @param itemInfo
+	 */
+	public Item(String auctionName,double startBid, String itemName, String itemInfo) {
+		//super();
 		this.auctionName = auctionName;
-		this.itemID = createID();
+		this.itemID = getID();
 		this.startBid = startBid;
 		this.itemName = itemName;
-		this.itemInfo = itemInfo;
+		this.itemInfo =itemInfo;
 	}
-	
-	public Item(int itemID, String auctionName, double startBid,
-			String itemName, String itemInfo)
-	{
-		// super();
+	/**
+	 * Construction of item class 
+	 * @param itemID
+	 * @param auctionName
+	 * @param startBid
+	 * @param itemName
+	 * @param itemInfo
+	 */
+	public Item(int itemID,String auctionName,double startBid, String itemName, String itemInfo) {
+		//super();
 		this.itemID = itemID;
 		this.auctionName = auctionName;
 		this.startBid = startBid;
 		this.itemName = itemName;
-		this.itemInfo = itemInfo;
+		this.itemInfo =itemInfo;
 	}
 	
-	private int createID()
-	{		
-		Inventory in = new Inventory();
-		return in.getSize();
+	/**
+	 * get the index for Inventory list
+	 * @return index of arraylist
+	 */
+	private int getID(){
+		Inventory i = new Inventory();
+		return i.listofItems.size();
 	}
 	
+
 }

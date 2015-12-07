@@ -115,7 +115,8 @@ public class BidderInterface{
 	 */
 	public int selectAuction(CalendarAuctionCentral c){
 		System.out.println("Select Auction(Number) :");
-		System.out.println(c.viewFutureAuctions());
+		CalendarUI cui = new CalendarUI();
+		cui.viewFutureAuctions();
 		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);
 		int select = reader.nextInt();
