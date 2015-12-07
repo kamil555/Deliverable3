@@ -3,41 +3,50 @@ package main;
 import java.io.IOException;
 import java.text.ParseException;
 
-import UI.*;
+import UI.BidderInterface;
+import UI.UserInterface;
 
 /**
- * 
+ * This is the bidder class.
+ * It keeps track of all the bidders.
  * @author Stepan Adespya
+ * @edited by Mindy Huynh
  * @since November 5, 2015
  */
-public class Bidder{
+public class Bidder
+{
 	
 	/**
-	 * Main menu for the Bidder User
+	 * Main menu for the Bidder User.
 	 * 
+	 * @param user the username of the user. 
 	 * @throws IOException
 	 * @throws ParseException
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 * 
 	 */
-	public Bidder(User u) throws IOException, ParseException, ClassNotFoundException{
-		BidderInterface bi = new BidderInterface(u);
+	public Bidder(User user) throws IOException, ParseException, ClassNotFoundException
+	{
+		BidderInterface bi = new BidderInterface(user);
 		int input = bi.mainMenu();
-		switch (input){
+		switch (input)
+		{
 			case 1:
-				this.viewOpenAuctions(u,bi);
+				this.viewOpenAuctions(user, bi);
 				break;
 			case 2:
-				this.viewItemsBidded(u);
+				this.viewItemsBidded(user);
 				int select = bi.enterItemID();
 				Inventory i = new Inventory();
 				Item it = i.getItemFromList(select);
-				if (select == -1){
-					new Bidder(u);
-				}else{
+				if (select == -1)
+				{
+					new Bidder(user);
+				} else
+				{
 					double money = bi.editBidAmount();
-					editBid(u, it, money);
-					new Bidder(u);
+					editBid(user, it, money);
+					new Bidder(user);
 				}
 				
 				break;
@@ -49,70 +58,79 @@ public class Bidder{
 	}
 	
 	/**
-	 * Lets you bid on a given item.
+	 * This method allows the bidder to view the item and bid on the item they like.
 	 * 
-	 * @param u
-	 * @param i
+	 * @param user the bidder.
+	 * @param item the item being bid on.
 	 * @throws IOException
 	 * @throws ParseException
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 */
-	public void viewItem(User u, Item i,BidderInterface bi) throws IOException, ParseException, ClassNotFoundException{
-		System.out.println(i.toString());
-		int input = bi.viewItemMenu();
-		switch (input){
+	public void viewItem(User user, Item item, BidderInterface bidInterface) throws IOException, ParseException,
+			ClassNotFoundException
+	{
+		System.out.println(item.toString());
+		int input = bidInterface.viewItemMenu();
+		switch (input)
+		{
 			case 1:
-				double money = bi.enterBidAmount();
-				Bid b = new Bid(u.getUserName(), i.getItemID(), money);
+				double amount = bidInterface.enterBidAmount();
+				Bid b = new Bid(user.getUserName(), item.getItemID(), amount);
 				BidList bl = new BidList();
-				bl.addBid(u, b);
-				new Bidder(u);
+				bl.addBid(user, b);
+				new Bidder(user);
 				break;
 			case 2:
-				new Bidder(u);
+				new Bidder(user);
 				break;
 		}
 	}
 	
 	/**
-	 * Allows you to change your bid on a given item.
+	 * This method allows bidder to change his/her bid on a given item.
 	 * 
-	 * @param u
-	 * @param i
-	 * @param money
-	 * @throws IOException
-	 */
-	public void editBid(User u, Item i, double money) throws IOException{
-		BidList b = new BidList();
-		b.editBid(u, i, money);
-	}
-	
-	/**
-	 * Shows the User all open auctions.
-	 * 
-	 * @param u
-	 * @throws ParseException
+	 * @param user the bidder interested in the item.
+	 * @param item the item that is being bid on.
+	 * @param money the amount they want to pay.
 	 * @throws IOException
 	 * @throws ClassNotFoundException 
 	 */
-	public void viewOpenAuctions(User u, BidderInterface bi) throws ParseException, IOException, ClassNotFoundException{
-		CalendarAuctionCentral c = new CalendarAuctionCentral();
-		int selectAuction = bi.selectAuction(c);
-		Auction a = c.getAuctionList().get(selectAuction);
-		Inventory i = new Inventory();
-		int selectItem = bi.selectItem(i, a);
-		viewItem(u, i.listofItems.get(selectItem),bi);
+	public void editBid(User user, Item item, double money) throws IOException, ClassNotFoundException
+	{
+		BidList b = new BidList();
+		b.editBid(user, item, money);
 	}
 	
 	/**
-	 * Shows the all the Users bided items.
+	 * This method shows the bidder all open auction.
 	 * 
-	 * @param u
+	 * @param user the bidder that is looking to view the auction.
+	 * @throws ParseException
 	 * @throws IOException
+	 * @throws ClassNotFoundException
 	 */
-	private void viewItemsBidded(User u) throws IOException{
+	public void viewOpenAuctions(User user, BidderInterface bidderInterface) throws ParseException, IOException,
+			ClassNotFoundException
+	{
+		CalendarAuctionCentral c = new CalendarAuctionCentral();
+		int selectAuction = bidderInterface.selectAuction(c);
+		Auction a = c.getAuctionList().get(selectAuction);
 		Inventory i = new Inventory();
-		i.allItemsBidder(u);
+		int selectItem = bidderInterface.selectItem(i, a);
+		viewItem(user, i.listofItems.get(selectItem), bidderInterface);
+	}
+	
+	/**
+	 * This method shows the user what item is being bidded on.
+	 * 
+	 * @param user the bidder for the item.
+	 * @throws IOException
+	 * @throws ClassNotFoundException 
+	 */
+	private void viewItemsBidded(User user) throws IOException, ClassNotFoundException
+	{
+		Inventory i = new Inventory();
+		i.allItemsBidder(user);
 	}
 	
 }
