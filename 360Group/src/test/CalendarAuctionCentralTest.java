@@ -175,7 +175,6 @@ public class CalendarAuctionCentralTest
 		int DurationRollingTest13 = 2;
 		AuctionRollingTest13 = new Auction(NPNameRollingTest13, DateRollingTest13,
 				DurationRollingTest13);		
-		
 
 		
 		noAuctions = new ArrayList<Auction>();
@@ -216,6 +215,10 @@ public class CalendarAuctionCentralTest
 		// Setup for testCalendarConstructorOnAuctionListFileWithBothPastAndFutureAuctions()
 		// and testGetAuctionOnAuctionListWithNonProfitName()
 		// and testGetAuctionOnAuctionListWithoutNonProfitName()
+		// and testEditAuctionDateWithValidNewDate()
+		// and testEditAuctionDateWithInvalidNewDate()
+		// and testEditAuctionDurationWithValidNewDuration()
+		// and testEditAuctionDurationWithInvalidNewDuration()
 		String NPNameTest3 = "NPNAMETEST3";
 		Date futureDateTest2 = new Date("02/01/2016 5:00:00");
 		int futureDurationTest2 = 2;
@@ -228,11 +231,6 @@ public class CalendarAuctionCentralTest
 		serializeAuctions(bothPastAndFutureAuctionsList);
 		calendarWithBothPastAndFutureAuctions = new CalendarAuctionCentral();
 		
-//		bothPastAndFutureAuctionsList2 = new ArrayList<Auction>();
-//		bothPastAndFutureAuctionsList2.add(pastAuction1);
-//		bothPastAndFutureAuctionsList2.add(futureAuction1);
-//		bothPastAndFutureAuctionsList2.add(futureAuction2);
-		
 		// Setup for testAtMaxFutureAuctionsOnMaxFutureAuction()
 		serializeAuctions(pastAuctionsOnlyList);
 		calendarWithNoFutureAuctions = new CalendarAuctionCentral();
@@ -244,8 +242,9 @@ public class CalendarAuctionCentralTest
 		// Setup for testAtMaxFutureAuctionsOnMaxFutureAuction()
 		maxFutureAuctionsList = new ArrayList<Auction>();
 		Date now = new Date();
-		for (int i = 0; i < MAX_FUTURE_AUCTIONS; i++) {
-			now.addDays(1 + 2*i);
+		int i;
+		for (i = 0; i < MAX_FUTURE_AUCTIONS; i++) {
+			now.addDays(2);
 			maxFutureAuctionsList.add(new Auction("NPNAME" + i, now, 2));
 		}
 		serializeAuctions(maxFutureAuctionsList);
@@ -337,56 +336,75 @@ public class CalendarAuctionCentralTest
 	}
 	
 	/**
-	 * @throws IOException
 	 * 
+	 * @throws IOException
+	 * @throws ParseException
 	 */
-	// @Test
-	// public void testEditAuctionDateWithValidNewDate()
-	// throws IOException {
-	// temperaryAuctionList = storeFileContentsAndClearFile();
-	// serializeAuctions(bothPastAndFutureAuctionsList2);
-	// myCalendar = new CalendarAuctionCentral();
-	//
-	// myCalendar.editAuctionDate(futureAuction2, new
-	// Date("01/03/2016 5:00:00"));
-	//
-	// //TODO
-	// // System.out.println(myCalendar.getAuctionList());
-	// // System.out.println(myCalendar.getFutureAuctionList());
-	//
-	// restoreFileContents(temperaryAuctionList);
-	// temperaryAuctionList = null;
-	// myCalendar = null;
-	//
-	//
-	// }
+	@Test
+	public void testEditAuctionDateWithValidNewDate() throws IOException, ParseException {
+		
+		// additional setup for this test
+		Date newDate = new Date("01/03/2016 5:00:00");
+		calendarWithBothPastAndFutureAuctions.editAuctionDate(futureAuction2, newDate);
+		
+		assertEquals(newDate, futureAuction2.getAuctionStart());
+	}
 	
-	// /**
-	// * @throws IOException
-	// *
-	// */
-	// @Test
-	// public void testEditAuctionDateWithInvalidNewDate()
-	// throws IOException {
-	// temperaryAuctionList = storeFileContentsAndClearFile();
-	// serializeAuctions(bothPastAndFutureAuctionsList2);
-	// myCalendar = new CalendarAuctionCentral();
-	//
-	// try {
-	// myCalendar.editAuctionDate(futureAuction2, new
-	// Date("01/03/2017 5:00:00"));
-	// } catch (ParseException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// //TODO
-	// System.out.println(myCalendar.getAuctionList());
-	// System.out.println(myCalendar.getFutureAuctionList());
-	//
-	// restoreFileContents(temperaryAuctionList);
-	// temperaryAuctionList = null;
-	// myCalendar = null;
-	// }
+	/**
+	 * @throws IOException
+	 * @throws ParseException 
+	 *
+	 */
+	@Test
+	public void testEditAuctionDateWithInvalidNewDate() throws IOException,
+			ParseException {
+
+		// additional setup for this test
+		Date newDate = new Date("01/03/2017 5:00:00");
+		Date copyDate = futureAuction1.getAuctionStart().clone();
+		calendarWithBothPastAndFutureAuctions.editAuctionDate(futureAuction1,
+				newDate);
+
+		assertTrue(copyDate.toString().equals(
+				calendarWithBothPastAndFutureAuctions
+						.getAuction(futureAuction1.getNonProfitName())
+						.getAuctionStart().toString()));
+	}
+	
+	/**
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	@Test
+	public void testEditAuctionDurationWithValidNewDuration() throws IOException, ParseException {
+		
+		// additional setup for this test
+		calendarWithBothPastAndFutureAuctions.editAuctionDuration(futureAuction2, 4);
+		
+		assertEquals(4, futureAuction2.getAuctionDuration());
+	}
+	
+//	/**
+//	 * @throws IOException
+//	 * @throws ParseException 
+//	 *
+//	 */
+//	@Test
+//	public void testEditAuctionDurationWithInvalidNewDuration() throws IOException,
+//			ParseException {
+//
+//		// additional setup for this test
+//		Date newDate = new Date("01/03/2017 5:00:00");
+//		Date copyDate = futureAuction1.getAuctionStart().clone();
+//		calendarWithBothPastAndFutureAuctions.editAuctionDate(futureAuction1,
+//				newDate);
+//
+//		assertTrue(copyDate.toString().equals(
+//				calendarWithBothPastAndFutureAuctions
+//						.getAuction(futureAuction1.getNonProfitName())
+//						.getAuctionStart().toString()));
+//	}
 	
 	/**
 	 * @throws IOException

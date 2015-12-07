@@ -57,7 +57,7 @@ public class CalendarUI
 	{
 		for (int i = 0; i < myCalendar.getFutureAuctionList().size(); i++)
 		{
-			System.out.println("   (" + i + 1 + ")"); 
+			System.out.println("   (" + (i + 1) + ")"); 
 			System.out.println("\tAuction Name:\t" + myCalendar.getFutureAuctionList().get(i).getAuctionName());
 			System.out.println("");
 		}
