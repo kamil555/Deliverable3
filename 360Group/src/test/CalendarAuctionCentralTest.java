@@ -27,7 +27,31 @@ import org.junit.Test;
  */
 public class CalendarAuctionCentralTest
 {
+	
+	/**
+	 * Constants specified by Auction Central business rules.
+	 */
+	private static int MAX_FUTURE_AUCTIONS = 25;
+	private static int MAX_DAYS_OUT = 90;
+	private static int MAX_AUCTIONS_ROLLING_PERIOD = 5;
+	private static int MAX_AUCTIONS_SAME_DAY = 2;
+	private static int MAX_HOURS_BTW_AUCTIONS = 2;
+	private static int MAX_NP_AUCTIONS_PER_YEAR = 1;
+	private static int DAYS_PER_ROLLING_PERIOD = 7;
+	
+	/*
+	 * Utility constants
+	 */
+	private static int DAYS_PER_YEAR = 365;
+	private static String FILENAME = "Auctions.ser";
+	
+	
 	CalendarAuctionCentral myCalendar;
+	CalendarAuctionCentral calendarWithEmptyAuctionFile;
+	CalendarAuctionCentral calendarWithPastAuctionsOnlyFile;
+	CalendarAuctionCentral calendarWithLessThanMaxFutureAuctions;
+	CalendarAuctionCentral calendarWithNoFutureAuctions;
+	CalendarAuctionCentral calendarWithMaxFutureAuctions;
 	
 	Auction pastAuction1;
 	Auction futureAuction1;
@@ -58,12 +82,14 @@ public class CalendarAuctionCentralTest
 	ArrayList<Auction> oneAuctionOnDay;
 	ArrayList<Auction> twoAuctionsOnDay;
 	ArrayList<Auction> RollingPeriodHelperTestArray;
+	ArrayList<Auction> maxFutureAuctionsList;
 	
 	@Before
 	public void setUp() throws Exception
 	{
 		
 		// myCalendar = new CalendarAuctionCentral();
+		temperaryAuctionList = storeFileContentsAndClearFile();
 		
 		String NPNameTest1 = "NPNAMETEST1";
 		Date pastDateTest1 = new Date("06/02/2014 5:00:00");
@@ -197,6 +223,28 @@ public class CalendarAuctionCentralTest
 		twoAuctionsOnDay.add(futureAuction3);
 		twoAuctionsOnDay.add(futureAuction4);
 		
+		deleteFileContents();
+		calendarWithEmptyAuctionFile = new CalendarAuctionCentral();
+
+		serializeAuctions(pastAuctionsOnlyList);
+		calendarWithNoFutureAuctions = new CalendarAuctionCentral();
+
+		serializeAuctions(bothPastAndFutureAuctionsList);
+		calendarWithLessThanMaxFutureAuctions = new CalendarAuctionCentral();
+		
+		
+		maxFutureAuctionsList = new ArrayList<Auction>();
+		Date now = new Date();
+		for (int i = 0; i < MAX_FUTURE_AUCTIONS; i++) {
+			now.addDays(1 + 2*i);
+			maxFutureAuctionsList.add(new Auction("NPNAME" + i, now, 2));
+		}
+		serializeAuctions(maxFutureAuctionsList);
+		calendarWithMaxFutureAuctions = new CalendarAuctionCentral();
+		
+		restoreFileContents(temperaryAuctionList);
+		temperaryAuctionList = null;
+		
 	}
 	
 	/**
@@ -208,16 +256,9 @@ public class CalendarAuctionCentralTest
 	public void testCalendarConstructorOnEmptyAuctionListFile()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertTrue(myCalendar.getAuctionList().isEmpty());
-		assertTrue(myCalendar.getFutureAuctionList().isEmpty());
-		assertEquals(0, myCalendar.getFutureAuctions());
-		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+		assertTrue(calendarWithEmptyAuctionFile.getAuctionList().isEmpty());
+		assertTrue(calendarWithEmptyAuctionFile.getFutureAuctionList().isEmpty());
+		assertEquals(0, calendarWithEmptyAuctionFile.getFutureAuctions());
 	}
 	
 	/**
@@ -229,15 +270,15 @@ public class CalendarAuctionCentralTest
 	public void testCalendarConstructorOnAuctionListFileWithPastAuctionsOnly()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", pastAuctionsOnlyList);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(pastAuctionsOnlyList);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertFalse(myCalendar.getAuctionList().isEmpty());
 		assertTrue(myCalendar.getFutureAuctionList().isEmpty());
 		assertEquals(0, myCalendar.getFutureAuctions());
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -250,8 +291,8 @@ public class CalendarAuctionCentralTest
 	public void testCalendarConstructorOnAuctionListFileWithFutureAuctionsOnly()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", futureAuctionsOnlyList);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(futureAuctionsOnlyList);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertFalse(myCalendar.getAuctionList().isEmpty());
@@ -259,7 +300,7 @@ public class CalendarAuctionCentralTest
 		assertEquals(futureAuctionsOnlyList.size(),
 				myCalendar.getFutureAuctions());
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -272,8 +313,8 @@ public class CalendarAuctionCentralTest
 	public void testCalendarConstructorOnAuctionListFileWithBothPastAndFutureAuctions()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", bothPastAndFutureAuctionsList);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(bothPastAndFutureAuctionsList);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertFalse(myCalendar.getAuctionList().isEmpty());
@@ -283,7 +324,7 @@ public class CalendarAuctionCentralTest
 		assertEquals(bothPastAndFutureAuctionsList.size(), myCalendar
 				.getAuctionList().size());
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -296,8 +337,8 @@ public class CalendarAuctionCentralTest
 	public void testGetAuctionOnAuctionListWithNonProfitName()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", bothPastAndFutureAuctionsList);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(bothPastAndFutureAuctionsList);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertTrue(pastAuction1.toString().equals(
@@ -305,7 +346,7 @@ public class CalendarAuctionCentralTest
 		assertTrue(futureAuction1.toString().equals(
 				myCalendar.getAuction(futureAuction1.getNonProfitName()).toString()));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -318,13 +359,13 @@ public class CalendarAuctionCentralTest
 	public void testGetAuctionOnAuctionListWithoutNonProfitName()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", bothPastAndFutureAuctionsList);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(bothPastAndFutureAuctionsList);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertNull(myCalendar.getAuction("NonExistentNPName"));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -336,8 +377,8 @@ public class CalendarAuctionCentralTest
 	// @Test
 	// public void testEditAuctionDateWithValidNewDate()
 	// throws IOException {
-	// temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-	// serializeAuctions("Auctions.ser", bothPastAndFutureAuctionsList2);
+	// temperaryAuctionList = storeFileContentsAndClearFile();
+	// serializeAuctions(bothPastAndFutureAuctionsList2);
 	// myCalendar = new CalendarAuctionCentral();
 	//
 	// myCalendar.editAuctionDate(futureAuction2, new
@@ -347,7 +388,7 @@ public class CalendarAuctionCentralTest
 	// // System.out.println(myCalendar.getAuctionList());
 	// // System.out.println(myCalendar.getFutureAuctionList());
 	//
-	// restoreFileContents("Auctions.ser", temperaryAuctionList);
+	// restoreFileContents(temperaryAuctionList);
 	// temperaryAuctionList = null;
 	// myCalendar = null;
 	//
@@ -361,8 +402,8 @@ public class CalendarAuctionCentralTest
 	// @Test
 	// public void testEditAuctionDateWithInvalidNewDate()
 	// throws IOException {
-	// temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-	// serializeAuctions("Auctions.ser", bothPastAndFutureAuctionsList2);
+	// temperaryAuctionList = storeFileContentsAndClearFile();
+	// serializeAuctions(bothPastAndFutureAuctionsList2);
 	// myCalendar = new CalendarAuctionCentral();
 	//
 	// try {
@@ -376,7 +417,7 @@ public class CalendarAuctionCentralTest
 	// System.out.println(myCalendar.getAuctionList());
 	// System.out.println(myCalendar.getFutureAuctionList());
 	//
-	// restoreFileContents("Auctions.ser", temperaryAuctionList);
+	// restoreFileContents(temperaryAuctionList);
 	// temperaryAuctionList = null;
 	// myCalendar = null;
 	// }
@@ -389,13 +430,13 @@ public class CalendarAuctionCentralTest
 	public void testAddFutureAuctionOnPastAuction()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", bothPastAndFutureAuctionsList);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(bothPastAndFutureAuctionsList);
 		myCalendar = new CalendarAuctionCentral();
 		
 		// TODO
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -408,13 +449,13 @@ public class CalendarAuctionCentralTest
 	public void testAddFutureAuctionOnGoodFutureAuction()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", bothPastAndFutureAuctionsList);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(bothPastAndFutureAuctionsList);
 		myCalendar = new CalendarAuctionCentral();
 		
 		// TODO
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -427,13 +468,13 @@ public class CalendarAuctionCentralTest
 	public void testAddFutureAuctionOnBadFutureAuction()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", bothPastAndFutureAuctionsList);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(bothPastAndFutureAuctionsList);
 		myCalendar = new CalendarAuctionCentral();
 		
 		// TODO
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -446,13 +487,13 @@ public class CalendarAuctionCentralTest
 	public void testCountAuctiionsOnDayOnDayWithZeroAuctions()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", noAuctions);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(noAuctions);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertEquals(myCalendar.getAuctionList().size(), noAuctions.size());
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -465,13 +506,13 @@ public class CalendarAuctionCentralTest
 	public void testCountAuctiionsOnDayOnDayWithOneAuction()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", oneAuctionOnDay);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(oneAuctionOnDay);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertEquals(myCalendar.getAuctionList().size(), oneAuctionOnDay.size());
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -484,13 +525,13 @@ public class CalendarAuctionCentralTest
 	public void testCountAuctiionsOnDayOnDayWithTwoAuctions()
 			throws IOException
 	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", twoAuctionsOnDay);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(twoAuctionsOnDay);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertEquals(myCalendar.getAuctionList().size(), twoAuctionsOnDay.size());
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -507,13 +548,13 @@ public class CalendarAuctionCentralTest
 		ArrayList<Auction> OneAuctionInPeriodAtBeginning = new ArrayList<Auction>();
 		OneAuctionInPeriodAtBeginning.add(AuctionRollingTest1);
 		
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", OneAuctionInPeriodAtBeginning);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(OneAuctionInPeriodAtBeginning);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertFalse(myCalendar.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -530,13 +571,13 @@ public class CalendarAuctionCentralTest
 		ArrayList<Auction> OneAuctionInPeriodAtEnd = new ArrayList<Auction>();
 		OneAuctionInPeriodAtEnd.add(AuctionRollingTest7);
 		
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", OneAuctionInPeriodAtEnd);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(OneAuctionInPeriodAtEnd);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertFalse(myCalendar.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -556,13 +597,13 @@ public class CalendarAuctionCentralTest
 		TwoAuctionsAtEachEnd.add(AuctionRollingTest6);
 		TwoAuctionsAtEachEnd.add(AuctionRollingTest7);
 		
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", TwoAuctionsAtEachEnd);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(TwoAuctionsAtEachEnd);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertFalse(myCalendar.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -583,13 +624,13 @@ public class CalendarAuctionCentralTest
 		FiveAuctionsPerPeriod.add(AuctionRollingTest6);
 		FiveAuctionsPerPeriod.add(AuctionRollingTest7);
 		
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", FiveAuctionsPerPeriod);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(FiveAuctionsPerPeriod);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertTrue(myCalendar.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -606,13 +647,13 @@ public class CalendarAuctionCentralTest
 		ArrayList<Auction> OneAuctionAtBeginning = new ArrayList<Auction>();
 		OneAuctionAtBeginning.add(AuctionRollingTest1);
 		
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", OneAuctionAtBeginning);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(OneAuctionAtBeginning);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertFalse(myCalendar.atMaxAuctionsInRollingPeriodHelper(new Date("01/27/2016 14:00:00")));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -629,13 +670,13 @@ public class CalendarAuctionCentralTest
 		ArrayList<Auction> OneAuctionAtEnd = new ArrayList<Auction>();
 		OneAuctionAtEnd.add(AuctionRollingTest13);
 		
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", OneAuctionAtEnd);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(OneAuctionAtEnd);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertFalse(myCalendar.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -655,13 +696,13 @@ public class CalendarAuctionCentralTest
 		TwoAuctionsAtEachEnd.add(AuctionRollingTest12);
 		TwoAuctionsAtEachEnd.add(AuctionRollingTest13);
 		
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", TwoAuctionsAtEachEnd);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(TwoAuctionsAtEachEnd);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertFalse(myCalendar.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -685,13 +726,13 @@ public class CalendarAuctionCentralTest
 		FourAuctionsAtEachEnd.add(AuctionRollingTest12);
 		FourAuctionsAtEachEnd.add(AuctionRollingTest13);
 		
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", FourAuctionsAtEachEnd);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(FourAuctionsAtEachEnd);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertFalse(myCalendar.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -716,13 +757,13 @@ public class CalendarAuctionCentralTest
 		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest12);
 		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest13);
 		
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", FourAuctionsAtBegAndFiveAtEnd);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(FourAuctionsAtBegAndFiveAtEnd);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertTrue(myCalendar.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -747,13 +788,13 @@ public class CalendarAuctionCentralTest
 		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest12);
 		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest13);
 		
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", FourAuctionsAtEndAndFiveAtBeg);
+		temperaryAuctionList = storeFileContentsAndClearFile();
+		serializeAuctions(FourAuctionsAtEndAndFiveAtBeg);
 		myCalendar = new CalendarAuctionCentral();
 		
 		assertTrue(myCalendar.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
 		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
+		restoreFileContents(temperaryAuctionList);
 		temperaryAuctionList = null;
 		myCalendar = null;
 	}
@@ -766,58 +807,59 @@ public class CalendarAuctionCentralTest
 	@Test
 	public void testAtMaxAuctionsFutureAuctionsOnNoFutureAuctions()
 			throws IOException, ParseException
-	{
-		
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", pastAuctionsOnlyList);
-		CalendarAuctionCentral calendarWithNoFutureAuctions = new CalendarAuctionCentral();
-		
+	{		
 		assertFalse(calendarWithNoFutureAuctions.atMaxFutureAuctions());
-		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
-		temperaryAuctionList = null;
-		calendarWithNoFutureAuctions = null;
 	}
 	
 	/**
+	 * 
 	 * @throws IOException
 	 * @throws ParseException
-	 * 
 	 */
 	@Test
-	public void testAtMaxAuctionsFutureAuctionsOnOneFutureAuction()
+	public void testAtMaxAuctionsFutureAuctionsOnLessThanMaxFutureAuction()
 			throws IOException, ParseException
-	{
-		temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-		serializeAuctions("Auctions.ser", bothPastAndFutureAuctionsList);
-		CalendarAuctionCentral calendarWithLessThanMaxFutureAuctions = new CalendarAuctionCentral();
-		
+	{		
 		assertFalse(calendarWithLessThanMaxFutureAuctions.atMaxFutureAuctions());
-		
-		restoreFileContents("Auctions.ser", temperaryAuctionList);
-		temperaryAuctionList = null;
-		calendarWithLessThanMaxFutureAuctions = null;
 	}
 	
-	// /**
-	// * @throws IOException
-	// * @throws ParseException
-	// * NOTFINISHED
-	// */
-	// @Test
-	// public void testAtMaxAuctionsFutureAuctionsOnMaxFutureAuctions()
-	// throws IOException, ParseException {
-	// temperaryAuctionList = storeFileContentsAndClearFile("Auctions.ser");
-	// serializeAuctions("Auctions.ser", bothPastAndFutureAuctionsList);
-	// CalendarAuctionCentral calendarWithMaxFutureAuctions = new
-	// CalendarAuctionCentral();
-	//
-	// assertFalse(calendarWithMaxFutureAuctions.atMaxFutureAuctions());
-	//
-	// restoreFileContents("Auctions.ser", temperaryAuctionList);
-	// temperaryAuctionList = null;
-	// calendarWithMaxFutureAuctions = null;
-	// }
+	/**
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	@Test
+	public void testAtMaxAuctionsFutureAuctionsOnMaxFutureAuction()
+			throws IOException, ParseException
+	{		
+		assertTrue(calendarWithMaxFutureAuctions.atMaxFutureAuctions());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * 
@@ -856,11 +898,10 @@ public class CalendarAuctionCentralTest
 	 * @param auctionList
 	 * @throws IOException
 	 */
-	public void serializeAuctions(String fileName,
-			ArrayList<Auction> auctionList) throws IOException
-	{
-		
-		FileOutputStream fileOut = new FileOutputStream(fileName);
+	public void serializeAuctions(ArrayList<Auction> auctionList) throws IOException
+	{		
+		deleteFileContents();
+		FileOutputStream fileOut = new FileOutputStream(FILENAME);
 		ObjectOutputStream out = new ObjectOutputStream(fileOut);
 		out.writeObject(auctionList);
 		out.close();
@@ -872,9 +913,9 @@ public class CalendarAuctionCentralTest
 	 * @param fileName
 	 * @throws IOException
 	 */
-	public void deleteFileContents(String fileName) throws IOException
+	public void deleteFileContents() throws IOException
 	{
-		FileOutputStream file = new FileOutputStream(fileName);
+		FileOutputStream file = new FileOutputStream(FILENAME);
 		file.close();
 	}
 	
@@ -884,10 +925,10 @@ public class CalendarAuctionCentralTest
 	 * @return
 	 * @throws IOException
 	 */
-	public ArrayList<Auction> storeFileContentsAndClearFile(String fileName) throws IOException
+	public ArrayList<Auction> storeFileContentsAndClearFile() throws IOException
 	{
-		ArrayList<Auction> auctionList = deserializeAuctions(fileName);
-		deleteFileContents(fileName);
+		ArrayList<Auction> auctionList = deserializeAuctions(FILENAME);
+		deleteFileContents();
 		return auctionList;
 	}
 	
@@ -896,11 +937,11 @@ public class CalendarAuctionCentralTest
 	 * @param fileName
 	 * @throws IOException
 	 */
-	public void restoreFileContents(String fileName, ArrayList<Auction> auctionList)
+	public void restoreFileContents(ArrayList<Auction> auctionList)
 			throws IOException
 	{
-		deleteFileContents(fileName);
-		serializeAuctions(fileName, auctionList);
+		deleteFileContents();
+		serializeAuctions(auctionList);
 	}
 	
 }
