@@ -239,8 +239,6 @@ public class CalendarAuctionCentral
 			return;
 		}
 		
-		System.out.println("OA, clone of auction: " + originalAuction);
-		
 		futureAuctionList.remove(auctionToRemove);
 		setFutureAuctions();
 		auctionList.remove(auctionToRemove);
@@ -290,8 +288,6 @@ public class CalendarAuctionCentral
 			return;
 		}
 		
-		System.out.println("OA, clone of auction: " + originalAuction);
-		
 		futureAuctionList.remove(auctionToRemove);
 		setFutureAuctions();
 		auctionList.remove(auctionToRemove);
@@ -317,8 +313,7 @@ public class CalendarAuctionCentral
 	 * @param reqAuction the auction we want to add.
 	 * @throws ParseException
 	 */
-	public void addFutureAuction(Auction reqAuction) throws ParseException {
-		System.out.println(reqAuction);
+	public void addFutureAuction(Auction reqAuction) throws ParseException {		
 		auctionList.add(reqAuction);
 		futureAuctionList.add(reqAuction);
 		try {
@@ -328,7 +323,6 @@ public class CalendarAuctionCentral
 			e.printStackTrace();
 		}
 		futureAuctions += 1;
-		System.out.println(auctionList);
 	}
 	
 	/**
@@ -421,14 +415,15 @@ public class CalendarAuctionCentral
 	public boolean atMaxAuctionsInRollingPeriod(Date requestedDate)
 			throws ParseException
 	{
-		requestedDate.addDays(-(DAYS_PER_ROLLING_PERIOD - 1));
+		Date counterDate = requestedDate.clone();
+		counterDate.addDays(-(DAYS_PER_ROLLING_PERIOD - 1));
 		for (int i = 0; i < DAYS_PER_ROLLING_PERIOD; i++)
 		{
-			if (atMaxAuctionsInRollingPeriodHelper(requestedDate))
+			if (atMaxAuctionsInRollingPeriodHelper(counterDate))
 			{
 				return true;
 			}
-			requestedDate.addDays(1);
+			counterDate.addDays(1);
 		}
 		return false;
 	}
@@ -437,10 +432,11 @@ public class CalendarAuctionCentral
 			throws ParseException
 	{
 		int counter = 0;
+		Date counterDate = begOfPeriodDate.clone();
 		for (int i = 0; i < DAYS_PER_ROLLING_PERIOD; i++)
 		{
-			counter += countAuctionsOnDay(begOfPeriodDate);
-			begOfPeriodDate.addDays(1);
+			counter += countAuctionsOnDay(counterDate);
+			counterDate.addDays(1);
 		}
 		return counter >= MAX_AUCTIONS_ROLLING_PERIOD;
 	}
@@ -594,10 +590,9 @@ public class CalendarAuctionCentral
 		int auctionsWithinLastYear = 0;
 		for (Auction auction : auctionList)
 		{
-			if (auction.getNonProfitName().equalsIgnoreCase(
-					nonProfitOrganization)
+			if (auction.getNonProfitName().equalsIgnoreCase(nonProfitOrganization)
 					&& auction.getAuctionEnd().getDiffDay(requestedDate) < DAYS_PER_YEAR)
-			{
+			{				
 				auctionsWithinLastYear++;
 			}
 		}
