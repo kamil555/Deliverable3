@@ -90,26 +90,6 @@ public class CalendarAuctionCentral
 	 */
 	private static String FILENAME = "Auctions.ser";
 	
-	/**
-	 * Makes class CalendarAuctionCentral a singleton.
-	 */
-	private static CalendarAuctionCentral sCalendar;
-	
-	/**
-	 * This is the getter for calendar 
-	 * 
-	 * @return the calendar
-	 * @throws ParseException
-	 * @throws ClassNotFoundException
-	 * @throws IOException
-	 */
-	public static CalendarAuctionCentral getCalendar() throws ParseException,
-			ClassNotFoundException, IOException
-	{
-		if (sCalendar == null)
-			sCalendar = new CalendarAuctionCentral();
-		return sCalendar;
-	}
 	
 	/**
 	 * Constructor, currently reading auctions from existing file.
@@ -268,12 +248,12 @@ public class CalendarAuctionCentral
 		
 		if (checkRequestedAuction(auctionToEdit))
 		{
-			addFutureAuctionWOChecking(auctionToEdit);
+			addFutureAuction(auctionToEdit);
 			System.out
 					.println("Auction with new requested date has been added.");
 		} else
 		{
-			addFutureAuctionWOChecking(originalAuction);
+			addFutureAuction(originalAuction);
 			System.out
 					.println("Auction with new requested date could not be added.");
 		}
@@ -290,62 +270,59 @@ public class CalendarAuctionCentral
 			throws ParseException
 	{
 		Auction originalAuction = null;
+		Auction auctionToRemove = null;
 		for (Auction auction : futureAuctionList)
 		{
-			if (auctionToEdit.toString().equals(auction.toString()))
+			if (auction.toString().equals(auctionToEdit.toString()))
 			{
+				auctionToRemove = auction;
 				originalAuction = auction.clone();
-				futureAuctionList.remove(auction);
-			} else
-			{
-				System.out.println("Auction " + auctionToEdit.getAuctionName()
-						+ " not found in scheduled auctions.");
-				return;
 			}
-			
-			auctionToEdit.setAuctionDuration(newDuration);
-			auctionToEdit.resetAuctionEnd();
-			
-			if (checkRequestedAuction(auctionToEdit))
-			{
-				addFutureAuction(auctionToEdit);
-				System.out.println("Auction with new duration has been added.");
-			} else
-			{
-				addFutureAuction(originalAuction);
-				System.out.println("Auction with new duration could not be added.");
-			}
+		}
+		if (originalAuction == null)
+		{
+			System.out.println("Auction " + auctionToEdit.getAuctionName()
+					+ " not found in scheduled auctions.");
+			return;
+		}
+		
+		System.out.println("OA, clone of auction: " + originalAuction);
+		
+		futureAuctionList.remove(auctionToRemove);
+		setFutureAuctions();
+		auctionList.remove(auctionToRemove);
+		
+		auctionToEdit.setAuctionDuration(newDuration);
+		auctionToEdit.resetAuctionEnd();
+		
+		if (checkRequestedAuction(auctionToEdit))
+		{
+			addFutureAuction(auctionToEdit);
+			System.out
+					.println("Auction with new duration has been added.");
+		} else
+		{
+			addFutureAuction(originalAuction);
+			System.out
+					.println("Auction with new duration could not be added.");
 		}
 	}
 	
 	/**
 	 * 
 	 * @param reqAuction
-	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public void addFutureAuctionWOChecking(Auction reqAuction)
-			throws ParseException
-	{
+	public void addFutureAuction(Auction reqAuction) throws ParseException {
 		auctionList.add(reqAuction);
 		futureAuctionList.add(reqAuction);
-		futureAuctions += 1;
-	}
-	
-	/**
-	 * 
-	 * @param reqAuction
-	 * @throws IOException
-	 * @throws ParseException
-	 */
-	public void addFutureAuction(Auction reqAuction) throws ParseException
-	{
-		if (checkRequestedAuction(reqAuction))
-		{
-			auctionList.add(reqAuction);
-			futureAuctionList.add(reqAuction);
-			futureAuctions += 1;
+		try {
+			serializeAuctions();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		futureAuctions += 1;
 	}
 	
 	/**
@@ -644,11 +621,23 @@ public class CalendarAuctionCentral
 	
 	public void serializeAuctions() throws IOException
 	{
+		deleteAuctionFileContents();
 		FileOutputStream fileOut = new FileOutputStream(FILENAME);
 		ObjectOutputStream out = new ObjectOutputStream(fileOut);
 		out.writeObject(auctionList);
 		out.close();
 		fileOut.close();
+	}	
+	
+	/**
+	 * 
+	 * @param fileName
+	 * @throws IOException
+	 */
+	public void deleteAuctionFileContents() throws IOException
+	{
+		FileOutputStream file = new FileOutputStream(FILENAME);
+		file.close();
 	}
 	
 }
