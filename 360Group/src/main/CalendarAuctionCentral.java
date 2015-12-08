@@ -64,9 +64,9 @@ public class CalendarAuctionCentral
 	
 	/**
 	 * The constant specified by Auction Central business rules.
-	 * The maximum number of hours per auction.
+	 * The minimum number of hours between auctions.
 	 */
-	private static int MAX_HOURS_BTW_AUCTIONS = 2;
+	private static int MIN_HOURS_BTW_AUCTIONS = 2;
 	
 	/**
 	 * The constant specified by Auction Central business rules.
@@ -377,11 +377,11 @@ public class CalendarAuctionCentral
 							+ " may be added to any 7-day rolling period.");
 			numberOfFails++;
 		}
-		if (is2HoursBetween(reqAuction))
+		if (!isMinHoursBetween(reqAuction))
 		{
 			System.out
 					.println("Requested auction cannot be added; there must be at least "
-							+ MAX_HOURS_BTW_AUCTIONS
+							+ MIN_HOURS_BTW_AUCTIONS
 							+ " between the end of one auction and the start"
 							+ "of another.");
 			numberOfFails++;
@@ -450,7 +450,7 @@ public class CalendarAuctionCentral
 	public int countAuctionsOnDay(Date requestedDate) throws ParseException
 	{
 		int counter = 0;
-		for (Auction auction : auctionList)
+		for (Auction auction : futureAuctionList)
 		{
 			if (auction.getAuctionStart().getYear() == (requestedDate.getYear())
 					&& auction.getAuctionStart().getMonth() == (requestedDate
@@ -487,7 +487,7 @@ public class CalendarAuctionCentral
 	{
 		Date currentDate = new Date();
 		Date inMaxDaysFromCurrentDate = new Date();
-		inMaxDaysFromCurrentDate.addDays(MAX_DAYS_OUT);
+		inMaxDaysFromCurrentDate.addDays(MAX_DAYS_OUT+1);
 		return currentDate.before(requestedDate)
 				&& requestedDate.before(inMaxDaysFromCurrentDate);
 	}
@@ -528,36 +528,38 @@ public class CalendarAuctionCentral
 	 * @return if the scheduled auction is at least 2 hours before and after the next auction.
 	 * @throws ParseException
 	 */
-	public boolean is2HoursBetween(Auction requestedAuction)
+	public boolean isMinHoursBetween(Auction requestedAuction)
 			throws ParseException
 	{
-		int index = oneAuctionforDay(requestedAuction);
+		int index = oneAuctionForDay(requestedAuction);
 		if (index == -1)
 		{
-			return false;
+			return true;
 		} else if (requestedAuction.getAuctionStart().before(
 				futureAuctionList.get(index).getAuctionEnd()))
 		{
 			return (requestedAuction.getAuctionEnd().getDiffHours(
-					futureAuctionList.get(index).getAuctionEnd()) < MAX_HOURS_BTW_AUCTIONS);
+					futureAuctionList.get(index).getAuctionStart()) >= MIN_HOURS_BTW_AUCTIONS);
 		} else
 		{
 			return (futureAuctionList.get(index).getAuctionEnd()
-					.getDiffHours(requestedAuction.getAuctionStart()) < MAX_HOURS_BTW_AUCTIONS);
+					.getDiffHours(requestedAuction.getAuctionStart()) >= MIN_HOURS_BTW_AUCTIONS);
 		}
 	}
 	
 	/**
-	 * This is the method that checks the business rule of
-	 * returns the index of an auction if it is scheduled on the same date as
-	 * the requested Date of a new auction; if not returns -1.
+	 * This method returns the index of an auction if it 
+	 * is scheduled on the same date as the requested Date 
+	 * of a new auction and there is only one auction already
+	 * scheduled; if not returns -1.
 	 * 
 	 * @param requestedDate the date the user want to schedule the auction
 	 * @return checks if there's another auction happening at the same date as requestedDate.
 	 * @throws ParseException
 	 */
-	public int oneAuctionforDay(Auction requestedAuction) throws ParseException
+	public int oneAuctionForDay(Auction requestedAuction) throws ParseException
 	{
+		int index = -1;
 		for (int j = 0; j < futureAuctionList.size(); j++)
 		{
 			if (futureAuctionList.get(j).getAuctionStart().getMonth() == requestedAuction
@@ -565,12 +567,13 @@ public class CalendarAuctionCentral
 					&& futureAuctionList.get(j).getAuctionStart().getDay() == requestedAuction
 							.getAuctionStart().getDay()
 					&& futureAuctionList.get(j).getAuctionStart().getYear() == requestedAuction
-							.getAuctionStart().getYear())
+							.getAuctionStart().getYear()
+					&& (countAuctionsOnDay(requestedAuction.getAuctionStart()) == 1))
 			{
-				return j;
+				index = j;
 			}
 		}
-		return -1;
+		return index;
 	}
 	
 	/**

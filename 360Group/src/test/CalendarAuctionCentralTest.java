@@ -32,13 +32,12 @@ public class CalendarAuctionCentralTest
 	private static int MAX_DAYS_OUT = 90;
 	private static int MAX_AUCTIONS_ROLLING_PERIOD = 5;
 	private static int MAX_AUCTIONS_SAME_DAY = 2;
-	private static int MAX_HOURS_BTW_AUCTIONS = 2;
+	private static int MIN_HOURS_BTW_AUCTIONS = 2;
 	private static int MAX_NP_AUCTIONS_PER_YEAR = 1;
 	private static int DAYS_PER_ROLLING_PERIOD = 7;
 	private static int DAYS_PER_YEAR = 365;
 	private static String FILENAME = "Auctions.ser";
 	
-	CalendarAuctionCentral myCalendar;
 	CalendarAuctionCentral calendarWithEmptyAuctionFile;
 	CalendarAuctionCentral calendarWithPastAuctionsOnly;
 	CalendarAuctionCentral calendarWithFutureAuctionsOnly;
@@ -57,10 +56,18 @@ public class CalendarAuctionCentralTest
 	CalendarAuctionCentral calendarWithLessThanMaxFutureAuctions;
 	CalendarAuctionCentral calendarWithNoFutureAuctions;
 	CalendarAuctionCentral calendarWithMaxFutureAuctions;
+	CalendarAuctionCentral calendarWithOneAuctionForIsMinTest;
+	CalendarAuctionCentral calendarToTestOneAuctionForDay;
+	CalendarAuctionCentral calendarWithNPAuctionOverAYearAgo;
+	CalendarAuctionCentral calendarWithNPAuctionWithinLastYear;
+	CalendarAuctionCentral calendarWithNPAuctionAlreadyScheduled;
 
+	String NPName;
+	
 	Date pastDate;
 	Date dateInRange;
 	Date futureDateOutOfRange;
+	Date requestedDate;
 	
 	Auction pastAuction1;
 	Auction futureAuction1;
@@ -81,6 +88,17 @@ public class CalendarAuctionCentralTest
 	Auction AuctionRollingTest11;
 	Auction AuctionRollingTest12;
 	Auction AuctionRollingTest13;
+	Auction auctionAlreadyScheduled;
+	Auction earlierAuctionThatInterferes;
+	Auction laterAuctionThatInterferes;
+	Auction earlierAuctionThatDoesNotInterferes;
+	Auction laterAuctionThatDoesNotInterferes;
+	Auction auctionRequestForDayWithNoAuctions;
+	Auction auctionSameTimeAsAlreadyScheduled;
+	Auction auctionRequestOnEmptyDay;
+	Auction firstAuctionAdded;
+	Auction secondAuctionAdded;
+	Auction thirdAuctionAdded;
 	
 	ArrayList<Auction> temperaryAuctionList;
 	ArrayList<Auction> pastAuctionsOnlyList;
@@ -343,6 +361,7 @@ public class CalendarAuctionCentralTest
 		calendarWithFourAuctionsAtEndAndFiveAtBegForRollingPeriod = new CalendarAuctionCentral();		
 		
 		// Setup for testAtMaxFutureAuctionsOnMaxFutureAuction()
+		// 
 		serializeAuctions(pastAuctionsOnlyList);
 		calendarWithNoFutureAuctions = new CalendarAuctionCentral();
 
@@ -372,6 +391,72 @@ public class CalendarAuctionCentralTest
 		futureDateOutOfRange.addDays(MAX_DAYS_OUT + 5);
 		serializeAuctions(new ArrayList<Auction>());
 		calendarWithEmptyAuctionFile = new CalendarAuctionCentral();
+		
+		// Setup for testIsMinHoursBetweenOnDayWithNoAuctions()
+		// and for testIsMinHoursBetweenOnDayWithLaterAuctionThatDoesNotInterfere()
+		// and for testIsMinHoursBetweenOnDayWithEarlierAuctionThatDoesNotInterfere()
+		// and for testIsMinHoursBetweenOnDayWithLaterAuctionThatDoesInterfere()
+		// and for testIsMinHoursBetweenOnDayWithEarlierAuctionThatDoesInterfere()
+		// and for testIsMinHoursBetweenOnDayWithAuctionAtTheSameTime() 
+		auctionAlreadyScheduled = new Auction("FAKENAME1", new Date("01/20/2016 14:00:00"), 2);
+		auctionRequestForDayWithNoAuctions = new Auction("FAKENAME6", new Date("01/21/2016 14:00:00"), 2);
+		auctionSameTimeAsAlreadyScheduled = new Auction("FAKENAME7", new Date("01/20/2016 14:00:00"), 2);
+		earlierAuctionThatInterferes = new Auction("FAKENAME2", new Date("01/20/2016 11:00:00"), 2);
+		laterAuctionThatInterferes = new Auction("FAKENAME3", new Date("01/20/2016 17:00:00"), 2);
+		earlierAuctionThatDoesNotInterferes = new Auction("FAKENAME4", new Date("01/20/2016 10:00:00"), 2);
+		laterAuctionThatDoesNotInterferes = new Auction("FAKENAME5", new Date("01/20/2016 18:00:00"), 2);
+		ArrayList<Auction> oneAuctionForIsMinHourBtw = new ArrayList<Auction>();
+		oneAuctionForIsMinHourBtw.add(auctionAlreadyScheduled);
+		serializeAuctions(oneAuctionForIsMinHourBtw);
+		calendarWithOneAuctionForIsMinTest = new CalendarAuctionCentral();
+		
+		// Setup for testOneAuctionForDayOnNoAuctionsOnDay()
+		// and for testOneAuctionForDayOnFirstAuctionAddedWhereItIsOneOfTwoAuctionScheduled() throws ParseException
+		// and fortestOneAuctionForDayOnSecondAuctionAddedWhereItIsOneOfTwoAuctionScheduled() throws ParseException
+		// and for testOneAuctionForDayOnThirdAuctionAddedWhereItIsTheOnlyAuctionScheduled
+		Auction firstAuctionOnSameDay = new Auction("FAKENP1", new Date("12/25/2015 8:00:00"), 2);
+		Auction secondAuctionOnSameDay = new Auction("FAKENP2", new Date("12/25/2015 12:00:00"), 2);
+		Auction anotherAuctionNotOnSameDay = new Auction("FAKENP3", new Date("12/24/2015 12:00:00"), 2);
+		ArrayList<Auction> auctionToTestOneAuctionForDay = new ArrayList<Auction>();
+		auctionToTestOneAuctionForDay.add(firstAuctionOnSameDay);
+		auctionToTestOneAuctionForDay.add(secondAuctionOnSameDay);
+		auctionToTestOneAuctionForDay.add(anotherAuctionNotOnSameDay);
+		serializeAuctions(auctionToTestOneAuctionForDay);
+		calendarToTestOneAuctionForDay = new CalendarAuctionCentral();
+		auctionRequestOnEmptyDay = new Auction("FAKENP4", new Date("12/20/2015 8:00:00"), 2);
+		firstAuctionAdded = firstAuctionOnSameDay;
+		secondAuctionAdded = secondAuctionOnSameDay;
+		thirdAuctionAdded = anotherAuctionNotOnSameDay;
+		
+		// Setup for testAtMaxAuctionPerNonProfitPerYearOnAuctionOverAYearAgo() throws ParseException
+		// Setup for testAtMaxAuctionPerNonProfitPerYearOnAuctionWithinLastYear() throws ParseException
+		// Setup for testAtMaxAuctionPerNonProfitPerYearOnAuctionAlreadyOnTheSchedule() throws ParseException
+		NPName = "ANOTHERFAKETESTNP";
+		requestedDate = new Date();
+		requestedDate.addDays(MAX_DAYS_OUT/2);
+		Date now1 = new Date();
+		now1.addDays(-(2*DAYS_PER_YEAR));		
+		Auction auctionOverAYearAgo = new Auction(NPName, now1, 2);
+		ArrayList<Auction> auctionListWithAuctionOverAYearAgo = new ArrayList<Auction>();
+		auctionListWithAuctionOverAYearAgo.add(auctionOverAYearAgo);
+		serializeAuctions(auctionListWithAuctionOverAYearAgo);
+		calendarWithNPAuctionOverAYearAgo = new CalendarAuctionCentral();
+		
+		Date now2 = new Date();
+		now1.addDays(-(DAYS_PER_YEAR/2));		
+		Auction auctionLessThanAYearAgo = new Auction(NPName, now2, 2);
+		ArrayList<Auction> auctionListWithAuctionLessThanAYearAgo = new ArrayList<Auction>();
+		auctionListWithAuctionLessThanAYearAgo.add(auctionLessThanAYearAgo);		
+		serializeAuctions(auctionListWithAuctionLessThanAYearAgo);
+		calendarWithNPAuctionWithinLastYear = new CalendarAuctionCentral();
+		
+		Date now3 = new Date();
+		now1.addDays(MAX_DAYS_OUT/3);		
+		Auction auctionAlreadyScheduled = new Auction(NPName, now3, 2);
+		ArrayList<Auction> auctionListWithAuctionAlreadyScheduled = new ArrayList<Auction>();
+		auctionListWithAuctionAlreadyScheduled.add(auctionAlreadyScheduled);		
+		serializeAuctions(auctionListWithAuctionAlreadyScheduled);
+		calendarWithNPAuctionAlreadyScheduled = new CalendarAuctionCentral();
 		
 		// Restoring original contents of Auction file
 		restoreFileContents(temperaryAuctionList);		
@@ -595,72 +680,146 @@ public class CalendarAuctionCentralTest
 	
 	@Test
 	public void testAtMaxFutureAuctionsOnNoFutureAuctions()
-			throws IOException, ParseException
 	{		
 		assertFalse(calendarWithNoFutureAuctions.atMaxFutureAuctions());
 	}
 	
 	@Test
 	public void testAtMaxFutureAuctionsOnLessThanMaxFutureAuction()
-			throws IOException, ParseException
 	{		
 		assertFalse(calendarWithLessThanMaxFutureAuctions.atMaxFutureAuctions());
 	}
 	
 	@Test
 	public void testAtMaxFutureAuctionsOnMaxFutureAuction()
-			throws IOException, ParseException
 	{		
 		assertEquals(MAX_FUTURE_AUCTIONS, calendarWithMaxFutureAuctions.getFutureAuctionList().size());
 		assertTrue(calendarWithMaxFutureAuctions.atMaxFutureAuctions());
 	}
 	
 	@Test
-	public void testInDateRangeOnAuctionInPast()
-			throws IOException, ParseException
+	public void testInDateRangeOnAuctionInPast() throws ParseException
 	{		
 		assertFalse(calendarWithEmptyAuctionFile.inDateRange(pastDate));
 	}
 	
 	@Test
-	public void testInDateRangeOnAuctionInDateRange()
-			throws IOException, ParseException
+	public void testInDateRangeOnAuctionInDateRange() throws ParseException
 	{		
 		assertTrue(calendarWithEmptyAuctionFile.inDateRange(dateInRange));
 		
 	}
 	
 	@Test
-	public void testInDateRangeOnAuctionInFutureOutOfRange()
-			throws IOException, ParseException
+	public void testInDateRangeOnAuctionInFutureOutOfRange() throws ParseException
 	{		
 		assertFalse(calendarWithEmptyAuctionFile.inDateRange(futureDateOutOfRange));
 		
 	}
 	
 	@Test
-	public void testAtMaxAuctionsPerDayOnDayWithZeroAuctions()
-			throws IOException, ParseException
+	public void testAtMaxAuctionsPerDayOnDayWithZeroAuctions() throws ParseException
 	{		
 		assertFalse(calendarWithOneAuctionOnOneDayAndTwoOnAnother.atMaxAuctionsPerDay(new Date("12/31/2015 5:00:00")));
 		
 	}
 	
 	@Test
-	public void testAtMaxAuctionsPerDayOnDayWithLessThanMaxAuctions()
-			throws IOException, ParseException
+	public void testAtMaxAuctionsPerDayOnDayWithLessThanMaxAuctions() throws ParseException
 	{		
 		assertFalse(calendarWithOneAuctionOnOneDayAndTwoOnAnother.atMaxAuctionsPerDay(futureAuction5.getAuctionStart()));
 		
 	}
 	
 	@Test
-	public void testAtMaxAuctionsPerDayOnDayWithMaxAuctions()
-			throws IOException, ParseException
+	public void testAtMaxAuctionsPerDayOnDayWithMaxAuctions() throws ParseException
 	{		
 		assertTrue(calendarWithOneAuctionOnOneDayAndTwoOnAnother.atMaxAuctionsPerDay(futureAuction3.getAuctionStart()));
 		
 	}
+	
+	@Test	
+	public void testIsMinHoursBetweenOnDayWithNoAuctions() throws ParseException
+	{
+		assertTrue(calendarWithOneAuctionForIsMinTest.isMinHoursBetween(auctionRequestForDayWithNoAuctions));
+	}
+	
+	@Test
+	public void testIsMinHoursBetweenOnDayWithLaterAuctionThatDoesNotInterfere() throws ParseException
+	{
+		assertTrue(calendarWithOneAuctionForIsMinTest.isMinHoursBetween(laterAuctionThatDoesNotInterferes));
+	}
+	
+	@Test
+	public void testIsMinHoursBetweenOnDayWithEarlierAuctionThatDoesNotInterfere() throws ParseException
+	{
+		assertTrue(calendarWithOneAuctionForIsMinTest.isMinHoursBetween(earlierAuctionThatDoesNotInterferes));
+	}
+	
+	@Test
+	public void testIsMinHoursBetweenOnDayWithLaterAuctionThatDoesInterfere() throws ParseException
+	{
+		assertFalse(calendarWithOneAuctionForIsMinTest.isMinHoursBetween(laterAuctionThatInterferes));
+	}
+	
+	@Test
+	public void testIsMinHoursBetweenOnDayWithEarlierAuctionThatDoesInterfere() throws ParseException
+	{
+		assertFalse(calendarWithOneAuctionForIsMinTest.isMinHoursBetween(earlierAuctionThatInterferes));
+	}
+	
+	@Test
+	public void testIsMinHoursBetweenOnDayWithAuctionAtTheSameTime() throws ParseException
+	{
+		assertFalse(calendarWithOneAuctionForIsMinTest.isMinHoursBetween(auctionSameTimeAsAlreadyScheduled));
+	}
+	
+	@Test
+	public void testOneAuctionForDayOnNoAuctionsOnDay() throws ParseException
+	{
+		assertEquals(-1, calendarToTestOneAuctionForDay.oneAuctionForDay(auctionRequestOnEmptyDay));
+	}
+	
+	@Test
+	public void testOneAuctionForDayOnFirstAuctionAddedWhereItIsOneOfTwoAuctionScheduled() throws ParseException
+	{
+		// we expect this behavior because we only want the index of a auction if
+		// is the only one in the day
+		assertEquals(-1, calendarToTestOneAuctionForDay.oneAuctionForDay(firstAuctionAdded));
+	}
+	
+	@Test
+	public void testOneAuctionForDayOnSecondAuctionAddedWhereItIsOneOfTwoAuctionScheduled() throws ParseException
+	{
+		// we expect this behavior because we only want the index of a auction if
+		// is the only one in the day
+		assertEquals(-1, calendarToTestOneAuctionForDay.oneAuctionForDay(secondAuctionAdded));
+	}
+	
+	@Test
+	public void testOneAuctionForDayOnThirdAuctionAddedWhereItIsTheOnlyAuctionScheduled() throws ParseException
+	{
+		assertEquals(2, calendarToTestOneAuctionForDay.oneAuctionForDay(thirdAuctionAdded));
+	}
+	
+	@Test
+	public void testAtMaxAuctionPerNonProfitPerYearOnAuctionOverAYearAgo() throws ParseException
+	{
+		assertFalse(calendarWithNPAuctionOverAYearAgo.atMaxAuctionPerNonProfitPerYear(NPName, requestedDate));
+	}
+	
+	@Test
+	public void testAtMaxAuctionPerNonProfitPerYearOnAuctionWithinLastYear() throws ParseException
+	{
+		assertTrue(calendarWithNPAuctionWithinLastYear.atMaxAuctionPerNonProfitPerYear(NPName, requestedDate));
+	}
+	
+	@Test
+	public void testAtMaxAuctionPerNonProfitPerYearOnAuctionAlreadyOnTheSchedule() throws ParseException
+	{
+		assertTrue(calendarWithNPAuctionAlreadyScheduled.atMaxAuctionPerNonProfitPerYear(NPName, requestedDate));
+	}
+	
 	
 	/**
 	 * 
