@@ -43,20 +43,33 @@ public class NonProfit
 			case 2:
 				c = new CalendarAuctionCentral();
 				a = c.getAuction(user.getOrganization());
-				this.editAuctionInfo(user, a, npi);
+				if (a != null) {
+					this.editAuctionInfo(user, a, npi);
+				} else {
+					System.out.println("There is no auction scheduled with your organization.\n");
+					new NonProfit(user);
+				}
 				break;
 			case 3:
 				c = new CalendarAuctionCentral();
 				a = c.getAuction(user.getOrganization());
-				this.addItemInfo(user, a, npi);
+				if (a != null) {
+					this.addItemInfo(user, a, npi);
+				} else {
+					System.out.println("There is no auction scheduled with your organization.\n");
+				}
 				new NonProfit(user);
 				break;
 			case 4:
 				c = new CalendarAuctionCentral();
 				a = c.getAuction(user.getOrganization());
-				Inventory i = new Inventory();
-				int item = npi.selectEditItem(i, a);
-				this.editItemInfo(user, item, npi);
+				if (a != null) {
+					Inventory i = new Inventory();
+					int item = npi.selectEditItem(i, a);
+					this.editItemInfo(user, item, npi);
+				} else {
+					System.out.println("There is no auction scheduled with your organization.\n");
+				}
 				new NonProfit(user);
 				break;
 			case 5:

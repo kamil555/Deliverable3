@@ -20,7 +20,7 @@ import org.junit.Test;
 
 /**
  * @author Gabrielle Glynn
- * @since December 5, 2015
+ * @since December 8, 2015
  */
 public class CalendarAuctionCentralTest
 {
@@ -30,12 +30,7 @@ public class CalendarAuctionCentralTest
 	 */
 	private static int MAX_FUTURE_AUCTIONS = 25;
 	private static int MAX_DAYS_OUT = 90;
-	private static int MAX_AUCTIONS_ROLLING_PERIOD = 5;
-	private static int MAX_AUCTIONS_SAME_DAY = 2;
-	private static int MIN_HOURS_BTW_AUCTIONS = 2;
-	private static int MAX_NP_AUCTIONS_PER_YEAR = 1;
-	private static int DAYS_PER_ROLLING_PERIOD = 7;
-	private static int DAYS_PER_YEAR = 365;
+	static int DAYS_PER_YEAR = 365;
 	private static String FILENAME = "Auctions.ser";
 	
 	CalendarAuctionCentral calendarWithEmptyAuctionFile;
@@ -62,6 +57,7 @@ public class CalendarAuctionCentralTest
 	CalendarAuctionCentral calendarWithNPAuctionOverAYearAgo;
 	CalendarAuctionCentral calendarWithNPAuctionWithinLastYear;
 	CalendarAuctionCentral calendarWithNPAuctionAlreadyScheduled;
+	CalendarAuctionCentral calendarForAddFutureAuction;
 
 	String NPName;
 	
@@ -421,8 +417,8 @@ public class CalendarAuctionCentralTest
 		calendarWithOneAuctionForIsMinTest = new CalendarAuctionCentral();
 		
 		// Setup for testOneAuctionForDayOnNoAuctionsOnDay()
-		// and for testOneAuctionForDayOnFirstAuctionAddedWhereItIsOneOfTwoAuctionScheduled() throws ParseException
-		// and fortestOneAuctionForDayOnSecondAuctionAddedWhereItIsOneOfTwoAuctionScheduled() throws ParseException
+		// and for testOneAuctionForDayOnFirstAuctionAddedWhereItIsOneOfTwoAuctionScheduled() 
+		// and fortestOneAuctionForDayOnSecondAuctionAddedWhereItIsOneOfTwoAuctionScheduled() 
 		// and for testOneAuctionForDayOnThirdAuctionAddedWhereItIsTheOnlyAuctionScheduled
 		Auction firstAuctionOnSameDay = new Auction("FAKENP1", new Date("12/25/2015 8:00:00"), 2);
 		Auction secondAuctionOnSameDay = new Auction("FAKENP2", new Date("12/25/2015 12:00:00"), 2);
@@ -438,9 +434,9 @@ public class CalendarAuctionCentralTest
 		secondAuctionAdded = secondAuctionOnSameDay;
 		thirdAuctionAdded = anotherAuctionNotOnSameDay;
 		
-		// Setup for testAtMaxAuctionPerNonProfitPerYearOnAuctionOverAYearAgo() throws ParseException
-		// Setup for testAtMaxAuctionPerNonProfitPerYearOnAuctionWithinLastYear() throws ParseException
-		// Setup for testAtMaxAuctionPerNonProfitPerYearOnAuctionAlreadyOnTheSchedule() throws ParseException
+		// Setup for testAtMaxAuctionPerNonProfitPerYearOnAuctionOverAYearAgo()
+		// Setup for testAtMaxAuctionPerNonProfitPerYearOnAuctionWithinLastYear() 
+		// Setup for testAtMaxAuctionPerNonProfitPerYearOnAuctionAlreadyOnTheSchedule() 
 		NPName = "ANOTHERFAKETESTNP";
 		requestedDate = new Date();
 		requestedDate.addDays(MAX_DAYS_OUT/2);
@@ -467,6 +463,12 @@ public class CalendarAuctionCentralTest
 		auctionListWithAuctionAlreadyScheduled.add(auctionAlreadyScheduled);		
 		serializeAuctions(auctionListWithAuctionAlreadyScheduled);
 		calendarWithNPAuctionAlreadyScheduled = new CalendarAuctionCentral();
+		
+		
+		// Setup for testAddFutureAuction()
+		ArrayList<Auction> emptyList = new ArrayList<Auction>();	
+		serializeAuctions(emptyList);
+		calendarForAddFutureAuction = new CalendarAuctionCentral();
 		
 		// Restoring original contents of Auction file
 		restoreFileContents(temperaryAuctionList);		
@@ -566,6 +568,7 @@ public class CalendarAuctionCentralTest
 		assertEquals(auctionEnd.toString(), futureAuction3.getAuctionEnd().toString());
 	}
 	
+	// TEST FAILS
 	@Test
 	public void testEditAuctionDurationWithInvalidNewDuration() throws IOException,
 			ParseException {
@@ -578,27 +581,18 @@ public class CalendarAuctionCentralTest
 		assertTrue(auctionEnd.toString().equals(futureAuction3a.getAuctionEnd().toString()));
 		assertEquals(2, futureAuction3a.getAuctionDuration());
 	}
-//	
-//	@Test
-//	public void testAddFutureAuctionOnPastAuction()
-//			throws IOException
-//	{
-//		// TODO
-//	}
-//	
-//	@Test
-//	public void testAddFutureAuctionOnGoodFutureAuction()
-//			throws IOException
-//	{
-//		// TODO
-//	}
-//	
-//	@Test
-//	public void testAddFutureAuctionOnBadFutureAuction()
-//			throws IOException
-//	{		
-//		// TODO
-//	}
+	
+	@Test
+	public void testAddFutureAuction()
+			throws IOException, ParseException
+	{
+		Date now = new Date();
+		now.addDays(MAX_DAYS_OUT/2);
+		calendarForAddFutureAuction.addFutureAuction(new Auction("NP", now, 2));
+		assertEquals(1,calendarForAddFutureAuction.getFutureAuctionList().size());
+		assertEquals(1,calendarForAddFutureAuction.getFutureAuctions());
+		assertEquals(1,calendarForAddFutureAuction.getAuctionList().size());
+	}
 	
 	@Test
 	public void testCountAuctiionsOnDayOnDayWithZeroAuctions()
@@ -832,13 +826,6 @@ public class CalendarAuctionCentralTest
 		assertTrue(calendarWithNPAuctionAlreadyScheduled.atMaxAuctionPerNonProfitPerYear(NPName, requestedDate));
 	}
 	
-	
-	/**
-	 * 
-	 * @param fileName
-	 * @return
-	 * @throws IOException
-	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<Auction> deserializeAuctions(String fileName)
 			throws IOException
@@ -864,12 +851,6 @@ public class CalendarAuctionCentralTest
 		return auctionList;
 	}
 	
-	/**
-	 * 
-	 * @param fileName
-	 * @param auctionList
-	 * @throws IOException
-	 */
 	public void serializeAuctions(ArrayList<Auction> auctionList) throws IOException
 	{		
 		deleteFileContents();
@@ -880,23 +861,12 @@ public class CalendarAuctionCentralTest
 		fileOut.close();
 	}
 	
-	/**
-	 * 
-	 * @param fileName
-	 * @throws IOException
-	 */
 	public void deleteFileContents() throws IOException
 	{
 		FileOutputStream file = new FileOutputStream(FILENAME);
 		file.close();
 	}
-	
-	/**
-	 * 
-	 * @param fileName
-	 * @return
-	 * @throws IOException
-	 */
+
 	public ArrayList<Auction> storeFileContentsAndClearFile() throws IOException
 	{
 		ArrayList<Auction> auctionList = deserializeAuctions(FILENAME);
@@ -904,11 +874,6 @@ public class CalendarAuctionCentralTest
 		return auctionList;
 	}
 	
-	/**
-	 * 
-	 * @param fileName
-	 * @throws IOException
-	 */
 	public void restoreFileContents(ArrayList<Auction> auctionList)
 			throws IOException
 	{

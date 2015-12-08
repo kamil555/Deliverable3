@@ -184,7 +184,7 @@ public class Item implements java.io.Serializable
 	private int getID() throws ClassNotFoundException, IOException
 	{
 		Inventory i = new Inventory();
-		return i.listofItems.size();
+		return i.listofItems.size() + 1;
 	}
 	
 	/**
@@ -196,6 +196,20 @@ public class Item implements java.io.Serializable
 	public String toString()
 	{
 		return itemID + "," + auctionName + "," + startBid + "," + itemName + "," + itemInfo;
+	}
+	
+	/**
+	 * This is a toString method to the item. 
+	 * 
+	 * @return the string representation of the item for display.
+	 */
+	public String toDisplayString()
+	{
+		return "\nItem ID: " + itemID 
+				+ "\nItem Name: " + itemName 
+				+ "\nStarting Bid: $" + startBid 
+				+ "\nItem Description: " + itemInfo
+				+ "\nAuction Name: " + auctionName + "\n";
 	}
 	
 }

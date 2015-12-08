@@ -2,6 +2,7 @@ package UI;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import main.*;
@@ -130,13 +131,18 @@ public class BidderInterface
 	 */
 	public int selectAuction(CalendarAuctionCentral cal)
 	{
-		System.out.println("Select Auction(Number) :");
-		CalendarUserInterface cui = new CalendarUserInterface();
-		cui.viewFutureAuctions();
-		@SuppressWarnings("resource")
-		Scanner reader = new Scanner(System.in);
-		int select = reader.nextInt();
-		return select;
+		if(cal.getFutureAuctions() > 0) {
+			System.out.println("Select Auction(Number) :");
+			CalendarUserInterface cui = new CalendarUserInterface();
+			cui.viewFutureAuctions();
+			@SuppressWarnings("resource")
+			Scanner reader = new Scanner(System.in);
+			int select = reader.nextInt();
+			return select;
+		} else {
+			System.out.println("There are currently no auctions scheduled.");
+			return -1;
+		}
 	}
 	
 	/**
@@ -151,7 +157,17 @@ public class BidderInterface
 	public int selectItem(Inventory item, Auction auction)
 	{
 		System.out.println("Select Item(Number) :");
-		System.out.println(item.allItemsAuction(auction));
+		ArrayList<Item> itemsForAuction = item.viewAllitems(auction);
+		int counter = 1;
+		for (Item itm: itemsForAuction) {
+			System.out.println("\t(" + counter + ")");
+			System.out.println("\t\tItem ID: " + itm.getItemID());
+			System.out.println("\t\tItem Name: " + itm.getStartBid());
+			System.out.println("\t\tItem Description: " + itm.getItemInfo());
+			System.out.println("\t\tStarting Bid: $" + itm.getStartBid());
+			System.out.println("");
+			counter++;
+		}
 		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);
 		int select = reader.nextInt();

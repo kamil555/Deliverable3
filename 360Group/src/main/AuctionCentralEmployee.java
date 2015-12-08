@@ -74,9 +74,13 @@ public class AuctionCentralEmployee
 			throws ParseException, IOException
 	{
 		CalendarAuctionCentral cal = new CalendarAuctionCentral();
-		int select = acei.selectAuction(cal);
-		Auction a = cal.getAuctionList().get(select);
-		return a.toString();
+		if(cal.getAuctionList().size() > 0) {
+			int select = acei.selectAuction(cal);
+			Auction a = cal.getAuctionList().get(select);
+			return a.toString();
+		} else {
+			return "There are currently no auctions to view.";
+		}
 	}
 	
 	/**

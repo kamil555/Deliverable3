@@ -1,12 +1,20 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
+import main.Auction;
 import main.Inventory;
 import main.Item;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -19,6 +27,7 @@ public class InventoryTest
 {
 	
 	private static final double TOLERANCE = .0001;
+	private static String FILENAME = "Inventory.ser";
 	
 	private Inventory myInventory;
 	private Inventory myNewInventory;
@@ -29,10 +38,14 @@ public class InventoryTest
 	private Item myItem2;
 	private Item myItem3;
 	
-	/*
-	 * Note: "Inventory.txt" must be cleared and empty before running the tests
-	 * in this file.
-	 */
+	@Before
+	public void setUp() throws Exception
+	{
+		// clearing file
+		deserializeItems();
+		deleteFileContents();
+	}
+	
 	@Test
 	public void testAddItem() throws IOException, ClassNotFoundException
 	{
@@ -139,5 +152,60 @@ public class InventoryTest
 		myInventory4.editItemInfo(myItem1.getItemID(), "New description of item1");
 		assertEquals("New description of item1", myItem1.getItemInfo());
 		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<Item> deserializeItems()
+			throws IOException
+	{
+		ArrayList<Item> itemList = null;
+		FileInputStream fileIn = new FileInputStream(FILENAME);
+		try
+		{
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			try
+			{
+				itemList = (ArrayList<Item>) in.readObject();
+			} catch (ClassNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			in.close();
+		} catch (EOFException e)
+		{
+			itemList = new ArrayList<Item>();
+		}
+		fileIn.close();
+		return itemList;
+	}
+	
+	public void serializeItems(ArrayList<Item> itemList) throws IOException
+	{		
+		deleteFileContents();
+		FileOutputStream fileOut = new FileOutputStream(FILENAME);
+		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		out.writeObject(itemList);
+		out.close();
+		fileOut.close();
+	}
+	
+	public void deleteFileContents() throws IOException
+	{
+		FileOutputStream file = new FileOutputStream(FILENAME);
+		file.close();
+	}
+	
+	public ArrayList<Item> storeFileContentsAndClearFile() throws IOException
+	{
+		ArrayList<Item> itemList = deserializeItems();
+		deleteFileContents();
+		return itemList;
+	}
+	
+	public void restoreFileContents(ArrayList<Item> itemList)
+			throws IOException
+	{
+		deleteFileContents();
+		serializeItems(itemList);
 	}
 }

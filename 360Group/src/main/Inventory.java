@@ -189,14 +189,16 @@ public class Inventory
 	 * @pre none
 	 * @post shows all the item.
 	 */
-	public void viewAllitems()
+	public ArrayList<Item> viewAllitems(Auction auction)
 	{
-		int i = 0;
+		ArrayList<Item> itemsForAuction = new ArrayList<Item>();
 		for (Item itm : this.listofItems)
 		{
-			i++;
-			System.out.println(i + ") " + itm.toString());
+			if(itm.getAuctionName().equals(auction.getAuctionName())) {
+				itemsForAuction.add(itm);
+			}
 		}
+		return itemsForAuction;
 	}
 	
 	/**

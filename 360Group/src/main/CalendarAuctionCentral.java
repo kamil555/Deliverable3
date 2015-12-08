@@ -222,17 +222,20 @@ public class CalendarAuctionCentral
 	public void editAuctionDate(Auction auctionToEdit, Date newDate)
 			throws ParseException
 	{
+		Auction auctionToRemove = null;
 		Auction originalAuction = null;
 		for (Auction auction : futureAuctionList)
 		{
 			if (auction.toString().equals(auctionToEdit.toString()))
 			{
+				auctionToRemove = auction;
 				originalAuction = auction.clone();
-				auctionList.remove(auction);
-				futureAuctionList.remove(auction);
-				setFutureAuctions();
 			}
-		}		
+		}
+		
+		auctionList.remove(auctionToRemove);
+		futureAuctionList.remove(auctionToRemove);
+		setFutureAuctions();
 		
 		auctionToEdit.setAuctionStart(newDate);
 		auctionToEdit.resetAuctionEnd();
@@ -262,17 +265,20 @@ public class CalendarAuctionCentral
 	public void editAuctionDuration(Auction auctionToEdit, int newDuration)
 			throws ParseException
 	{
+		Auction auctionToRemove = null;
 		Auction originalAuction = null;
 		for (Auction auction : futureAuctionList)
 		{
 			if (auction.toString().equals(auctionToEdit.toString()))
 			{
+				auctionToRemove = auction;
 				originalAuction = auction.clone();
-				auctionList.remove(auction);
-				futureAuctionList.remove(auction);
-				setFutureAuctions();
 			}
-		}		
+		}
+		
+		auctionList.remove(auctionToRemove);
+		futureAuctionList.remove(auctionToRemove);
+		setFutureAuctions();	
 		
 		auctionToEdit.setAuctionDuration(newDuration);
 		auctionToEdit.resetAuctionEnd();

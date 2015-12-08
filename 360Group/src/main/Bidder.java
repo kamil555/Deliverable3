@@ -75,7 +75,7 @@ public class Bidder
 	public void viewItem(User user, Item item, BidderInterface bidInterface) throws IOException, ParseException,
 			ClassNotFoundException
 	{
-		System.out.println(item.toString());
+		System.out.println(item.toDisplayString());
 		int input = bidInterface.viewItemMenu();
 		switch (input)
 		{
@@ -126,10 +126,14 @@ public class Bidder
 	{
 		CalendarAuctionCentral c = new CalendarAuctionCentral();
 		int selectAuction = bidderInterface.selectAuction(c);
-		Auction a = c.getAuctionList().get(selectAuction);
-		Inventory i = new Inventory();
-		int selectItem = bidderInterface.selectItem(i, a);
-		viewItem(user, i.listofItems.get(selectItem), bidderInterface);
+		if (selectAuction > 0) {
+			Auction a = c.getAuctionList().get(selectAuction-1);
+			Inventory i = new Inventory();
+			int selectItem = bidderInterface.selectItem(i, a);
+			viewItem(user, i.listofItems.get(selectItem-1), bidderInterface);
+		} else {
+			new Bidder(user);			
+		}
 	}
 	
 	/**
