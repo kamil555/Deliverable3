@@ -85,7 +85,7 @@ public class Item implements java.io.Serializable
 	
 	/**
 	 * This is the setter for the auction name
-	 * @param auctionName the nnew name of the auction.
+	 * @param auctionName the new name of the auction.
 	 */
 	public void setAuctionName(String auctionName)
 	{

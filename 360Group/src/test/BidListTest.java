@@ -1,101 +1,110 @@
 package test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+
 import main.Bid;
 import main.BidList;
+import main.Inventory;
 import main.Item;
 import main.User;
 
-import org.junit.Before;
 import org.junit.Test;
-
 /**
  * 
  * @author Han
  *
  */
-public class BidListTest
-{
-	
+public class BidListTest {
+
 	private static final double TOLERANCE = .0001;
-	
+
 	private BidList bidlist;
 	private User user;
+	private Inventory in;
 	private Item item;
 	private Bid bid;
-	
-	// private Inventory inv;
-	
-	/**
-	 * set up before test
-	 * 
-	 * @throws Exception
-	 */
-	@Before
-	public void setUp() throws Exception
-	{
-		bidlist = new BidList();
-		user = new User("Han", "User");
-		item = new Item(123, "123", 1.0, "cake", "cake");
-		bid = new Bid(user.getUserName(), 123, 4.2);
-	}
-	
-	/**
-	 * test Bidlist
-	 * 
-	 */
-	@Test
-	public void testBidList()
-	{
-		assertTrue(bidlist.Bidlist != null);
-	}
-	
+
 	/**
 	 * test addBid
-	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void testAddBid() throws Exception
-	{
+	public void testAddBid() throws Exception {
+		
+		bidlist = new BidList();
+		in = new Inventory();
+		user = new User("Han","User");
+		item = new Item(123, "123", 1.0, "cake", "cake");
+		bid = new Bid(user.getUserName(), 123, 4.2);
+		in.addItem(item);
 		bidlist.addBid(user, bid);
+
 		assertEquals("add name fail", "Han", user.getUserName());
 		assertEquals("add ID fail", 123, item.getItemID());
-		assertEquals("add Amount fail", 4.2, bid.getBidAmount(), TOLERANCE);
+		assertEquals("add Amount fail", 4.2, bid.getBidAmount(),TOLERANCE);
 	}
-	
 	/**
 	 * test edit bid
-	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void testEditBid() throws Exception
-	{
+	public void testEditBid() throws Exception {
+
+		bidlist = new BidList();
+		in = new Inventory();
+		user = new User("Han","User");
+		item = new Item(123, "123", 1.0, "cake", "cake");
+		bid = new Bid(user.getUserName(), 123, 4.2);
+		in.addItem(item);
+		
+		bidlist.addBid(user, bid);
+		bidlist.editBid(user, item, 5.5);
+		bid = bidlist.Bidlist.get(bidlist.Bidlist.size()-1);
+
 		assertEquals("edit name fail", "Han", user.getUserName());
 		assertEquals("add ID fail", 123, item.getItemID());
-		assertEquals("edit Amount fail", 4.2, bid.getBidAmount(), TOLERANCE);
+		assertEquals("edit Amount fail", 5.5, bid.getBidAmount(),TOLERANCE);
 	}
-	
 	/**
 	 * test cancel bid
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
 	@Test
-	public void testCancelBid()
-	{
+	public void testCancelBid() throws IOException, ClassNotFoundException {
+		bidlist = new BidList();
+		in = new Inventory();
+		user = new User("Han","User");
+		item = new Item(123, "123", 1.0, "cake", "cake");
+		bid = new Bid(user.getUserName(), 123, 4.2);
+		in.addItem(item);
+		
+		bidlist.cancelBid(user, item);
+		
 		assertTrue(bid.getuserName().equalsIgnoreCase(user.getUserName()));
 		assertTrue(bid.getItemID() == item.getItemID());
 	}
-	
 	/**
 	 * test who is winning the bid
+	 * 
+	 * if there no Bids.txt,  run it again, it will be pass the test
+	 * 
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
 	@Test
-	public void testIsWinBid()
-	{
+	public void testIsWinBid() throws IOException, ClassNotFoundException {
+		bidlist = new BidList();
+		in = new Inventory();
+		user = new User("Han","User");
+		item = new Item(123, "123", 1.0, "cake", "cake");
+		bid = new Bid(user.getUserName(), 123, 4.2);
+		in.addItem(item);
+		bidlist.editBid(user, item, 5.5);
 		bidlist.isWinBid(item);
-		assertEquals("error", "userName is:Han Amount is:4.2", bidlist.isWinBid(item).toString());
+		assertEquals("error", "userName is:Han Amount is:5.5", bidlist.isWinBid(item).toString());
 	}
-	
+
 }
