@@ -56,15 +56,18 @@ public class CalendarAuctionCentralTest
 	CalendarAuctionCentral calendarWithFourAuctionsAtEndAndFiveAtBegForRollingPeriod;
 	CalendarAuctionCentral calendarWithLessThanMaxFutureAuctions;
 	CalendarAuctionCentral calendarWithNoFutureAuctions;
-	CalendarAuctionCentral calendarWithMaxFutureAuctions;	
+	CalendarAuctionCentral calendarWithMaxFutureAuctions;
+
+	Date pastDate;
+	Date dateInRange;
+	Date futureDateOutOfRange;
 	
 	Auction pastAuction1;
 	Auction futureAuction1;
 	Auction futureAuction2;
 	Auction futureAuction3;
 	Auction futureAuction4;
-	Auction futureAuction5;
-	
+	Auction futureAuction5;	
 	Auction AuctionRollingTest1;
 	Auction AuctionRollingTest2;
 	Auction AuctionRollingTest3;
@@ -221,6 +224,9 @@ public class CalendarAuctionCentralTest
 		// and testCountAuctiionsOnDayOnDayWithZeroAuctions()
 		// and testCountAuctiionsOnDayOnDayWithOneAuction()
 		// and testCountAuctiionsOnDayOnDayWithTwoAuctions()
+		// and testAtMaxAuctionsPerDayOnDayWithZeroAuctions()
+		// and testAtMaxAuctionsPerDayOnDayWithLessThanMaxAuctions()
+		// and testAtMaxAuctionsPerDayOnDayWithMaxAuctions()
 		String NPNameTest4 = "NPNAMETEST4";
 		Date futureDateTest3 = new Date("01/20/2016 5:00:00");
 		int futureDurationTest3 = 2;
@@ -354,6 +360,18 @@ public class CalendarAuctionCentralTest
 		}
 		serializeAuctions(maxFutureAuctionsList);
 		calendarWithMaxFutureAuctions = new CalendarAuctionCentral();
+		
+		// Setup for testInDateRangeOnAuctionInPast()
+		// and testInDateRangeOnAuctionInDateRange()
+		// and testInDateRangeOnAuctionInFutureOutOfRange()
+		pastDate = new Date();
+		pastDate.addDays(-10);
+		dateInRange = new Date();
+		dateInRange.addDays(MAX_DAYS_OUT);
+		futureDateOutOfRange = new Date();
+		futureDateOutOfRange.addDays(MAX_DAYS_OUT + 5);
+		serializeAuctions(new ArrayList<Auction>());
+		calendarWithEmptyAuctionFile = new CalendarAuctionCentral();
 		
 		// Restoring original contents of Auction file
 		restoreFileContents(temperaryAuctionList);		
@@ -601,22 +619,48 @@ public class CalendarAuctionCentralTest
 	public void testInDateRangeOnAuctionInPast()
 			throws IOException, ParseException
 	{		
-		
+		assertFalse(calendarWithEmptyAuctionFile.inDateRange(pastDate));
 	}
 	
 	@Test
 	public void testInDateRangeOnAuctionInDateRange()
 			throws IOException, ParseException
 	{		
+		assertTrue(calendarWithEmptyAuctionFile.inDateRange(dateInRange));
 		
 	}
 	
 	@Test
-	public void testInDateRangeOnAuctionInFuture()
+	public void testInDateRangeOnAuctionInFutureOutOfRange()
 			throws IOException, ParseException
 	{		
+		assertFalse(calendarWithEmptyAuctionFile.inDateRange(futureDateOutOfRange));
 		
-	}		
+	}
+	
+	@Test
+	public void testAtMaxAuctionsPerDayOnDayWithZeroAuctions()
+			throws IOException, ParseException
+	{		
+		assertFalse(calendarWithOneAuctionOnOneDayAndTwoOnAnother.atMaxAuctionsPerDay(new Date("12/31/2015 5:00:00")));
+		
+	}
+	
+	@Test
+	public void testAtMaxAuctionsPerDayOnDayWithLessThanMaxAuctions()
+			throws IOException, ParseException
+	{		
+		assertFalse(calendarWithOneAuctionOnOneDayAndTwoOnAnother.atMaxAuctionsPerDay(futureAuction5.getAuctionStart()));
+		
+	}
+	
+	@Test
+	public void testAtMaxAuctionsPerDayOnDayWithMaxAuctions()
+			throws IOException, ParseException
+	{		
+		assertTrue(calendarWithOneAuctionOnOneDayAndTwoOnAnother.atMaxAuctionsPerDay(futureAuction3.getAuctionStart()));
+		
+	}
 	
 	/**
 	 * 
