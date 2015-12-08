@@ -19,6 +19,9 @@ public class Bidder
 	/**
 	 * Main menu for the Bidder User.
 	 * 
+	 * @pre User that logged in.
+	 * @post Menu options for the Bidder that logged in.
+	 * 
 	 * @param user the username of the user. 
 	 * @throws IOException
 	 * @throws ParseException
@@ -60,6 +63,9 @@ public class Bidder
 	/**
 	 * This method allows the bidder to view the item and bid on the item they like.
 	 * 
+	 * @pre User that logged in, the item to view, and interface for the bidder.
+	 * @post Details of the item selected.
+	 * 
 	 * @param user the bidder.
 	 * @param item the item being bid on.
 	 * @throws IOException
@@ -89,6 +95,9 @@ public class Bidder
 	/**
 	 * This method allows bidder to change his/her bid on a given item.
 	 * 
+	 * @pre User that logged in, item to edit bid, and the amount he wants edited to.
+	 * @post Bid changes if the rules are accepted.
+	 * 
 	 * @param user the bidder interested in the item.
 	 * @param item the item that is being bid on.
 	 * @param money the amount they want to pay.
@@ -103,6 +112,9 @@ public class Bidder
 	
 	/**
 	 * This method shows the bidder all open auction.
+	 * 
+	 * @pre User that logged in, bidder interface.
+	 * @post Options to all the auctions available to the bidder.
 	 * 
 	 * @param user the bidder that is looking to view the auction.
 	 * @throws ParseException
@@ -122,6 +134,9 @@ public class Bidder
 	
 	/**
 	 * This method shows the user what item is being bidded on.
+	 * 
+	 * @pre User that logged in.
+	 * @post View all the items the bidder bided on.
 	 * 
 	 * @param user the bidder for the item.
 	 * @throws IOException

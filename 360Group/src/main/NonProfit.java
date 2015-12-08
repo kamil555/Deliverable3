@@ -19,6 +19,9 @@ public class NonProfit
 	/**
 	 * This is the constructor for the Non Profit User, easier to navigate.
 	 * 
+	 * @pre User that logged in.
+	 * @post Menu of all the options the Nonprofit can choose.
+	 * 
 	 * @throws ParseException
 	 * @throws IOException
 	 * @throws ClassNotFoundException
@@ -27,7 +30,6 @@ public class NonProfit
 	{
 		NonProfitInterface npi = new NonProfitInterface(user);
 		int input = npi.mainMenu();
-		// selectOption(input, user);
 		CalendarAuctionCentral c;
 		Auction a;
 		switch (input)
@@ -70,6 +72,9 @@ public class NonProfit
 	/**
 	 * This method requests an Auction, checks if the schedule fits
 	 * 
+	 * @pre User that logged in, date that user wants to schedule auction, duration of auction in hours, NonProfit interface
+	 * @post Checks to see if the date selected can be scheduled.
+	 * 
 	 * @param user the user that scheduled it.
 	 * @param auctionDate the date of the auction.
 	 * @param duration the duration of the auction.
@@ -95,6 +100,9 @@ public class NonProfit
 	
 	/**
 	 * This method adds Information to the Auction class.
+	 * 
+	 * @pre User that logged in, organization name of User, date schedule for auction, duration for auction, NonProfit interface.
+	 * @post Gets more information about auction and adds to calendar.
 	 * 
 	 * @param user the user using the class.
 	 * @param nonProfitName the name of the non profit
@@ -136,6 +144,9 @@ public class NonProfit
 	/**
 	 * This method edits Auction Information.
 	 * 
+	 * @pre User that logged in, auction the User wants to edit, and NonProfit Interface.
+	 * @post Editing whatever the User chooses.
+	 * 
 	 * @param user the user using the class.
 	 * @param auction the auction to be added.
 	 * @throws ParseException
@@ -171,6 +182,9 @@ public class NonProfit
 	/**
 	 * This method adds an Item to the selected auction.
 	 * 
+	 * @pre User that logged in, auction to which item is selling, and NonProfit interface
+	 * @post adds item to the auction selected by User.
+	 * 
 	 * @param user the user that's adding item info.
 	 * @param auction the auction that the item belongs to.
 	 * @throws ParseException
@@ -188,6 +202,9 @@ public class NonProfit
 	
 	/**
 	 * This method edits an items from selected auction.
+	 * 
+	 * @pre User that logged in, item the User wants edited, and NonProfit Interface.
+	 * @post Item edited to what the User wants.
 	 * 
 	 * @param user the user using the class. 
 	 * @param itemID the ID of the item.

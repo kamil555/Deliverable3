@@ -20,6 +20,9 @@ public class AuctionCentralEmployee
 	/**
 	 * The Main menu for the AuctionCentral Employee.
 	 * 
+	 * @pre User that logged in.
+	 * @post User interface of all the Menu options.
+	 * 
 	 * @param user the person currently logged in.
 	 * @throws ParseException
 	 * @throws IOException
@@ -59,6 +62,9 @@ public class AuctionCentralEmployee
 	/**
 	 * Shows the User the details of an up and coming auction.
 	 * 
+	 * @pre User that logged in, the Interface used.
+	 * @post Printing out to the console information about the auction.
+	 * 
 	 * @param user the person currently logged in.
 	 * @param acei the auction central employeee calling to view auction.
 	 * @throws ParseException
@@ -75,6 +81,9 @@ public class AuctionCentralEmployee
 	
 	/**
 	 * Show the User a monthly calendar of auctions.
+	 * 
+	 * @pre User that logged in, the month and year the User would like to see as an integer.
+	 * @post a Calendar showing the month that the User selected.
 	 * 
 	 * @param user the person currently logged in.
 	 * @param month the month the user wants to set up in the calendar
