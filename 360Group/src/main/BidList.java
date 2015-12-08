@@ -28,6 +28,8 @@ public class BidList
 	 * 
 	 * @throws IOException
 	 * @throws ClassNotFoundException 
+	 * @pre the arraylist for bid need to create
+	 * @post create the bidlist as an arraylist
 	 */
 	public BidList() throws IOException, ClassNotFoundException
 	{
@@ -44,6 +46,9 @@ public class BidList
 	 *            the bid that creates a new Bid list
 	 * @throws IOException
 	 * @throws ClassNotFoundException 
+	 * 
+	 * @pre user's name, item id, and user's amount need to add 
+	 * @post add those into arraylist.
 	 */
 	
 	public void addBid(User user, Bid b) throws IOException, ClassNotFoundException
@@ -86,6 +91,9 @@ public class BidList
 	 * @param bidAmount
 	 *           bider's bid price
 	 * @throws IOException
+	 * @pre the edit bidamount, that user want to edit.
+	 * @post edited the new amount 
+	 * 
 	 */
 	public void editBid(User user, Item item, double bidAmount) throws IOException
 	{
@@ -118,6 +126,9 @@ public class BidList
 	 * @param item
 	 *           the item that user want to cancel their bid on.
 	 * @throws IOException
+	 * 
+	 * @pre the bid that user want to cancel
+	 * @post canceled the bid that user wanted to cancel
 	 */
 	public void cancelBid(User user, Item item) throws IOException
 	{
@@ -138,6 +149,9 @@ public class BidList
 	 * @param item
 	 *            being checked on's information
 	 * @return user's name and bid amount
+	 * 
+	 * @pre check the winning bid for the item
+	 * @post print out the winning bid for the item
 	 */
 	public String isWinBid(Item item)
 	{
@@ -160,6 +174,9 @@ public class BidList
 	 * 
 	 * @param string the string being written to.
 	 * @throws IOException
+	 * 
+	 * @pre none
+	 * @post write the arraylist to the file
 	 */
 	private void writeToFile(String string) throws IOException
 	{

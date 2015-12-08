@@ -8,7 +8,7 @@ import org.junit.Test;
 
 /**
  * 
- * @author kamil
+ * @author Han
  *
  */
 public class ItemTest
