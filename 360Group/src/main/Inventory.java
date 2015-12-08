@@ -15,6 +15,7 @@ import java.util.ArrayList;
  * @since November 9, 2015
  * @edited by Gabrielle 11/15/2015
  * @edited by Mindy Huynh 12/5/2015
+ * @edited by Han 12/7/2015
  */
 public class Inventory
 {
@@ -58,6 +59,9 @@ public class Inventory
 	 * 
 	 * @param item the item to be added
 	 * @throws IOException
+	 * 
+	 * @pre none
+	 * @post add the item to inventory.
 	 */
 	public void addItem(Item item) throws IOException
 	{
@@ -72,6 +76,9 @@ public class Inventory
 	 * @param itemID the ID of the item.
 	 * @param newName the name of the item.
 	 * @throws IOException
+	 * 
+	 * @pre the item name wanted to edit.
+	 * @post edited the item's name
 	 */
 	public void editItemName(int itemID, String newName) throws IOException
 	{
@@ -92,6 +99,9 @@ public class Inventory
 	 * @param itemID the ID of the item.
 	 * @param startBid the starting bid of the item.
 	 * @throws IOException
+	 * 
+	 * @pre the start bid for the item wanted to edit.
+	 * @post edited start bid for the item.
 	 */
 	public void editItemStartBid(int itemID, double startBid)
 			throws IOException
@@ -113,6 +123,9 @@ public class Inventory
 	 * @param itemID the Id of the item.
 	 * @param info the information on the item.
 	 * @throws IOException
+	 * 
+	 * @pre the item information wanted to edit.
+	 * @post the item information edited.
 	 */
 	public void editItemInfo(int itemID, String info) throws IOException
 	{
@@ -132,6 +145,9 @@ public class Inventory
 	 * Separate functions?
 	 * 
 	 * @param a
+	 * 
+	 * @pre none
+	 * @post print out all auctions.
 	 */
 	public String allItemsAuction(Auction a)
 	{
@@ -152,6 +168,9 @@ public class Inventory
 	 * @param u
 	 * @throws IOException
 	 * @throws ClassNotFoundException 
+	 * 
+	 * @pre none
+	 * @post print out all the items that user has bided on.
 	 */
 	public void allItemsBidder(User u) throws IOException, ClassNotFoundException
 	{
@@ -167,6 +186,8 @@ public class Inventory
 	
 	/**
 	 * shows all the items in the array list.
+	 * @pre none
+	 * @post shows all the item.
 	 */
 	public void viewAllitems()
 	{
@@ -181,8 +202,8 @@ public class Inventory
 	/**
 	 * Gives the item from id number.
 	 * 
-	 * @param ID
-	 * @return
+	 * @param ID item id
+	 * @return if there dont have this item, return null
 	 */
 	public Item getItemFromList(int ID)
 	{
