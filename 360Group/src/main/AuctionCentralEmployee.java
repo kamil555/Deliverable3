@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import UI.AuctionCentralEmployeeInterface;
-import UI.CalendarUI;
+import UI.CalendarUserInterface;
 import UI.UserInterface;
 
 /**
@@ -85,7 +85,7 @@ public class AuctionCentralEmployee
 	public String viewCalendar(User user, int month, int year)
 			throws ParseException, IOException
 	{
-		CalendarUI cui = new CalendarUI();
+		CalendarUserInterface cui = new CalendarUserInterface();
 		return cui.printCalendarMonthly(month, year);
 	}
 	

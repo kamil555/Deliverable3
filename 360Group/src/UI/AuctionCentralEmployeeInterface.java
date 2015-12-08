@@ -117,7 +117,7 @@ public class AuctionCentralEmployeeInterface
 	public int selectAuction(CalendarAuctionCentral cal)
 	{
 		System.out.println("Select Auction(Number) :");
-		CalendarUI cui = new CalendarUI();
+		CalendarUserInterface cui = new CalendarUserInterface();
 		cui.viewFutureAuctions();
 		@SuppressWarnings("resource")
 		Scanner reader = new Scanner(System.in);

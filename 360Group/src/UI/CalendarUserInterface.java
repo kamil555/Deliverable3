@@ -4,11 +4,8 @@ import java.text.ParseException;
 
 import main.CalendarAuctionCentral;
 
-public class CalendarUI
-{
-	
-	CalendarAuctionCentral myCalendar = new CalendarAuctionCentral();
-	
+public class CalendarUserInterface
+{	
 	/**
 	 * 
 	 * @param month
@@ -17,6 +14,7 @@ public class CalendarUI
 	 */
 	public String printCalendarMonthly(int month, int year) throws ParseException
 	{
+		CalendarAuctionCentral myCalendar = new CalendarAuctionCentral();
 		int counter = 1;
 		String calendar = "";
 		String[] monthName =
@@ -55,6 +53,7 @@ public class CalendarUI
 	 */
 	public void viewFutureAuctions()
 	{
+		CalendarAuctionCentral myCalendar = new CalendarAuctionCentral();
 		for (int i = 0; i < myCalendar.getFutureAuctionList().size(); i++)
 		{
 			System.out.println("   (" + (i + 1) + ")"); 
