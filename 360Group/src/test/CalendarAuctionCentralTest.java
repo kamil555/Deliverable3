@@ -535,8 +535,8 @@ public class CalendarAuctionCentralTest
 		// additional setup for this test
 		Date newDate = new Date("01/03/2016 5:00:00");
 		calendarWithBothPastAndFutureAuctions.editAuctionDate(futureAuction2, newDate);
-		
-		assertEquals(newDate, futureAuction2.getAuctionStart());
+
+		assertTrue(newDate.toString().equals(futureAuction2.getAuctionStart().toString()));
 	}
 
 	@Test
@@ -573,10 +573,10 @@ public class CalendarAuctionCentralTest
 		// additional setup for this test
 		calendarWithTwoFutureAuctionsOnSameDay.editAuctionDuration(futureAuction3a, 8);
 		Date auctionEnd = new Date("1/20/2016 7:0:0");
-		System.out.println(futureAuction3a.getAuctionDuration());
+
 		// shows auction duration doesn't change
+		assertTrue(auctionEnd.toString().equals(futureAuction3a.getAuctionEnd().toString()));
 		assertEquals(2, futureAuction3a.getAuctionDuration());
-		assertEquals(auctionEnd.toString(), futureAuction3a.getAuctionEnd().toString());
 	}
 //	
 //	@Test

@@ -10,6 +10,7 @@ public class CalendarUserInterface
 	 * 
 	 * @param month
 	 * @param year
+	 * @return
 	 * @throws ParseException
 	 */
 	public String printCalendarMonthly(int month, int year) throws ParseException
@@ -62,26 +63,5 @@ public class CalendarUserInterface
 		}
 		
 	}
-	
-	// /*
-	// * Returns auction if it matches a Nonprofit's name.
-	// */
-	// public Auction getAuction(User u) throws ParseException, IOException {
-	// System.out
-	// .println("Select your Auction or Press -1 to go back to main menu:");
-	// for (int i = 0; i < auctionList.size(); i++) {
-	// if (auctionList.get(i).getProfitName()
-	// .equalsIgnoreCase(u.organization)) {
-	// System.out.println(i + ")" + auctionList.get(i).toString());
-	// }
-	// }
-	// @SuppressWarnings("resource")
-	// Scanner reader = new Scanner(System.in);
-	// int select = reader.nextInt();
-	// if (select == -1) {
-	// new NonProfit(u);
-	// }
-	// return auctionList.get(select);
-	// }
 	
 }
