@@ -43,15 +43,27 @@ public class CalendarAuctionCentralTest
 	CalendarAuctionCentral calendarWithPastAuctionsOnly;
 	CalendarAuctionCentral calendarWithFutureAuctionsOnly;
 	CalendarAuctionCentral calendarWithBothPastAndFutureAuctions;
+	CalendarAuctionCentral calendarWithOneAuctionOnOneDayAndTwoOnAnother;	
+	CalendarAuctionCentral calendarWithOneAuctionInPeriodAtBeginning;
+	CalendarAuctionCentral calendarWithOneAuctionInPeriodAtEnd;		
+	CalendarAuctionCentral calendarWithTwoAuctionsAtEachEndOfPeriod;
+	CalendarAuctionCentral calendarWithOnFiveAuctionsInPeriod;
+	CalendarAuctionCentral calendarWithOneAuctionAtBeginningForRollingPeriod;
+	CalendarAuctionCentral calendarWithOneAuctionAtEndForRollingPeriod;
+	CalendarAuctionCentral calendarWithTwoAuctionsAtEachEndForRollingPeriod;
+	CalendarAuctionCentral calendarWithFourAuctionsAtEachEndForRollingPeriod;
+	CalendarAuctionCentral calendarWithFourAuctionsAtBegAndFiveAtEndForRollingPeriod;
+	CalendarAuctionCentral calendarWithFourAuctionsAtEndAndFiveAtBegForRollingPeriod;
 	CalendarAuctionCentral calendarWithLessThanMaxFutureAuctions;
 	CalendarAuctionCentral calendarWithNoFutureAuctions;
-	CalendarAuctionCentral calendarWithMaxFutureAuctions;
+	CalendarAuctionCentral calendarWithMaxFutureAuctions;	
 	
 	Auction pastAuction1;
 	Auction futureAuction1;
 	Auction futureAuction2;
 	Auction futureAuction3;
 	Auction futureAuction4;
+	Auction futureAuction5;
 	
 	Auction AuctionRollingTest1;
 	Auction AuctionRollingTest2;
@@ -71,9 +83,7 @@ public class CalendarAuctionCentralTest
 	ArrayList<Auction> pastAuctionsOnlyList;
 	ArrayList<Auction> futureAuctionsOnlyList;
 	ArrayList<Auction> bothPastAndFutureAuctionsList;
-	ArrayList<Auction> noAuctions;
-	ArrayList<Auction> oneAuctionOnDay;
-	ArrayList<Auction> twoAuctionsOnDay;
+	ArrayList<Auction> OneAuctionOnOneDayAndTwoOnAnother;
 	ArrayList<Auction> RollingPeriodHelperTestArray;
 	ArrayList<Auction> maxFutureAuctionsList;
 	
@@ -84,19 +94,6 @@ public class CalendarAuctionCentralTest
 		// Storing Auction file contents to prevent testing from
 		// interfering with Auction Central setup.
 		temperaryAuctionList = storeFileContentsAndClearFile();
-		
-
-		String NPNameTest4 = "NPNAMETEST4";
-		Date futureDateTest3 = new Date("01/20/2016 5:00:00");
-		int futureDurationTest3 = 2;
-		futureAuction3 = new Auction(NPNameTest4, futureDateTest3,
-				futureDurationTest3);
-		
-		String NPNameTest5 = "NPNAMETEST5";
-		Date futureDateTest4 = new Date("01/20/2016 14:00:00");
-		int futureDurationTest4 = 2;
-		futureAuction4 = new Auction(NPNameTest5, futureDateTest4,
-				futureDurationTest4);
 		
 		String NPNameRollingTest1 = "NPNAMERHTEST1";
 		Date DateRollingTest1 = new Date("01/21/2016 14:00:00");
@@ -175,16 +172,6 @@ public class CalendarAuctionCentralTest
 		int DurationRollingTest13 = 2;
 		AuctionRollingTest13 = new Auction(NPNameRollingTest13, DateRollingTest13,
 				DurationRollingTest13);		
-
-		
-		noAuctions = new ArrayList<Auction>();
-		
-		oneAuctionOnDay = new ArrayList<Auction>();
-		oneAuctionOnDay.add(futureAuction3);
-		
-		twoAuctionsOnDay = new ArrayList<Auction>();
-		twoAuctionsOnDay.add(futureAuction3);
-		twoAuctionsOnDay.add(futureAuction4);
 		
 		// Setup for testCalendarConstructorOnEmptyAuctionListFile()
 		deleteFileContents();
@@ -217,8 +204,6 @@ public class CalendarAuctionCentralTest
 		// and testGetAuctionOnAuctionListWithoutNonProfitName()
 		// and testEditAuctionDateWithValidNewDate()
 		// and testEditAuctionDateWithInvalidNewDate()
-		// and testEditAuctionDurationWithValidNewDuration()
-		// and testEditAuctionDurationWithInvalidNewDuration()
 		String NPNameTest3 = "NPNAMETEST3";
 		Date futureDateTest2 = new Date("02/01/2016 5:00:00");
 		int futureDurationTest2 = 2;
@@ -230,6 +215,126 @@ public class CalendarAuctionCentralTest
 		bothPastAndFutureAuctionsList.add(futureAuction2);
 		serializeAuctions(bothPastAndFutureAuctionsList);
 		calendarWithBothPastAndFutureAuctions = new CalendarAuctionCentral();
+
+		// Setup for testEditAuctionDurationWithValidNewDuration()
+		// and testEditAuctionDurationWithInvalidNewDuration()
+		// and testCountAuctiionsOnDayOnDayWithZeroAuctions()
+		// and testCountAuctiionsOnDayOnDayWithOneAuction()
+		// and testCountAuctiionsOnDayOnDayWithTwoAuctions()
+		String NPNameTest4 = "NPNAMETEST4";
+		Date futureDateTest3 = new Date("01/20/2016 5:00:00");
+		int futureDurationTest3 = 2;
+		futureAuction3 = new Auction(NPNameTest4, futureDateTest3,
+				futureDurationTest3);		
+		String NPNameTest5 = "NPNAMETEST5";
+		Date futureDateTest4 = new Date("01/20/2016 14:00:00");
+		int futureDurationTest4 = 2;
+		futureAuction4 = new Auction(NPNameTest5, futureDateTest4,
+				futureDurationTest4);
+		String NPNameTest6 = "NPNAMETEST6";
+		Date futureDateTest5 = new Date("01/22/2016 14:00:00");
+		int futureDurationTest5 = 2;
+		futureAuction5 = new Auction(NPNameTest6, futureDateTest5,
+				futureDurationTest5);
+		OneAuctionOnOneDayAndTwoOnAnother = new ArrayList<Auction>();
+		OneAuctionOnOneDayAndTwoOnAnother.add(futureAuction3);
+		OneAuctionOnOneDayAndTwoOnAnother.add(futureAuction4);
+		OneAuctionOnOneDayAndTwoOnAnother.add(futureAuction5);
+		serializeAuctions(OneAuctionOnOneDayAndTwoOnAnother);
+		calendarWithOneAuctionOnOneDayAndTwoOnAnother = new CalendarAuctionCentral();		
+
+		// Setup for testAtMaxAuctionsInRollingPeriodHelperOnOneAuctionInPeriodAtBeginning()
+		ArrayList<Auction> OneAuctionInPeriodAtBeginning = new ArrayList<Auction>();
+		OneAuctionInPeriodAtBeginning.add(AuctionRollingTest1);
+		serializeAuctions(OneAuctionInPeriodAtBeginning);
+		calendarWithOneAuctionInPeriodAtBeginning = new CalendarAuctionCentral();
+		
+		// Setup for testAtMaxAuctionsInRollingPeriodHelperOnOneAuctionInPeriodAtEnd()
+		ArrayList<Auction> OneAuctionInPeriodAtEnd = new ArrayList<Auction>();
+		OneAuctionInPeriodAtEnd.add(AuctionRollingTest7);
+		serializeAuctions(OneAuctionInPeriodAtEnd);
+		calendarWithOneAuctionInPeriodAtEnd = new CalendarAuctionCentral();		
+		
+		// Setup for testAtMaxAuctionsInRollingPeriodHelperOnTwoAuctionsAtEachEnd()
+		ArrayList<Auction> TwoAuctionsAtEachEnd = new ArrayList<Auction>();
+		TwoAuctionsAtEachEnd.add(AuctionRollingTest1);
+		TwoAuctionsAtEachEnd.add(AuctionRollingTest2);
+		TwoAuctionsAtEachEnd.add(AuctionRollingTest6);
+		TwoAuctionsAtEachEnd.add(AuctionRollingTest7);
+		serializeAuctions(TwoAuctionsAtEachEnd);
+		calendarWithTwoAuctionsAtEachEndOfPeriod = new CalendarAuctionCentral();
+
+		// Setup for testAtMaxAuctionsInRollingPeriodHelperOnFiveAuctions()
+		ArrayList<Auction> FiveAuctionsPerPeriod = new ArrayList<Auction>();
+		FiveAuctionsPerPeriod.add(AuctionRollingTest1);
+		FiveAuctionsPerPeriod.add(AuctionRollingTest2);
+		FiveAuctionsPerPeriod.add(AuctionRollingTest4);
+		FiveAuctionsPerPeriod.add(AuctionRollingTest6);
+		FiveAuctionsPerPeriod.add(AuctionRollingTest7);
+		serializeAuctions(FiveAuctionsPerPeriod);
+		calendarWithOnFiveAuctionsInPeriod = new CalendarAuctionCentral();
+
+		// Setup for testAtMaxAuctionsInRollingPeriodOnOneAuctionAtBeginning()
+		ArrayList<Auction> OneAuctionAtBeginning = new ArrayList<Auction>();
+		OneAuctionAtBeginning.add(AuctionRollingTest1);
+		serializeAuctions(OneAuctionAtBeginning);
+		calendarWithOneAuctionAtBeginningForRollingPeriod = new CalendarAuctionCentral();
+		
+		// Setup for testAtMaxAuctionsInRollingPeriodOnOneAuctionAtEnd()
+		ArrayList<Auction> OneAuctionAtEnd = new ArrayList<Auction>();
+		OneAuctionAtEnd.add(AuctionRollingTest13);
+		serializeAuctions(OneAuctionAtEnd);
+		calendarWithOneAuctionAtEndForRollingPeriod = new CalendarAuctionCentral();
+			
+		// Setup for testAtMaxAuctionsInRollingPeriodOnTwoAuctionsAtEachEnd()
+		ArrayList<Auction> TwoAuctionsAtEachEndforRollingPeriod = new ArrayList<Auction>();
+		TwoAuctionsAtEachEnd.add(AuctionRollingTest1);
+		TwoAuctionsAtEachEnd.add(AuctionRollingTest2);
+		TwoAuctionsAtEachEnd.add(AuctionRollingTest12);
+		TwoAuctionsAtEachEnd.add(AuctionRollingTest13);
+		serializeAuctions(TwoAuctionsAtEachEndforRollingPeriod);
+		calendarWithTwoAuctionsAtEachEndForRollingPeriod = new CalendarAuctionCentral();
+		
+		// Setup for testAtMaxAuctionsInRollingPeriodOnFourAuctionsAtEachEnd()
+		ArrayList<Auction> FourAuctionsAtEachEnd = new ArrayList<Auction>();
+		FourAuctionsAtEachEnd.add(AuctionRollingTest1);
+		FourAuctionsAtEachEnd.add(AuctionRollingTest2);
+		FourAuctionsAtEachEnd.add(AuctionRollingTest3);
+		FourAuctionsAtEachEnd.add(AuctionRollingTest4);
+		FourAuctionsAtEachEnd.add(AuctionRollingTest10);
+		FourAuctionsAtEachEnd.add(AuctionRollingTest11);
+		FourAuctionsAtEachEnd.add(AuctionRollingTest12);
+		FourAuctionsAtEachEnd.add(AuctionRollingTest13);
+		serializeAuctions(FourAuctionsAtEachEnd);
+		calendarWithFourAuctionsAtEachEndForRollingPeriod = new CalendarAuctionCentral();
+		
+		//Setup for testAtMaxAuctionsInRollingPeriodOnFourAuctionsAtBegAndFiveAtEnd()
+		ArrayList<Auction> FourAuctionsAtBegAndFiveAtEnd = new ArrayList<Auction>();
+		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest1);
+		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest2);
+		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest3);
+		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest4);
+		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest9);
+		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest10);
+		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest11);
+		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest12);
+		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest13);
+		serializeAuctions(FourAuctionsAtBegAndFiveAtEnd);
+		calendarWithFourAuctionsAtBegAndFiveAtEndForRollingPeriod = new CalendarAuctionCentral();
+		
+		// Setup for testAtMaxAuctionsInRollingPeriodOnFourAuctionsAtEndAndFiveAtBeg()
+		ArrayList<Auction> FourAuctionsAtEndAndFiveAtBeg = new ArrayList<Auction>();
+		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest1);
+		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest2);
+		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest3);
+		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest4);
+		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest5);
+		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest10);
+		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest11);
+		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest12);
+		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest13);
+		serializeAuctions(FourAuctionsAtEndAndFiveAtBeg);
+		calendarWithFourAuctionsAtEndAndFiveAtBegForRollingPeriod = new CalendarAuctionCentral();		
 		
 		// Setup for testAtMaxFutureAuctionsOnMaxFutureAuction()
 		serializeAuctions(pastAuctionsOnlyList);
@@ -254,10 +359,6 @@ public class CalendarAuctionCentralTest
 		restoreFileContents(temperaryAuctionList);		
 	}
 	
-	/**
-	 * 
-	 * @throws IOException
-	 */
 	@Test
 	public void testCalendarConstructorOnEmptyAuctionListFile()
 			throws IOException
@@ -267,10 +368,6 @@ public class CalendarAuctionCentralTest
 		assertEquals(0, calendarWithEmptyAuctionFile.getFutureAuctions());
 	}
 	
-	/**
-	 * 
-	 * @throws IOException
-	 */
 	@Test
 	public void testCalendarConstructorOnAuctionListFileWithPastAuctionsOnly()
 			throws IOException
@@ -280,10 +377,6 @@ public class CalendarAuctionCentralTest
 		assertEquals(0, calendarWithPastAuctionsOnly.getFutureAuctions());
 	}
 	
-	/**
-	 * @throws IOException
-	 * 
-	 */
 	@Test
 	public void testCalendarConstructorOnAuctionListFileWithFutureAuctionsOnly()
 			throws IOException
@@ -294,10 +387,6 @@ public class CalendarAuctionCentralTest
 				calendarWithFutureAuctionsOnly.getFutureAuctions());
 	}
 	
-	/**
-	 * @throws IOException
-	 * 
-	 */
 	@Test
 	public void testCalendarConstructorOnAuctionListFileWithBothPastAndFutureAuctions()
 			throws IOException
@@ -310,10 +399,6 @@ public class CalendarAuctionCentralTest
 				, calendarWithBothPastAndFutureAuctions.getAuctionList().size());
 	}
 	
-	/**
-	 * @throws IOException
-	 * 
-	 */
 	@Test
 	public void testGetAuctionOnAuctionListWithNonProfitName()
 			throws IOException
@@ -324,22 +409,13 @@ public class CalendarAuctionCentralTest
 				calendarWithBothPastAndFutureAuctions.getAuction(futureAuction1.getNonProfitName()).toString()));
 	}
 	
-	/**
-	 * @throws IOException
-	 * 
-	 */
 	@Test
 	public void testGetAuctionOnAuctionListWithoutNonProfitName()
 			throws IOException
 	{
 		assertNull(calendarWithBothPastAndFutureAuctions.getAuction("NonExistentNPName"));
 	}
-	
-	/**
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 */
+
 	@Test
 	public void testEditAuctionDateWithValidNewDate() throws IOException, ParseException {
 		
@@ -349,12 +425,7 @@ public class CalendarAuctionCentralTest
 		
 		assertEquals(newDate, futureAuction2.getAuctionStart());
 	}
-	
-	/**
-	 * @throws IOException
-	 * @throws ParseException 
-	 *
-	 */
+
 	@Test
 	public void testEditAuctionDateWithInvalidNewDate() throws IOException,
 			ParseException {
@@ -371,423 +442,139 @@ public class CalendarAuctionCentralTest
 						.getAuctionStart().toString()));
 	}
 	
-	/**
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 */
 	@Test
 	public void testEditAuctionDurationWithValidNewDuration() throws IOException, ParseException {
 		
 		// additional setup for this test
-		calendarWithBothPastAndFutureAuctions.editAuctionDuration(futureAuction2, 4);
+		calendarWithOneAuctionOnOneDayAndTwoOnAnother.editAuctionDuration(futureAuction3, 4);
+		Date auctionEnd = new Date("1/20/2016 9:0:0");
 		
-		assertEquals(4, futureAuction2.getAuctionDuration());
+		assertEquals(4, futureAuction3.getAuctionDuration());
+		assertEquals(auctionEnd.toString(), futureAuction3.getAuctionEnd().toString());
 	}
 	
-//	/**
-//	 * @throws IOException
-//	 * @throws ParseException 
-//	 *
-//	 */
 //	@Test
 //	public void testEditAuctionDurationWithInvalidNewDuration() throws IOException,
 //			ParseException {
 //
 //		// additional setup for this test
-//		Date newDate = new Date("01/03/2017 5:00:00");
-//		Date copyDate = futureAuction1.getAuctionStart().clone();
-//		calendarWithBothPastAndFutureAuctions.editAuctionDate(futureAuction1,
-//				newDate);
-//
-//		assertTrue(copyDate.toString().equals(
-//				calendarWithBothPastAndFutureAuctions
-//						.getAuction(futureAuction1.getNonProfitName())
-//						.getAuctionStart().toString()));
+//		calendarWithTwoFutureAuctionsOnOneDay.editAuctionDuration(futureAuction3, 8);
+//		
+//		// shows auction duration doesn't change
+//		assertEquals(2, futureAuction3.getAuctionDuration());
+//	}
+//	
+//	@Test
+//	public void testAddFutureAuctionOnPastAuction()
+//			throws IOException
+//	{
+//		// TODO
+//	}
+//	
+//	@Test
+//	public void testAddFutureAuctionOnGoodFutureAuction()
+//			throws IOException
+//	{
+//		// TODO
+//	}
+//	
+//	@Test
+//	public void testAddFutureAuctionOnBadFutureAuction()
+//			throws IOException
+//	{		
+//		// TODO
 //	}
 	
-	/**
-	 * @throws IOException
-	 * 
-	 */
-	@Test
-	public void testAddFutureAuctionOnPastAuction()
-			throws IOException
-	{
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(bothPastAndFutureAuctionsList);
-		myCalendar = new CalendarAuctionCentral();
-		
-		// TODO
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
-	}
-	
-	/**
-	 * @throws IOException
-	 * 
-	 */
-	@Test
-	public void testAddFutureAuctionOnGoodFutureAuction()
-			throws IOException
-	{
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(bothPastAndFutureAuctionsList);
-		myCalendar = new CalendarAuctionCentral();
-		
-		// TODO
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
-	}
-	
-	/**
-	 * @throws IOException
-	 * 
-	 */
-	@Test
-	public void testAddFutureAuctionOnBadFutureAuction()
-			throws IOException
-	{
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(bothPastAndFutureAuctionsList);
-		myCalendar = new CalendarAuctionCentral();
-		
-		// TODO
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
-	}
-	
-	/**
-	 * @throws IOException
-	 * 
-	 */
 	@Test
 	public void testCountAuctiionsOnDayOnDayWithZeroAuctions()
-			throws IOException
-	{
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(noAuctions);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertEquals(myCalendar.getAuctionList().size(), noAuctions.size());
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+			throws IOException, ParseException
+	{			
+		assertEquals(0, calendarWithOneAuctionOnOneDayAndTwoOnAnother.countAuctionsOnDay(new Date("12/31/2015 5:00:00")));
 	}
 	
-	/**
-	 * @throws IOException
-	 * 
-	 */
 	@Test
 	public void testCountAuctiionsOnDayOnDayWithOneAuction()
-			throws IOException
-	{
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(oneAuctionOnDay);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertEquals(myCalendar.getAuctionList().size(), oneAuctionOnDay.size());
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+			throws IOException, ParseException
+	{		
+		assertEquals(1, calendarWithOneAuctionOnOneDayAndTwoOnAnother.countAuctionsOnDay(futureAuction5.getAuctionStart()));
 	}
 	
-	/**
-	 * @throws IOException
-	 * 
-	 */
 	@Test
 	public void testCountAuctiionsOnDayOnDayWithTwoAuctions()
-			throws IOException
-	{
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(twoAuctionsOnDay);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertEquals(myCalendar.getAuctionList().size(), twoAuctionsOnDay.size());
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+			throws IOException, ParseException
+	{		
+		assertEquals(2, calendarWithOneAuctionOnOneDayAndTwoOnAnother.countAuctionsOnDay(futureAuction3.getAuctionStart()));
 	}
-	
-	/**
-	 * @throws IOException
-	 * @throws ParseException
-	 * 
-	 */
+		
 	@Test
 	public void testAtMaxAuctionsInRollingPeriodHelperOnOneAuctionInPeriodAtBeginning()
 			throws IOException, ParseException
 	{
-		ArrayList<Auction> OneAuctionInPeriodAtBeginning = new ArrayList<Auction>();
-		OneAuctionInPeriodAtBeginning.add(AuctionRollingTest1);
-		
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(OneAuctionInPeriodAtBeginning);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertFalse(myCalendar.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+		assertFalse(calendarWithOneAuctionInPeriodAtBeginning.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
 	}
 	
-	/**
-	 * @throws IOException
-	 * @throws ParseException
-	 * 
-	 */
 	@Test
 	public void testAtMaxAuctionsInRollingPeriodHelperOnOneAuctionInPeriodAtEnd()
 			throws IOException, ParseException
 	{
-		ArrayList<Auction> OneAuctionInPeriodAtEnd = new ArrayList<Auction>();
-		OneAuctionInPeriodAtEnd.add(AuctionRollingTest7);
-		
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(OneAuctionInPeriodAtEnd);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertFalse(myCalendar.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+		assertFalse(calendarWithOneAuctionInPeriodAtEnd.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
 	}
 	
-	/**
-	 * @throws IOException
-	 * @throws ParseException
-	 * 
-	 */
 	@Test
 	public void testAtMaxAuctionsInRollingPeriodHelperOnTwoAuctionsAtEachEnd()
 			throws IOException, ParseException
 	{
-		ArrayList<Auction> TwoAuctionsAtEachEnd = new ArrayList<Auction>();
-		TwoAuctionsAtEachEnd.add(AuctionRollingTest1);
-		TwoAuctionsAtEachEnd.add(AuctionRollingTest2);
-		TwoAuctionsAtEachEnd.add(AuctionRollingTest6);
-		TwoAuctionsAtEachEnd.add(AuctionRollingTest7);
-		
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(TwoAuctionsAtEachEnd);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertFalse(myCalendar.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+		assertFalse(calendarWithTwoAuctionsAtEachEndOfPeriod.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
 	}
 	
-	/**
-	 * @throws IOException
-	 * @throws ParseException
-	 * 
-	 */
 	@Test
 	public void testAtMaxAuctionsInRollingPeriodHelperOnFiveAuctions()
 			throws IOException, ParseException
 	{
-		ArrayList<Auction> FiveAuctionsPerPeriod = new ArrayList<Auction>();
-		FiveAuctionsPerPeriod.add(AuctionRollingTest1);
-		FiveAuctionsPerPeriod.add(AuctionRollingTest2);
-		FiveAuctionsPerPeriod.add(AuctionRollingTest4);
-		FiveAuctionsPerPeriod.add(AuctionRollingTest6);
-		FiveAuctionsPerPeriod.add(AuctionRollingTest7);
-		
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(FiveAuctionsPerPeriod);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertTrue(myCalendar.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+		assertTrue(calendarWithOnFiveAuctionsInPeriod.atMaxAuctionsInRollingPeriodHelper(new Date("01/21/2016 14:00:00")));
 	}
 	
-	/**
-	 * @throws IOException
-	 * @throws ParseException
-	 * 
-	 */
 	@Test
 	public void testAtMaxAuctionsInRollingPeriodOnOneAuctionAtBeginning()
 			throws IOException, ParseException
 	{
-		ArrayList<Auction> OneAuctionAtBeginning = new ArrayList<Auction>();
-		OneAuctionAtBeginning.add(AuctionRollingTest1);
-		
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(OneAuctionAtBeginning);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertFalse(myCalendar.atMaxAuctionsInRollingPeriodHelper(new Date("01/27/2016 14:00:00")));
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+		assertFalse(calendarWithOneAuctionAtBeginningForRollingPeriod.atMaxAuctionsInRollingPeriodHelper(new Date("01/27/2016 14:00:00")));
 	}
 	
-	/**
-	 * @throws IOException
-	 * @throws ParseException
-	 * 
-	 */
 	@Test
 	public void testAtMaxAuctionsInRollingPeriodOnOneAuctionAtEnd()
 			throws IOException, ParseException
 	{
-		ArrayList<Auction> OneAuctionAtEnd = new ArrayList<Auction>();
-		OneAuctionAtEnd.add(AuctionRollingTest13);
-		
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(OneAuctionAtEnd);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertFalse(myCalendar.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+		assertFalse(calendarWithOneAuctionAtEndForRollingPeriod.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
 	}
 	
-	/**
-	 * @throws IOException
-	 * @throws ParseException
-	 * 
-	 */
 	@Test
 	public void testAtMaxAuctionsInRollingPeriodOnTwoAuctionsAtEachEnd()
 			throws IOException, ParseException
 	{
-		ArrayList<Auction> TwoAuctionsAtEachEnd = new ArrayList<Auction>();
-		TwoAuctionsAtEachEnd.add(AuctionRollingTest1);
-		TwoAuctionsAtEachEnd.add(AuctionRollingTest2);
-		TwoAuctionsAtEachEnd.add(AuctionRollingTest12);
-		TwoAuctionsAtEachEnd.add(AuctionRollingTest13);
-		
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(TwoAuctionsAtEachEnd);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertFalse(myCalendar.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+		assertFalse(calendarWithTwoAuctionsAtEachEndForRollingPeriod.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
 	}
 	
-	/**
-	 * @throws IOException
-	 * @throws ParseException
-	 * 
-	 */
 	@Test
 	public void testAtMaxAuctionsInRollingPeriodOnFourAuctionsAtEachEnd()
 			throws IOException, ParseException
 	{
-		ArrayList<Auction> FourAuctionsAtEachEnd = new ArrayList<Auction>();
-		FourAuctionsAtEachEnd.add(AuctionRollingTest1);
-		FourAuctionsAtEachEnd.add(AuctionRollingTest2);
-		FourAuctionsAtEachEnd.add(AuctionRollingTest3);
-		FourAuctionsAtEachEnd.add(AuctionRollingTest4);
-		FourAuctionsAtEachEnd.add(AuctionRollingTest10);
-		FourAuctionsAtEachEnd.add(AuctionRollingTest11);
-		FourAuctionsAtEachEnd.add(AuctionRollingTest12);
-		FourAuctionsAtEachEnd.add(AuctionRollingTest13);
-		
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(FourAuctionsAtEachEnd);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertFalse(myCalendar.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+		assertFalse(calendarWithFourAuctionsAtEachEndForRollingPeriod.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
 	}
 	
-	/**
-	 * @throws IOException
-	 * @throws ParseException
-	 * 
-	 */
 	@Test
 	public void testAtMaxAuctionsInRollingPeriodOnFourAuctionsAtBegAndFiveAtEnd()
 			throws IOException, ParseException
-	{
-		ArrayList<Auction> FourAuctionsAtBegAndFiveAtEnd = new ArrayList<Auction>();
-		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest1);
-		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest2);
-		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest3);
-		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest4);
-		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest9);
-		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest10);
-		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest11);
-		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest12);
-		FourAuctionsAtBegAndFiveAtEnd.add(AuctionRollingTest13);
-		
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(FourAuctionsAtBegAndFiveAtEnd);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertTrue(myCalendar.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+	{		
+		assertTrue(calendarWithFourAuctionsAtBegAndFiveAtEndForRollingPeriod.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
 	}
 	
-	/**
-	 * @throws IOException
-	 * @throws ParseException
-	 * 
-	 */
 	@Test
-	public void testAtMaxAuctionsInRollingPeriodOnFourAuctionsAtEndAndFiveAtBeg()
-			throws IOException, ParseException
+	public void testAtMaxAuctionsInRollingPeriodOnFourAuctionsAtEndAndFiveAtBeg() throws ParseException
 	{
-		ArrayList<Auction> FourAuctionsAtEndAndFiveAtBeg = new ArrayList<Auction>();
-		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest1);
-		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest2);
-		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest3);
-		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest4);
-		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest5);
-		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest10);
-		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest11);
-		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest12);
-		FourAuctionsAtEndAndFiveAtBeg.add(AuctionRollingTest13);
-		
-		temperaryAuctionList = storeFileContentsAndClearFile();
-		serializeAuctions(FourAuctionsAtEndAndFiveAtBeg);
-		myCalendar = new CalendarAuctionCentral();
-		
-		assertTrue(myCalendar.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
-		
-		restoreFileContents(temperaryAuctionList);
-		temperaryAuctionList = null;
-		myCalendar = null;
+		assertTrue(calendarWithFourAuctionsAtEndAndFiveAtBegForRollingPeriod.atMaxAuctionsInRollingPeriod(new Date("01/27/2016 14:00:00")));
 	}
 	
-	/**
-	 * @throws IOException
-	 * @throws ParseException
-	 * 
-	 */
 	@Test
 	public void testAtMaxFutureAuctionsOnNoFutureAuctions()
 			throws IOException, ParseException
@@ -795,11 +582,6 @@ public class CalendarAuctionCentralTest
 		assertFalse(calendarWithNoFutureAuctions.atMaxFutureAuctions());
 	}
 	
-	/**
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 */
 	@Test
 	public void testAtMaxFutureAuctionsOnLessThanMaxFutureAuction()
 			throws IOException, ParseException
@@ -807,11 +589,6 @@ public class CalendarAuctionCentralTest
 		assertFalse(calendarWithLessThanMaxFutureAuctions.atMaxFutureAuctions());
 	}
 	
-	/**
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 */
 	@Test
 	public void testAtMaxFutureAuctionsOnMaxFutureAuction()
 			throws IOException, ParseException
@@ -820,43 +597,25 @@ public class CalendarAuctionCentralTest
 		assertTrue(calendarWithMaxFutureAuctions.atMaxFutureAuctions());
 	}
 	
-	/**
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 */
 	@Test
 	public void testInDateRangeOnAuctionInPast()
 			throws IOException, ParseException
 	{		
-		assertEquals(MAX_FUTURE_AUCTIONS, calendarWithMaxFutureAuctions.getFutureAuctionList().size());
-		assertTrue(calendarWithMaxFutureAuctions.atMaxFutureAuctions());
+		
 	}
 	
-	/**
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 */
 	@Test
 	public void testInDateRangeOnAuctionInDateRange()
 			throws IOException, ParseException
 	{		
-		assertEquals(MAX_FUTURE_AUCTIONS, calendarWithMaxFutureAuctions.getFutureAuctionList().size());
-		assertTrue(calendarWithMaxFutureAuctions.atMaxFutureAuctions());
+		
 	}
 	
-	/**
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 */
 	@Test
 	public void testInDateRangeOnAuctionInFuture()
 			throws IOException, ParseException
 	{		
-		assertEquals(MAX_FUTURE_AUCTIONS, calendarWithMaxFutureAuctions.getFutureAuctionList().size());
-		assertTrue(calendarWithMaxFutureAuctions.atMaxFutureAuctions());
+		
 	}		
 	
 	/**
