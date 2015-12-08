@@ -223,25 +223,16 @@ public class CalendarAuctionCentral
 			throws ParseException
 	{
 		Auction originalAuction = null;
-		Auction auctionToRemove = null;
 		for (Auction auction : futureAuctionList)
 		{
 			if (auction.toString().equals(auctionToEdit.toString()))
 			{
-				auctionToRemove = auction;
 				originalAuction = auction.clone();
+				auctionList.remove(auction);
+				futureAuctionList.remove(auction);
+				setFutureAuctions();
 			}
-		}
-		if (originalAuction == null)
-		{
-			System.out.println("Auction " + auctionToEdit.getAuctionName()
-					+ " not found in scheduled auctions.");
-			return;
-		}
-		
-		futureAuctionList.remove(auctionToRemove);
-		setFutureAuctions();
-		auctionList.remove(auctionToRemove);
+		}		
 		
 		auctionToEdit.setAuctionStart(newDate);
 		auctionToEdit.resetAuctionEnd();
@@ -272,25 +263,16 @@ public class CalendarAuctionCentral
 			throws ParseException
 	{
 		Auction originalAuction = null;
-		Auction auctionToRemove = null;
 		for (Auction auction : futureAuctionList)
 		{
 			if (auction.toString().equals(auctionToEdit.toString()))
 			{
-				auctionToRemove = auction;
 				originalAuction = auction.clone();
+				auctionList.remove(auction);
+				futureAuctionList.remove(auction);
+				setFutureAuctions();
 			}
-		}
-		if (originalAuction == null)
-		{
-			System.out.println("Auction " + auctionToEdit.getAuctionName()
-					+ " not found in scheduled auctions.");
-			return;
-		}
-		
-		futureAuctionList.remove(auctionToRemove);
-		setFutureAuctions();
-		auctionList.remove(auctionToRemove);
+		}		
 		
 		auctionToEdit.setAuctionDuration(newDuration);
 		auctionToEdit.resetAuctionEnd();
@@ -601,6 +583,35 @@ public class CalendarAuctionCentral
 		}
 		return (auctionsWithinLastYear >= MAX_NP_AUCTIONS_PER_YEAR);
 	}
+	
+	
+	
+    public enum AddErrorCode {
+        AT_MAX_AUCTIONS,
+        EXCEEDED_AUCTION_LIMIT_PER_DAY,
+        EXCEEDED_AUCTION_LIMIT_PER_7DAYS,
+        EXCEEDED_AUCTION_LIMIT_PER_YEAR_PER_NON_PROFIT,
+        SCHEDULED_DURING_OTHER_AUCTION_TIME,
+        SCHEDULED_MORE_THAN_90_DAYS_IN_ADVANCE
+    }
+
+    public static class AddAuctionException extends Exception {
+        private AddErrorCode errorCode;
+
+        AddAuctionException(AddErrorCode errorCode) {
+            this.errorCode = errorCode;
+        }
+
+        public AddErrorCode getErrorCode() {
+            return errorCode;
+        }
+
+        @Override
+        public String getMessage() {
+            return errorCode.toString();
+        }
+    }
+	
 	
 	/**
 	 * This method deserializes auctions.

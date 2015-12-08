@@ -42,7 +42,8 @@ public class CalendarAuctionCentralTest
 	CalendarAuctionCentral calendarWithPastAuctionsOnly;
 	CalendarAuctionCentral calendarWithFutureAuctionsOnly;
 	CalendarAuctionCentral calendarWithBothPastAndFutureAuctions;
-	CalendarAuctionCentral calendarWithOneAuctionOnOneDayAndTwoOnAnother;	
+	CalendarAuctionCentral calendarWithOneAuctionOnOneDayAndTwoOnAnother;
+	CalendarAuctionCentral calendarWithTwoFutureAuctionsOnSameDay;
 	CalendarAuctionCentral calendarWithOneAuctionInPeriodAtBeginning;
 	CalendarAuctionCentral calendarWithOneAuctionInPeriodAtEnd;		
 	CalendarAuctionCentral calendarWithTwoAuctionsAtEachEndOfPeriod;
@@ -73,6 +74,7 @@ public class CalendarAuctionCentralTest
 	Auction futureAuction1;
 	Auction futureAuction2;
 	Auction futureAuction3;
+	Auction futureAuction3a;
 	Auction futureAuction4;
 	Auction futureAuction5;	
 	Auction AuctionRollingTest1;
@@ -249,7 +251,9 @@ public class CalendarAuctionCentralTest
 		Date futureDateTest3 = new Date("01/20/2016 5:00:00");
 		int futureDurationTest3 = 2;
 		futureAuction3 = new Auction(NPNameTest4, futureDateTest3,
-				futureDurationTest3);		
+				futureDurationTest3);
+		futureAuction3a = new Auction(NPNameTest4, futureDateTest3,
+				futureDurationTest3);
 		String NPNameTest5 = "NPNAMETEST5";
 		Date futureDateTest4 = new Date("01/20/2016 14:00:00");
 		int futureDurationTest4 = 2;
@@ -265,7 +269,13 @@ public class CalendarAuctionCentralTest
 		OneAuctionOnOneDayAndTwoOnAnother.add(futureAuction4);
 		OneAuctionOnOneDayAndTwoOnAnother.add(futureAuction5);
 		serializeAuctions(OneAuctionOnOneDayAndTwoOnAnother);
-		calendarWithOneAuctionOnOneDayAndTwoOnAnother = new CalendarAuctionCentral();		
+		calendarWithOneAuctionOnOneDayAndTwoOnAnother = new CalendarAuctionCentral();
+		
+		ArrayList<Auction> auctionListWithTwoFutureAuctionsOnSameDay = new ArrayList<Auction>();
+		auctionListWithTwoFutureAuctionsOnSameDay.add(futureAuction3a);
+		auctionListWithTwoFutureAuctionsOnSameDay.add(futureAuction4);
+		serializeAuctions(auctionListWithTwoFutureAuctionsOnSameDay);
+		calendarWithTwoFutureAuctionsOnSameDay = new CalendarAuctionCentral();
 
 		// Setup for testAtMaxAuctionsInRollingPeriodHelperOnOneAuctionInPeriodAtBeginning()
 		ArrayList<Auction> OneAuctionInPeriodAtBeginning = new ArrayList<Auction>();
@@ -556,16 +566,18 @@ public class CalendarAuctionCentralTest
 		assertEquals(auctionEnd.toString(), futureAuction3.getAuctionEnd().toString());
 	}
 	
-//	@Test
-//	public void testEditAuctionDurationWithInvalidNewDuration() throws IOException,
-//			ParseException {
-//
-//		// additional setup for this test
-//		calendarWithTwoFutureAuctionsOnOneDay.editAuctionDuration(futureAuction3, 8);
-//		
-//		// shows auction duration doesn't change
-//		assertEquals(2, futureAuction3.getAuctionDuration());
-//	}
+	@Test
+	public void testEditAuctionDurationWithInvalidNewDuration() throws IOException,
+			ParseException {
+
+		// additional setup for this test
+		calendarWithTwoFutureAuctionsOnSameDay.editAuctionDuration(futureAuction3a, 8);
+		Date auctionEnd = new Date("1/20/2016 7:0:0");
+		System.out.println(futureAuction3a.getAuctionDuration());
+		// shows auction duration doesn't change
+		assertEquals(2, futureAuction3a.getAuctionDuration());
+		assertEquals(auctionEnd.toString(), futureAuction3a.getAuctionEnd().toString());
+	}
 //	
 //	@Test
 //	public void testAddFutureAuctionOnPastAuction()
