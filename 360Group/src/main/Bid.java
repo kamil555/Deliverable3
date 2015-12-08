@@ -6,6 +6,7 @@ package main;
  * @author Han Wang
  * @edited by Mindy Huynh 12/5/2015
  */
+@SuppressWarnings("serial")
 public class Bid implements java.io.Serializable
 {
 	

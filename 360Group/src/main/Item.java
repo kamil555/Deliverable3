@@ -8,6 +8,7 @@ import java.io.IOException;
  * @author Han Wang
  * @edited by Mindy Huynh 12/5/2015
  */
+@SuppressWarnings("serial")
 public class Item implements java.io.Serializable
 {
 	/**
