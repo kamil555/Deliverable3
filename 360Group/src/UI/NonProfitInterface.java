@@ -291,7 +291,7 @@ public class NonProfitInterface
 		if (year >= 2015)
 		{
 			int[] monthDay =
-			{ 31, 28, 31, 30, 31, 31, 31, 30, 31, 30, 31, 30 };
+			{ 31, 28, 31, 30, 31, 31, 31, 30, 31, 30, 31, 31 };
 			if (month < 13 && month > 0)
 			{
 				if (monthDay[month - 1] >= day)

@@ -75,7 +75,7 @@ public class AuctionCentralEmployee
 	{
 		CalendarAuctionCentral cal = new CalendarAuctionCentral();
 		int select = acei.selectAuction(cal);
-		Auction a = cal.getAuctionList().get(select);
+		Auction a = cal.getAuctionList().get(select-1);
 		return a.toString();
 	}
 	

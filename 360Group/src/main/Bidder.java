@@ -126,7 +126,7 @@ public class Bidder
 	{
 		CalendarAuctionCentral c = new CalendarAuctionCentral();
 		int selectAuction = bidderInterface.selectAuction(c);
-		Auction a = c.getAuctionList().get(selectAuction);
+		Auction a = c.getAuctionList().get(selectAuction-1);
 		Inventory i = new Inventory();
 		int selectItem = bidderInterface.selectItem(i, a);
 		viewItem(user, i.listofItems.get(selectItem), bidderInterface);

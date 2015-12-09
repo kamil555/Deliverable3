@@ -88,7 +88,7 @@ public class CalendarAuctionCentral
 	/**
 	 * The file name being used in this class.
 	 */
-	private static String FILENAME = "Auctions.ser";
+	private static String FILENAME = "AuctionsTest.ser";
 	
 	
 	/**

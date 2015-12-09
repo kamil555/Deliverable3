@@ -17,7 +17,7 @@ public class Bid implements java.io.Serializable
 	@Override
 	public String toString()
 	{
-		return userName + "," + itemID + "," + bidAmount;
+		return "User Name = "+userName + ", ItemID = " + itemID + ", Bid Amount = $" + bidAmount;
 	}
 	
 	/**

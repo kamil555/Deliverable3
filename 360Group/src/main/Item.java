@@ -195,7 +195,7 @@ public class Item implements java.io.Serializable
 	@Override
 	public String toString()
 	{
-		return itemID + "," + auctionName + "," + startBid + "," + itemName + "," + itemInfo;
+		return "ItemID = "+ itemID + ", Auction Name = " + auctionName + ", Start Bid = $" + startBid + ", Item Name = " + itemName + ", Item Information = " + itemInfo;
 	}
 	
 }
